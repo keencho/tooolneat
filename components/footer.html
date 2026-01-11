@@ -10,18 +10,3 @@
     </div>
   </div>
 </footer>
-
-<script>
-(function() {
-  const isEnglish = window.location.pathname.startsWith('/en/') || window.location.pathname === '/en';
-  const langPrefix = isEnglish ? '/en' : '';
-
-  // Update footer links with correct prefix
-  document.querySelectorAll('footer .nav-link').forEach(link => {
-    const href = link.getAttribute('href');
-    if (href && href.startsWith('/') && !href.startsWith('/en')) {
-      link.setAttribute('href', langPrefix + href);
-    }
-  });
-})();
-</script>

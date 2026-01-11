@@ -280,18 +280,3 @@
     </nav>
   </div>
 </header>
-
-<script>
-(function() {
-  const isEnglish = window.location.pathname.startsWith('/en/') || window.location.pathname === '/en';
-  const langPrefix = isEnglish ? '/en' : '';
-
-  // Update all navigation links with correct prefix
-  document.querySelectorAll('.nav-link').forEach(link => {
-    const href = link.getAttribute('href');
-    if (href && href.startsWith('/') && !href.startsWith('/en')) {
-      link.setAttribute('href', langPrefix + href);
-    }
-  });
-})();
-</script>

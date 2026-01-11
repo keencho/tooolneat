@@ -47,6 +47,17 @@
       footerEl.innerHTML = footerHtml;
     }
 
+    // Fix nav links for English pages
+    const isEnglish = window.location.pathname.startsWith('/en/') || window.location.pathname === '/en';
+    if (isEnglish) {
+      document.querySelectorAll('.nav-link').forEach(link => {
+        const href = link.getAttribute('href');
+        if (href && href.startsWith('/') && !href.startsWith('/en')) {
+          link.setAttribute('href', '/en' + href);
+        }
+      });
+    }
+
     // Update theme icon after header loads
     if (typeof updateThemeIcon === 'function') {
       updateThemeIcon(document.documentElement.classList.contains('dark'));
