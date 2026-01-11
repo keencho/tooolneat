@@ -179,3 +179,7 @@ function copyToClipboard(text) {
 ## Known Issues
 1. Some table headers in Base Converter still show Korean in English mode
 2. Mobile viewport testing via browser resize may not accurately reflect device behavior
+
+
+### sitemap.xml
+Must be added to sitemap.xml when creating a new tool page. Set the default to ko according to the existing form, and en needs to be added
