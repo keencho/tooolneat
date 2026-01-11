@@ -3,6 +3,7 @@ node_modules
 .idea
 .wrangler
 src
+docs
 *.md
 package.json
 package-lock.json
