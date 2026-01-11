@@ -1,0 +1,10 @@
+node_modules
+.git
+.idea
+.wrangler
+src
+*.md
+package.json
+package-lock.json
+.gitignore
+wrangler.toml
