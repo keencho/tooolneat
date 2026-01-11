@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <!-- Background gradient (Xcode-style blue) -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e40af"/>
+      <stop offset="50%" style="stop-color:#2563eb"/>
+      <stop offset="100%" style="stop-color:#3b82f6"/>
+    </linearGradient>
+
+    <!-- Hammer head gradient -->
+    <linearGradient id="hammerHeadGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f1f5f9"/>
+      <stop offset="30%" style="stop-color:#e2e8f0"/>
+      <stop offset="70%" style="stop-color:#94a3b8"/>
+      <stop offset="100%" style="stop-color:#64748b"/>
+    </linearGradient>
+
+    <!-- Handle gradient -->
+    <linearGradient id="handleGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#fbbf24"/>
+      <stop offset="50%" style="stop-color:#f59e0b"/>
+      <stop offset="100%" style="stop-color:#d97706"/>
+    </linearGradient>
+
+    <!-- Shadow -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="4" dy="8" stdDeviation="10" flood-color="#1e3a8a" flood-opacity="0.4"/>
+    </filter>
+
+    <!-- Glow effect for text -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGradient)"/>
+
+  <!-- Subtle grid pattern -->
+  <g opacity="0.04">
+    <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+      <path d="M 50 0 L 0 0 0 50" fill="none" stroke="white" stroke-width="1"/>
+    </pattern>
+    <rect width="1200" height="630" fill="url(#grid)"/>
+  </g>
+
+  <!-- Hammer icon (centered left) -->
+  <g transform="translate(320, 315) rotate(-45)" filter="url(#shadow)">
+    <!-- Hammer handle -->
+    <rect x="-14" y="30" width="28" height="130" rx="8" fill="url(#handleGradient)"/>
+    <!-- Handle highlight -->
+    <rect x="-10" y="35" width="6" height="120" rx="3" fill="#fcd34d" opacity="0.6"/>
+
+    <!-- Hammer head main body -->
+    <rect x="-55" y="-40" width="110" height="65" rx="10" fill="url(#hammerHeadGradient)"/>
+
+    <!-- Hammer head top highlight -->
+    <rect x="-50" y="-35" width="100" height="12" rx="4" fill="white" opacity="0.4"/>
+
+    <!-- Hammer striking face (right side) -->
+    <rect x="40" y="-40" width="25" height="65" rx="6" fill="#475569"/>
+    <rect x="42" y="-35" width="6" height="55" rx="2" fill="#64748b" opacity="0.5"/>
+
+    <!-- Hammer claw (left side) -->
+    <path d="M -55 -40 L -55 25 L -45 25 L -45 -10 L -35 -10 L -35 25 L -25 25 L -25 -30 Q -25 -40 -35 -40 Z" fill="#475569"/>
+
+    <!-- Metal ring where handle meets head -->
+    <ellipse cx="0" cy="28" rx="18" ry="8" fill="#94a3b8"/>
+    <ellipse cx="0" cy="26" rx="16" ry="6" fill="#cbd5e1"/>
+  </g>
+
+  <!-- Text: Toolneat -->
+  <g filter="url(#glow)">
+    <text x="480" y="330" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="88" font-weight="700" fill="white" letter-spacing="-2">
+      Toolneat
+    </text>
+  </g>
+
+  <!-- Tagline -->
+  <text x="480" y="390" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="26" font-weight="400" fill="white" opacity="0.85">
+    Developer &amp; Life Tools
+  </text>
+
+  <!-- Decorative circles -->
+  <circle cx="80" cy="80" r="50" fill="white" opacity="0.03"/>
+  <circle cx="1120" cy="550" r="70" fill="white" opacity="0.03"/>
+</svg>

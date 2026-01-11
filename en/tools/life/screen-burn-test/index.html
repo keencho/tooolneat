@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Screen Burn-In Test - Toolneat</title>
+  <meta name="description" content="Test your OLED monitor for burn-in and image retention.">
+  <meta name="theme-color" content="#2563eb">
+  <link rel="canonical" href="https://toolneat.com/en/tools/life/screen-burn-test/">
+  <link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/screen-burn-test/">
+  <link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/screen-burn-test/">
+  <link rel="icon" type="image/svg+xml" href="../../../../assets/icons/favicon.svg">
+  <link rel="stylesheet" href="../../../../assets/css/output.css">
+  <script src="../../../../assets/js/common.js"></script>
+  <script src="../../../../assets/js/i18n.js"></script>
+  <script src="../../../../assets/js/components.js"></script>
+  <style>
+    #fullscreen-overlay{position:fixed;inset:0;z-index:9999;display:none;overflow:hidden}
+    #fullscreen-overlay.active{display:block}
+    #fullscreen-hint{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.7);color:#fff;padding:8px 16px;border-radius:8px;font-size:14px;opacity:1;transition:opacity .3s;z-index:10}
+    #fullscreen-overlay:not(:hover) #fullscreen-hint{opacity:0}
+    .pattern-gray{background:linear-gradient(to right,#000 0%,#fff 100%)}
+    .pattern-gray50{background:#808080}
+    .pattern-checker{background:repeating-conic-gradient(#000 0% 25%,#fff 0% 50%) 50%/40px 40px}
+    .pattern-sliding{background:#808080}
+    #sliding-bar{position:absolute;top:0;width:100px;height:100%;background:#fff}
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <div id="header"></div>
+  <main class="flex-1 py-8 md:py-12"><div class="container-main">
+    <!-- Page Title -->
+    <div class="mb-6">
+      <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+        Screen Burn-In Test
+      </h1>
+      <p class="text-gray-600 dark:text-gray-400">
+        Check for burn-in on OLED displays. If you see ghost images on gray screen, your display has burn-in.
+      </p>
+    </div>
+
+    <!-- Ad Container (Top) -->
+    <div class="ad-container mb-6"></div>
+
+    <!-- Tool Card -->
+    <div class="card">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+        <button onclick="startTest('gray50')" class="p-4 rounded-xl bg-gray-500 hover:ring-4 ring-gray-400 transition-all text-white font-medium shadow-lg">50% Gray</button>
+        <button onclick="startTest('gray')" class="p-4 rounded-xl bg-gradient-to-r from-black to-white hover:ring-4 ring-gray-400 transition-all text-gray-700 font-medium shadow-lg">Gradient</button>
+        <button onclick="startTest('checker')" class="p-4 rounded-xl hover:ring-4 ring-gray-400 transition-all font-medium shadow-lg" style="background:repeating-conic-gradient(#000 0% 25%,#fff 0% 50%) 50%/20px 20px">Checker</button>
+        <button onclick="startTest('sliding')" class="p-4 rounded-xl bg-gray-600 hover:ring-4 ring-gray-400 transition-all text-white font-medium shadow-lg">Sliding</button>
+      </div>
+      <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
+        <h3 class="font-semibold text-gray-900 dark:text-white mb-2">How to Use</h3>
+        <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+          <li>• Click pattern → Fullscreen mode</li>
+          <li>• ← → or click to change pattern</li>
+          <li>• ESC to exit</li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-8 p-6 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+      <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">What is Burn-In?</h2>
+      <p class="text-gray-600 dark:text-gray-400">Burn-in is permanent image retention on OLED displays when the same image is displayed for extended periods.</p>
+    </div>
+    <div class="ad-container mt-8"></div>
+  </div></main>
+  <div id="footer"></div>
+  <div id="fullscreen-overlay"><div id="sliding-bar" style="display:none"></div><div id="fullscreen-hint">Click or ← → to change | ESC to exit</div></div>
+  <script>
+    const patterns=['gray50','gray','checker','sliding'];let ci=0,aid=null;
+    const ov=document.getElementById('fullscreen-overlay'),sb=document.getElementById('sliding-bar');
+    function ap(p){ov.className='active';sb.style.display='none';if(aid){cancelAnimationFrame(aid);aid=null}ov.classList.add('pattern-'+p);if(p==='sliding'){sb.style.display='block';anim()}}
+    function anim(){let pos=0;const w=window.innerWidth;function s(){pos=(pos+2)%(w+100);sb.style.left=(pos-100)+'px';aid=requestAnimationFrame(s)}s()}
+    function startTest(p){ci=patterns.indexOf(p);if(ci===-1)ci=0;ap(patterns[ci]);if(ov.requestFullscreen)ov.requestFullscreen();else if(ov.webkitRequestFullscreen)ov.webkitRequestFullscreen()}
+    function next(){ci=(ci+1)%patterns.length;ap(patterns[ci])}function prev(){ci=(ci-1+patterns.length)%patterns.length;ap(patterns[ci])}
+    function exit(){ov.classList.remove('active');if(aid){cancelAnimationFrame(aid);aid=null}if(document.fullscreenElement)document.exitFullscreen()}
+    ov.addEventListener('click',e=>{if(e.target!==sb)next()});
+    document.addEventListener('keydown',e=>{if(!ov.classList.contains('active'))return;if(e.key==='ArrowRight'||e.key===' ')next();else if(e.key==='ArrowLeft')prev();else if(e.key==='Escape')exit()});
+    document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement)exit()});
+  </script>
+</body>
+</html>

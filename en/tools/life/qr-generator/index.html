@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code Generator - Toolneat</title>
+  <meta name="description" content="Generate QR codes from URLs, text, phone numbers, emails, and Wi-Fi credentials. Download as PNG or SVG.">
+
+  <!-- Canonical & hreflang -->
+  <link rel="canonical" href="https://toolneat.com/en/tools/life/qr-generator/">
+  <link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/qr-generator/">
+  <link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/qr-generator/">
+  <link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/qr-generator/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Toolneat">
+  <meta property="og:title" content="QR Code Generator - Toolneat">
+  <meta property="og:description" content="Generate QR codes from URLs, text, phone numbers, emails, and Wi-Fi credentials.">
+  <meta property="og:url" content="https://toolneat.com/en/tools/life/qr-generator/">
+  <meta property="og:image" content="https://toolneat.com/assets/images/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#2563eb">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../../../../assets/icons/favicon.svg">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../../../../assets/css/output.css">
+
+  <!-- JS -->
+  <script src="../../../../assets/js/common.js"></script>
+  <script>localStorage.setItem('toolneat-lang', 'en');</script>
+  <script src="../../../../assets/js/i18n.js"></script>
+  <script src="../../../../assets/js/components.js"></script>
+
+  <!-- QRCode.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <style>
+    .qr-preview {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 200px;
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .dark .qr-preview {
+      background: white;
+    }
+    #qrcode img, #qrcode canvas {
+      max-width: 100%;
+      height: auto;
+    }
+    .type-btn {
+      flex: 1;
+      min-width: 80px;
+    }
+    .color-input-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .color-preview {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 2px solid #e5e7eb;
+      overflow: hidden;
+    }
+    .color-preview input[type="color"] {
+      width: 50px;
+      height: 50px;
+      margin: -7px;
+      border: none;
+      cursor: pointer;
+    }
+    .dark .color-preview {
+      border-color: #4b5563;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <!-- Header -->
+  <div id="header"></div>
+
+  <!-- Main Content -->
+  <main class="flex-1 py-8 md:py-12">
+    <div class="container-main">
+      <!-- Page Title -->
+      <div class="mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          QR Code Generator
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400">
+          Convert URLs, text, phone numbers, emails, and Wi-Fi information into QR codes. Download the generated QR code as an image.
+        </p>
+      </div>
+
+      <!-- Ad Container (Top) -->
+      <div class="ad-container mb-6">
+
+      </div>
+
+      <!-- Tool Card -->
+      <div class="card">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Input Section -->
+          <div>
+            <!-- Type Selection -->
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Type</label>
+              <div class="flex flex-wrap gap-2">
+                <button class="type-btn btn btn-primary text-sm py-1.5" data-type="url">URL</button>
+                <button class="type-btn btn btn-secondary text-sm py-1.5" data-type="text">Text</button>
+                <button class="type-btn btn btn-secondary text-sm py-1.5" data-type="phone">Phone</button>
+                <button class="type-btn btn btn-secondary text-sm py-1.5" data-type="email">Email</button>
+                <button class="type-btn btn btn-secondary text-sm py-1.5" data-type="wifi">Wi-Fi</button>
+              </div>
+            </div>
+
+            <!-- URL Input -->
+            <div id="url-input-section">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">URL</label>
+              <input type="url" id="url-input" class="input py-3" placeholder="https://example.com" value="https://toolneat.com">
+            </div>
+
+            <!-- Text Input -->
+            <div id="text-input-section" class="hidden">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Text</label>
+              <textarea id="text-input" class="textarea h-24" placeholder="Enter text to convert to QR code"></textarea>
+            </div>
+
+            <!-- Phone Input -->
+            <div id="phone-input-section" class="hidden">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Phone Number</label>
+              <input type="tel" id="phone-input" class="input py-3" placeholder="+1-555-123-4567">
+            </div>
+
+            <!-- Email Input -->
+            <div id="email-input-section" class="hidden">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email Address</label>
+              <input type="email" id="email-input" class="input py-3 mb-3" placeholder="example@email.com">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Subject (Optional)</label>
+              <input type="text" id="email-subject" class="input py-3 mb-3" placeholder="Email subject">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Body (Optional)</label>
+              <textarea id="email-body" class="textarea h-20" placeholder="Email body"></textarea>
+            </div>
+
+            <!-- WiFi Input -->
+            <div id="wifi-input-section" class="hidden">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Network Name (SSID)</label>
+              <input type="text" id="wifi-ssid" class="input py-3 mb-3" placeholder="MyWiFi">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Password</label>
+              <input type="text" id="wifi-password" class="input py-3 mb-3" placeholder="password123">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Encryption</label>
+              <select id="wifi-encryption" class="input py-3">
+                <option value="WPA">WPA/WPA2</option>
+                <option value="WEP">WEP</option>
+                <option value="nopass">No Password</option>
+              </select>
+            </div>
+
+            <!-- Options -->
+            <div class="mt-6 border-t border-gray-100 dark:border-gray-700 pt-6">
+              <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">Options</h3>
+
+              <div class="grid grid-cols-2 gap-4 mb-4">
+                <!-- Size -->
+                <div>
+                  <label class="block text-sm text-gray-600 dark:text-gray-400 mb-1">Size</label>
+                  <select id="qr-size" class="input py-2 text-sm">
+                    <option value="128">128 x 128</option>
+                    <option value="200" selected>200 x 200</option>
+                    <option value="256">256 x 256</option>
+                    <option value="400">400 x 400</option>
+                    <option value="512">512 x 512</option>
+                  </select>
+                </div>
+
+                <!-- Error Correction -->
+                <div>
+                  <label class="block text-sm text-gray-600 dark:text-gray-400 mb-1">Error Correction</label>
+                  <select id="qr-error" class="input py-2 text-sm">
+                    <option value="L">L (7%)</option>
+                    <option value="M" selected>M (15%)</option>
+                    <option value="Q">Q (25%)</option>
+                    <option value="H">H (30%)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Colors -->
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm text-gray-600 dark:text-gray-400 mb-1">Foreground</label>
+                  <div class="color-input-wrapper">
+                    <div class="color-preview">
+                      <input type="color" id="qr-fg-color" value="#000000">
+                    </div>
+                    <input type="text" id="qr-fg-hex" class="input py-2 text-sm font-mono flex-1" value="#000000">
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-sm text-gray-600 dark:text-gray-400 mb-1">Background</label>
+                  <div class="color-input-wrapper">
+                    <div class="color-preview">
+                      <input type="color" id="qr-bg-color" value="#ffffff">
+                    </div>
+                    <input type="text" id="qr-bg-hex" class="input py-2 text-sm font-mono flex-1" value="#ffffff">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Generate Button -->
+            <button id="generate-btn" class="btn btn-primary w-full mt-6">Generate</button>
+          </div>
+
+          <!-- Preview Section -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Preview</label>
+            <div class="qr-preview border border-gray-200 dark:border-gray-700">
+              <div id="qrcode"></div>
+            </div>
+
+            <!-- Download Buttons -->
+            <div class="flex gap-2 mt-4">
+              <button id="download-png" class="btn btn-secondary flex-1">Download PNG</button>
+              <button id="download-svg" class="btn btn-secondary flex-1">Download SVG</button>
+              <button id="copy-btn" class="btn btn-secondary flex-1">Copy</button>
+            </div>
+
+            <!-- QR Data Preview -->
+            <div class="mt-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+              <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Encoded Data</label>
+              <code id="encoded-data" class="text-sm text-gray-700 dark:text-gray-300 break-all">https://toolneat.com</code>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Box -->
+      <div class="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+        <h3 class="font-medium text-blue-800 dark:text-blue-300 mb-2">QR Code Tips</h3>
+        <ul class="text-sm text-blue-700 dark:text-blue-400 space-y-1">
+          <li>Higher error correction levels allow QR codes to be read even when partially damaged.</li>
+          <li>Ensure sufficient contrast between foreground and background colors for better recognition.</li>
+          <li>Wi-Fi QR codes can be scanned by smartphones to connect automatically.</li>
+        </ul>
+      </div>
+
+      <!-- Ad Container (Bottom) -->
+      <div class="ad-container mt-8">
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Tool Script -->
+  <script>
+    (function() {
+      'use strict';
+
+      // Elements
+      const typeBtns = document.querySelectorAll('.type-btn');
+      const inputSections = {
+        url: document.getElementById('url-input-section'),
+        text: document.getElementById('text-input-section'),
+        phone: document.getElementById('phone-input-section'),
+        email: document.getElementById('email-input-section'),
+        wifi: document.getElementById('wifi-input-section')
+      };
+
+      const urlInput = document.getElementById('url-input');
+      const textInput = document.getElementById('text-input');
+      const phoneInput = document.getElementById('phone-input');
+      const emailInput = document.getElementById('email-input');
+      const emailSubject = document.getElementById('email-subject');
+      const emailBody = document.getElementById('email-body');
+      const wifiSsid = document.getElementById('wifi-ssid');
+      const wifiPassword = document.getElementById('wifi-password');
+      const wifiEncryption = document.getElementById('wifi-encryption');
+
+      const qrSize = document.getElementById('qr-size');
+      const qrError = document.getElementById('qr-error');
+      const qrFgColor = document.getElementById('qr-fg-color');
+      const qrBgColor = document.getElementById('qr-bg-color');
+      const qrFgHex = document.getElementById('qr-fg-hex');
+      const qrBgHex = document.getElementById('qr-bg-hex');
+
+      const generateBtn = document.getElementById('generate-btn');
+      const downloadPng = document.getElementById('download-png');
+      const downloadSvg = document.getElementById('download-svg');
+      const copyBtn = document.getElementById('copy-btn');
+      const qrcodeDiv = document.getElementById('qrcode');
+      const encodedData = document.getElementById('encoded-data');
+
+      let currentType = 'url';
+      let qrInstance = null;
+
+      // Type switching
+      typeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          typeBtns.forEach(b => {
+            b.classList.remove('btn-primary');
+            b.classList.add('btn-secondary');
+          });
+          btn.classList.remove('btn-secondary');
+          btn.classList.add('btn-primary');
+
+          currentType = btn.dataset.type;
+
+          Object.values(inputSections).forEach(section => {
+            section.classList.add('hidden');
+          });
+          inputSections[currentType].classList.remove('hidden');
+        });
+      });
+
+      // Color inputs sync
+      qrFgColor.addEventListener('input', () => {
+        qrFgHex.value = qrFgColor.value;
+      });
+      qrBgColor.addEventListener('input', () => {
+        qrBgHex.value = qrBgColor.value;
+      });
+      qrFgHex.addEventListener('input', () => {
+        if (/^#[0-9a-f]{6}$/i.test(qrFgHex.value)) {
+          qrFgColor.value = qrFgHex.value;
+        }
+      });
+      qrBgHex.addEventListener('input', () => {
+        if (/^#[0-9a-f]{6}$/i.test(qrBgHex.value)) {
+          qrBgColor.value = qrBgHex.value;
+        }
+      });
+
+      // Get QR data based on type
+      function getQRData() {
+        switch (currentType) {
+          case 'url':
+            return urlInput.value.trim();
+          case 'text':
+            return textInput.value.trim();
+          case 'phone':
+            const phone = phoneInput.value.trim().replace(/[^0-9+]/g, '');
+            return phone ? `tel:${phone}` : '';
+          case 'email':
+            const email = emailInput.value.trim();
+            if (!email) return '';
+            let mailto = `mailto:${email}`;
+            const params = [];
+            if (emailSubject.value.trim()) params.push(`subject=${encodeURIComponent(emailSubject.value.trim())}`);
+            if (emailBody.value.trim()) params.push(`body=${encodeURIComponent(emailBody.value.trim())}`);
+            if (params.length > 0) mailto += '?' + params.join('&');
+            return mailto;
+          case 'wifi':
+            const ssid = wifiSsid.value.trim();
+            if (!ssid) return '';
+            const enc = wifiEncryption.value;
+            const pwd = wifiPassword.value;
+            if (enc === 'nopass') {
+              return `WIFI:T:nopass;S:${ssid};;`;
+            }
+            return `WIFI:T:${enc};S:${ssid};P:${pwd};;`;
+        }
+        return '';
+      }
+
+      // Generate QR Code
+      function generateQR() {
+        const data = getQRData();
+        if (!data) {
+          toast.warning(t('tools.qrGenerator.enterData'));
+          return;
+        }
+
+        // Clear previous QR code
+        qrcodeDiv.innerHTML = '';
+
+        const size = parseInt(qrSize.value);
+        const errorLevel = {
+          'L': QRCode.CorrectLevel.L,
+          'M': QRCode.CorrectLevel.M,
+          'Q': QRCode.CorrectLevel.Q,
+          'H': QRCode.CorrectLevel.H
+        }[qrError.value];
+
+        try {
+          qrInstance = new QRCode(qrcodeDiv, {
+            text: data,
+            width: size,
+            height: size,
+            colorDark: qrFgColor.value,
+            colorLight: qrBgColor.value,
+            correctLevel: errorLevel
+          });
+
+          encodedData.textContent = data;
+        } catch (e) {
+          toast.error(t('common.conversionError'));
+        }
+      }
+
+      // Download PNG
+      function downloadQRCode() {
+        const canvas = qrcodeDiv.querySelector('canvas');
+        if (!canvas) {
+          toast.warning(t('tools.qrGenerator.generateFirst'));
+          return;
+        }
+
+        const link = document.createElement('a');
+        link.download = 'qrcode.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      }
+
+      // Download SVG
+      function downloadQRCodeSvg() {
+        const canvas = qrcodeDiv.querySelector('canvas');
+        if (!canvas) {
+          toast.warning(t('tools.qrGenerator.generateFirst'));
+          return;
+        }
+
+        const ctx = canvas.getContext('2d');
+        const size = canvas.width;
+        const imageData = ctx.getImageData(0, 0, size, size);
+        const data = imageData.data;
+
+        // Detect module size by finding first black pixel row length
+        let moduleSize = 1;
+        for (let x = 0; x < size; x++) {
+          const idx = x * 4;
+          if (data[idx] < 128) { // Found dark pixel
+            let count = 1;
+            for (let nx = x + 1; nx < size; nx++) {
+              const nidx = nx * 4;
+              if (data[nidx] < 128) count++;
+              else break;
+            }
+            moduleSize = count;
+            break;
+          }
+        }
+
+        const modules = Math.round(size / moduleSize);
+        const fgColor = qrFgColor.value;
+        const bgColor = qrBgColor.value;
+
+        let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${modules} ${modules}" width="${size}" height="${size}">`;
+        svg += `<rect width="${modules}" height="${modules}" fill="${bgColor}"/>`;
+
+        // Sample center of each module
+        for (let y = 0; y < modules; y++) {
+          for (let x = 0; x < modules; x++) {
+            const px = Math.floor(x * moduleSize + moduleSize / 2);
+            const py = Math.floor(y * moduleSize + moduleSize / 2);
+            const idx = (py * size + px) * 4;
+            if (data[idx] < 128) { // Dark module
+              svg += `<rect x="${x}" y="${y}" width="1" height="1" fill="${fgColor}"/>`;
+            }
+          }
+        }
+
+        svg += '</svg>';
+
+        const blob = new Blob([svg], { type: 'image/svg+xml' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.download = 'qrcode.svg';
+        link.href = url;
+        link.click();
+        URL.revokeObjectURL(url);
+      }
+
+      // Copy image to clipboard
+      async function copyQRCode() {
+        const canvas = qrcodeDiv.querySelector('canvas');
+        if (!canvas) {
+          toast.warning(t('tools.qrGenerator.generateFirst'));
+          return;
+        }
+
+        try {
+          const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+          await navigator.clipboard.write([
+            new ClipboardItem({ 'image/png': blob })
+          ]);
+          toast.success(t('common.copied'));
+        } catch (e) {
+          // Fallback: copy data URL
+          try {
+            await navigator.clipboard.writeText(canvas.toDataURL('image/png'));
+            toast.success(t('common.copied'));
+          } catch (e2) {
+            toast.error(t('common.conversionError'));
+          }
+        }
+      }
+
+      // Event listeners
+      generateBtn.addEventListener('click', generateQR);
+      downloadPng.addEventListener('click', downloadQRCode);
+      downloadSvg.addEventListener('click', downloadQRCodeSvg);
+      copyBtn.addEventListener('click', copyQRCode);
+
+      // Enter key to generate
+      [urlInput, textInput, phoneInput, emailInput, wifiSsid].forEach(input => {
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            generateQR();
+          }
+        });
+      });
+
+      // Initial generation
+      setTimeout(generateQR, 100);
+    })();
+  </script>
+</body>
+</html>

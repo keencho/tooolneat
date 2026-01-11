@@ -1,0 +1,18 @@
+# Toolneat robots.txt
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://toolneat.com/sitemap.xml
+
+# Disallow development files
+Disallow: /node_modules/
+Disallow: /src/
+Disallow: /.github/
+Disallow: /package.json
+Disallow: /package-lock.json
+Disallow: /tailwind.config.js
+
+# Allow assets
+Allow: /assets/

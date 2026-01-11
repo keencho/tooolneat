@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hash Generator - Toolneat</title>
+  <meta name="description" content="Generate MD5, SHA-1, SHA-256, SHA-512 hashes from text or files. Free online hash calculator.">
+
+  <!-- Canonical & hreflang -->
+  <link rel="canonical" href="https://toolneat.com/en/tools/dev/hash-generator/">
+  <link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/dev/hash-generator/">
+  <link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/dev/hash-generator/">
+  <link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/dev/hash-generator/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Toolneat">
+  <meta property="og:title" content="Hash Generator - Toolneat">
+  <meta property="og:description" content="Generate MD5, SHA-1, SHA-256, SHA-512 hashes from text or files. Free online hash calculator.">
+  <meta property="og:url" content="https://toolneat.com/en/tools/dev/hash-generator/">
+  <meta property="og:image" content="https://toolneat.com/assets/images/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#2563eb">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../../../../assets/icons/favicon.svg">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../../../../assets/css/output.css">
+
+  <!-- JS -->
+  <script src="../../../../assets/js/common.js"></script>
+  <script>
+    // Force English language
+    localStorage.setItem('toolneat-lang', 'en');
+  </script>
+  <script src="../../../../assets/js/i18n.js"></script>
+  <script src="../../../../assets/js/components.js"></script>
+
+  <style>
+    .hash-output {
+      font-family: ui-monospace, monospace;
+      font-size: 13px;
+      word-break: break-all;
+    }
+    .hash-row {
+      display: grid;
+      grid-template-columns: 100px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      background: #f9fafb;
+      border-radius: 8px;
+    }
+    .dark .hash-row {
+      background: #1f2937;
+    }
+    @media (max-width: 640px) {
+      .hash-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <!-- Header -->
+  <div id="header"></div>
+
+  <!-- Main Content -->
+  <main class="flex-1 py-8 md:py-12">
+    <div class="container-main">
+      <!-- Page Title -->
+      <div class="mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          Hash Generator
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400">
+          Generate hash values from text or files. Supports MD5, SHA-1, SHA-256, SHA-384, and SHA-512 algorithms.
+        </p>
+      </div>
+
+      <!-- Ad Container (Top) -->
+      <div class="ad-container mb-6">
+
+      </div>
+
+      <!-- Tool Card -->
+      <div class="card">
+        <!-- Mode Tabs -->
+        <div class="flex gap-2 mb-4">
+          <button id="text-tab" class="btn btn-primary text-sm py-1.5 px-4">Text</button>
+          <button id="file-tab" class="btn btn-secondary text-sm py-1.5 px-4">File</button>
+        </div>
+
+        <!-- Text Input Mode -->
+        <div id="text-mode">
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Input</label>
+            <textarea
+              id="text-input"
+              class="textarea h-32 font-mono text-sm"
+              placeholder="Enter text to hash..."
+            ></textarea>
+          </div>
+
+          <!-- Options -->
+          <div class="flex flex-wrap items-center gap-4 mb-4">
+            <label class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 cursor-pointer">
+              <input type="checkbox" id="uppercase-output" class="rounded border-gray-300 dark:border-gray-600">
+              <span>Uppercase output</span>
+            </label>
+            <label class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 cursor-pointer">
+              <input type="checkbox" id="live-hash" checked class="rounded border-gray-300 dark:border-gray-600">
+              <span>Live</span>
+            </label>
+          </div>
+
+          <button id="generate-btn" class="btn btn-primary w-full md:w-auto">Generate Hash</button>
+        </div>
+
+        <!-- File Input Mode -->
+        <div id="file-mode" class="hidden">
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Select File</label>
+            <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-8 text-center">
+              <input type="file" id="file-input" class="hidden">
+              <div id="file-drop-zone">
+                <svg class="w-12 h-12 mx-auto text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                </svg>
+                <p class="text-gray-500 dark:text-gray-400 mb-2">Drag and drop a file or click to select</p>
+                <button type="button" id="browse-btn" class="btn btn-secondary text-sm">Browse Files</button>
+              </div>
+              <div id="file-info" class="hidden">
+                <p id="file-name" class="text-gray-700 dark:text-gray-300 font-medium mb-1"></p>
+                <p id="file-size" class="text-sm text-gray-500 dark:text-gray-400"></p>
+              </div>
+            </div>
+          </div>
+
+          <div id="file-progress" class="hidden mb-4">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-sm text-gray-600 dark:text-gray-400">Processing...</span>
+              <span id="progress-percent" class="text-sm text-gray-600 dark:text-gray-400">0%</span>
+            </div>
+            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+              <div id="progress-bar" class="bg-blue-600 h-2 rounded-full transition-all" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hash Results -->
+        <div id="hash-results" class="mt-6 border-t border-gray-100 dark:border-gray-700 pt-6 hidden">
+          <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">Hash Results</h3>
+          <div class="space-y-3">
+            <div class="hash-row">
+              <span class="text-sm font-medium text-gray-700 dark:text-gray-300">MD5</span>
+              <code id="md5-output" class="hash-output text-gray-600 dark:text-gray-400">-</code>
+              <button class="btn btn-secondary text-xs py-1 px-2 shrink-0" data-copy="md5">Copy</button>
+            </div>
+            <div class="hash-row">
+              <span class="text-sm font-medium text-gray-700 dark:text-gray-300">SHA-1</span>
+              <code id="sha1-output" class="hash-output text-gray-600 dark:text-gray-400">-</code>
+              <button class="btn btn-secondary text-xs py-1 px-2 shrink-0" data-copy="sha1">Copy</button>
+            </div>
+            <div class="hash-row">
+              <span class="text-sm font-medium text-gray-700 dark:text-gray-300">SHA-256</span>
+              <code id="sha256-output" class="hash-output text-gray-600 dark:text-gray-400">-</code>
+              <button class="btn btn-secondary text-xs py-1 px-2 shrink-0" data-copy="sha256">Copy</button>
+            </div>
+            <div class="hash-row">
+              <span class="text-sm font-medium text-gray-700 dark:text-gray-300">SHA-384</span>
+              <code id="sha384-output" class="hash-output text-gray-600 dark:text-gray-400">-</code>
+              <button class="btn btn-secondary text-xs py-1 px-2 shrink-0" data-copy="sha384">Copy</button>
+            </div>
+            <div class="hash-row">
+              <span class="text-sm font-medium text-gray-700 dark:text-gray-300">SHA-512</span>
+              <code id="sha512-output" class="hash-output text-gray-600 dark:text-gray-400">-</code>
+              <button class="btn btn-secondary text-xs py-1 px-2 shrink-0" data-copy="sha512">Copy</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Box -->
+      <div class="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+        <h3 class="font-medium text-blue-800 dark:text-blue-300 mb-2">Hash Algorithm Guide</h3>
+        <ul class="text-sm text-blue-700 dark:text-blue-400 space-y-1">
+          <li>MD5: 128-bit, fast but not secure (use for checksums only)</li>
+          <li>SHA-1: 160-bit, legacy system compatibility</li>
+          <li>SHA-256: 256-bit, current standard widely used</li>
+          <li>SHA-512: 512-bit, for higher security requirements</li>
+        </ul>
+      </div>
+
+      <!-- Ad Container (Bottom) -->
+      <div class="ad-container mt-8">
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Tool Script -->
+  <script>
+    (function() {
+      'use strict';
+
+      // Elements
+      const textTab = document.getElementById('text-tab');
+      const fileTab = document.getElementById('file-tab');
+      const textMode = document.getElementById('text-mode');
+      const fileMode = document.getElementById('file-mode');
+      const textInput = document.getElementById('text-input');
+      const generateBtn = document.getElementById('generate-btn');
+      const uppercaseCheckbox = document.getElementById('uppercase-output');
+      const liveHashCheckbox = document.getElementById('live-hash');
+      const hashResults = document.getElementById('hash-results');
+
+      const fileInput = document.getElementById('file-input');
+      const browseBtn = document.getElementById('browse-btn');
+      const fileDropZone = document.getElementById('file-drop-zone');
+      const fileInfo = document.getElementById('file-info');
+      const fileName = document.getElementById('file-name');
+      const fileSize = document.getElementById('file-size');
+      const fileProgress = document.getElementById('file-progress');
+      const progressBar = document.getElementById('progress-bar');
+      const progressPercent = document.getElementById('progress-percent');
+
+      const outputs = {
+        md5: document.getElementById('md5-output'),
+        sha1: document.getElementById('sha1-output'),
+        sha256: document.getElementById('sha256-output'),
+        sha384: document.getElementById('sha384-output'),
+        sha512: document.getElementById('sha512-output')
+      };
+
+      // MD5 implementation (for compatibility - Web Crypto API doesn't support MD5)
+      function md5(string) {
+        function rotateLeft(x, n) {
+          return (x << n) | (x >>> (32 - n));
+        }
+
+        function addUnsigned(x, y) {
+          const x8 = (x & 0x80000000);
+          const y8 = (y & 0x80000000);
+          const x4 = (x & 0x40000000);
+          const y4 = (y & 0x40000000);
+          const result = (x & 0x3FFFFFFF) + (y & 0x3FFFFFFF);
+          if (x4 & y4) return (result ^ 0x80000000 ^ x8 ^ y8);
+          if (x4 | y4) {
+            if (result & 0x40000000) return (result ^ 0xC0000000 ^ x8 ^ y8);
+            else return (result ^ 0x40000000 ^ x8 ^ y8);
+          }
+          return (result ^ x8 ^ y8);
+        }
+
+        function f(x, y, z) { return (x & y) | ((~x) & z); }
+        function g(x, y, z) { return (x & z) | (y & (~z)); }
+        function h(x, y, z) { return (x ^ y ^ z); }
+        function i(x, y, z) { return (y ^ (x | (~z))); }
+
+        function ff(a, b, c, d, x, s, ac) {
+          a = addUnsigned(a, addUnsigned(addUnsigned(f(b, c, d), x), ac));
+          return addUnsigned(rotateLeft(a, s), b);
+        }
+        function gg(a, b, c, d, x, s, ac) {
+          a = addUnsigned(a, addUnsigned(addUnsigned(g(b, c, d), x), ac));
+          return addUnsigned(rotateLeft(a, s), b);
+        }
+        function hh(a, b, c, d, x, s, ac) {
+          a = addUnsigned(a, addUnsigned(addUnsigned(h(b, c, d), x), ac));
+          return addUnsigned(rotateLeft(a, s), b);
+        }
+        function ii(a, b, c, d, x, s, ac) {
+          a = addUnsigned(a, addUnsigned(addUnsigned(i(b, c, d), x), ac));
+          return addUnsigned(rotateLeft(a, s), b);
+        }
+
+        function wordToHex(value) {
+          let hex = '', temp;
+          for (let i = 0; i <= 3; i++) {
+            temp = (value >>> (i * 8)) & 255;
+            hex += ('0' + temp.toString(16)).slice(-2);
+          }
+          return hex;
+        }
+
+        const utf8Encode = new TextEncoder();
+        const bytes = utf8Encode.encode(string);
+        const x = [];
+        const nblk = ((bytes.length + 8) >> 6) + 1;
+
+        for (let i = 0; i < nblk * 16; i++) x[i] = 0;
+        for (let i = 0; i < bytes.length; i++) {
+          x[i >> 2] |= bytes[i] << ((i % 4) * 8);
+        }
+        x[bytes.length >> 2] |= 0x80 << ((bytes.length % 4) * 8);
+        x[nblk * 16 - 2] = bytes.length * 8;
+
+        let a = 0x67452301, b = 0xEFCDAB89, c = 0x98BADCFE, d = 0x10325476;
+
+        for (let k = 0; k < nblk * 16; k += 16) {
+          const AA = a, BB = b, CC = c, DD = d;
+
+          a = ff(a, b, c, d, x[k + 0], 7, 0xD76AA478);
+          d = ff(d, a, b, c, x[k + 1], 12, 0xE8C7B756);
+          c = ff(c, d, a, b, x[k + 2], 17, 0x242070DB);
+          b = ff(b, c, d, a, x[k + 3], 22, 0xC1BDCEEE);
+          a = ff(a, b, c, d, x[k + 4], 7, 0xF57C0FAF);
+          d = ff(d, a, b, c, x[k + 5], 12, 0x4787C62A);
+          c = ff(c, d, a, b, x[k + 6], 17, 0xA8304613);
+          b = ff(b, c, d, a, x[k + 7], 22, 0xFD469501);
+          a = ff(a, b, c, d, x[k + 8], 7, 0x698098D8);
+          d = ff(d, a, b, c, x[k + 9], 12, 0x8B44F7AF);
+          c = ff(c, d, a, b, x[k + 10], 17, 0xFFFF5BB1);
+          b = ff(b, c, d, a, x[k + 11], 22, 0x895CD7BE);
+          a = ff(a, b, c, d, x[k + 12], 7, 0x6B901122);
+          d = ff(d, a, b, c, x[k + 13], 12, 0xFD987193);
+          c = ff(c, d, a, b, x[k + 14], 17, 0xA679438E);
+          b = ff(b, c, d, a, x[k + 15], 22, 0x49B40821);
+
+          a = gg(a, b, c, d, x[k + 1], 5, 0xF61E2562);
+          d = gg(d, a, b, c, x[k + 6], 9, 0xC040B340);
+          c = gg(c, d, a, b, x[k + 11], 14, 0x265E5A51);
+          b = gg(b, c, d, a, x[k + 0], 20, 0xE9B6C7AA);
+          a = gg(a, b, c, d, x[k + 5], 5, 0xD62F105D);
+          d = gg(d, a, b, c, x[k + 10], 9, 0x02441453);
+          c = gg(c, d, a, b, x[k + 15], 14, 0xD8A1E681);
+          b = gg(b, c, d, a, x[k + 4], 20, 0xE7D3FBC8);
+          a = gg(a, b, c, d, x[k + 9], 5, 0x21E1CDE6);
+          d = gg(d, a, b, c, x[k + 14], 9, 0xC33707D6);
+          c = gg(c, d, a, b, x[k + 3], 14, 0xF4D50D87);
+          b = gg(b, c, d, a, x[k + 8], 20, 0x455A14ED);
+          a = gg(a, b, c, d, x[k + 13], 5, 0xA9E3E905);
+          d = gg(d, a, b, c, x[k + 2], 9, 0xFCEFA3F8);
+          c = gg(c, d, a, b, x[k + 7], 14, 0x676F02D9);
+          b = gg(b, c, d, a, x[k + 12], 20, 0x8D2A4C8A);
+
+          a = hh(a, b, c, d, x[k + 5], 4, 0xFFFA3942);
+          d = hh(d, a, b, c, x[k + 8], 11, 0x8771F681);
+          c = hh(c, d, a, b, x[k + 11], 16, 0x6D9D6122);
+          b = hh(b, c, d, a, x[k + 14], 23, 0xFDE5380C);
+          a = hh(a, b, c, d, x[k + 1], 4, 0xA4BEEA44);
+          d = hh(d, a, b, c, x[k + 4], 11, 0x4BDECFA9);
+          c = hh(c, d, a, b, x[k + 7], 16, 0xF6BB4B60);
+          b = hh(b, c, d, a, x[k + 10], 23, 0xBEBFBC70);
+          a = hh(a, b, c, d, x[k + 13], 4, 0x289B7EC6);
+          d = hh(d, a, b, c, x[k + 0], 11, 0xEAA127FA);
+          c = hh(c, d, a, b, x[k + 3], 16, 0xD4EF3085);
+          b = hh(b, c, d, a, x[k + 6], 23, 0x04881D05);
+          a = hh(a, b, c, d, x[k + 9], 4, 0xD9D4D039);
+          d = hh(d, a, b, c, x[k + 12], 11, 0xE6DB99E5);
+          c = hh(c, d, a, b, x[k + 15], 16, 0x1FA27CF8);
+          b = hh(b, c, d, a, x[k + 2], 23, 0xC4AC5665);
+
+          a = ii(a, b, c, d, x[k + 0], 6, 0xF4292244);
+          d = ii(d, a, b, c, x[k + 7], 10, 0x432AFF97);
+          c = ii(c, d, a, b, x[k + 14], 15, 0xAB9423A7);
+          b = ii(b, c, d, a, x[k + 5], 21, 0xFC93A039);
+          a = ii(a, b, c, d, x[k + 12], 6, 0x655B59C3);
+          d = ii(d, a, b, c, x[k + 3], 10, 0x8F0CCC92);
+          c = ii(c, d, a, b, x[k + 10], 15, 0xFFEFF47D);
+          b = ii(b, c, d, a, x[k + 1], 21, 0x85845DD1);
+          a = ii(a, b, c, d, x[k + 8], 6, 0x6FA87E4F);
+          d = ii(d, a, b, c, x[k + 15], 10, 0xFE2CE6E0);
+          c = ii(c, d, a, b, x[k + 6], 15, 0xA3014314);
+          b = ii(b, c, d, a, x[k + 13], 21, 0x4E0811A1);
+          a = ii(a, b, c, d, x[k + 4], 6, 0xF7537E82);
+          d = ii(d, a, b, c, x[k + 11], 10, 0xBD3AF235);
+          c = ii(c, d, a, b, x[k + 2], 15, 0x2AD7D2BB);
+          b = ii(b, c, d, a, x[k + 9], 21, 0xEB86D391);
+
+          a = addUnsigned(a, AA);
+          b = addUnsigned(b, BB);
+          c = addUnsigned(c, CC);
+          d = addUnsigned(d, DD);
+        }
+
+        return wordToHex(a) + wordToHex(b) + wordToHex(c) + wordToHex(d);
+      }
+
+      // SHA hash using Web Crypto API
+      async function sha(algorithm, data) {
+        const encoder = new TextEncoder();
+        const dataBuffer = encoder.encode(data);
+        const hashBuffer = await crypto.subtle.digest(algorithm, dataBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      }
+
+      // SHA hash for file (with progress)
+      async function shaFile(algorithm, file, onProgress) {
+        const CHUNK_SIZE = 64 * 1024 * 1024; // 64MB chunks
+        const chunks = Math.ceil(file.size / CHUNK_SIZE);
+
+        if (file.size <= CHUNK_SIZE) {
+          const buffer = await file.arrayBuffer();
+          const hashBuffer = await crypto.subtle.digest(algorithm, buffer);
+          const hashArray = Array.from(new Uint8Array(hashBuffer));
+          return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        // For large files, read and hash in chunks (simplified - full file at once)
+        const buffer = await file.arrayBuffer();
+        const hashBuffer = await crypto.subtle.digest(algorithm, buffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      }
+
+      // Generate all hashes for text
+      async function generateTextHashes(text) {
+        const uppercase = uppercaseCheckbox.checked;
+
+        let md5Hash = md5(text);
+        let sha1Hash = await sha('SHA-1', text);
+        let sha256Hash = await sha('SHA-256', text);
+        let sha384Hash = await sha('SHA-384', text);
+        let sha512Hash = await sha('SHA-512', text);
+
+        if (uppercase) {
+          md5Hash = md5Hash.toUpperCase();
+          sha1Hash = sha1Hash.toUpperCase();
+          sha256Hash = sha256Hash.toUpperCase();
+          sha384Hash = sha384Hash.toUpperCase();
+          sha512Hash = sha512Hash.toUpperCase();
+        }
+
+        outputs.md5.textContent = md5Hash;
+        outputs.sha1.textContent = sha1Hash;
+        outputs.sha256.textContent = sha256Hash;
+        outputs.sha384.textContent = sha384Hash;
+        outputs.sha512.textContent = sha512Hash;
+
+        hashResults.classList.remove('hidden');
+      }
+
+      // Generate all hashes for file
+      async function generateFileHashes(file) {
+        fileProgress.classList.remove('hidden');
+        const uppercase = uppercaseCheckbox.checked;
+
+        try {
+          // Read file
+          const buffer = await file.arrayBuffer();
+          const uint8Array = new Uint8Array(buffer);
+
+          progressBar.style.width = '20%';
+          progressPercent.textContent = '20%';
+
+          // MD5 (text-based for simplicity, may not work for binary files correctly)
+          const decoder = new TextDecoder('utf-8', { fatal: false });
+          const text = decoder.decode(uint8Array);
+
+          // For proper file hashing, convert to hex string for MD5
+          let md5Hash = '-'; // MD5 for binary files needs special handling
+          try {
+            // Simple approach - may not be perfect for all binary files
+            let str = '';
+            for (let i = 0; i < uint8Array.length; i++) {
+              str += String.fromCharCode(uint8Array[i]);
+            }
+            md5Hash = md5(str);
+          } catch (e) {
+            md5Hash = 'Binary not supported';
+          }
+
+          progressBar.style.width = '40%';
+          progressPercent.textContent = '40%';
+
+          // SHA hashes using Web Crypto API
+          const sha1Hash = await shaFile('SHA-1', file);
+          progressBar.style.width = '60%';
+          progressPercent.textContent = '60%';
+
+          const sha256Hash = await shaFile('SHA-256', file);
+          progressBar.style.width = '80%';
+          progressPercent.textContent = '80%';
+
+          const sha384Hash = await shaFile('SHA-384', file);
+          const sha512Hash = await shaFile('SHA-512', file);
+
+          progressBar.style.width = '100%';
+          progressPercent.textContent = '100%';
+
+          outputs.md5.textContent = uppercase ? md5Hash.toUpperCase() : md5Hash;
+          outputs.sha1.textContent = uppercase ? sha1Hash.toUpperCase() : sha1Hash;
+          outputs.sha256.textContent = uppercase ? sha256Hash.toUpperCase() : sha256Hash;
+          outputs.sha384.textContent = uppercase ? sha384Hash.toUpperCase() : sha384Hash;
+          outputs.sha512.textContent = uppercase ? sha512Hash.toUpperCase() : sha512Hash;
+
+          hashResults.classList.remove('hidden');
+
+          setTimeout(() => {
+            fileProgress.classList.add('hidden');
+            progressBar.style.width = '0%';
+            progressPercent.textContent = '0%';
+          }, 500);
+
+        } catch (error) {
+          toast.error('Conversion error');
+          fileProgress.classList.add('hidden');
+        }
+      }
+
+      // Tab switching
+      textTab.addEventListener('click', () => {
+        textTab.classList.add('btn-primary');
+        textTab.classList.remove('btn-secondary');
+        fileTab.classList.remove('btn-primary');
+        fileTab.classList.add('btn-secondary');
+        textMode.classList.remove('hidden');
+        fileMode.classList.add('hidden');
+      });
+
+      fileTab.addEventListener('click', () => {
+        fileTab.classList.add('btn-primary');
+        fileTab.classList.remove('btn-secondary');
+        textTab.classList.remove('btn-primary');
+        textTab.classList.add('btn-secondary');
+        fileMode.classList.remove('hidden');
+        textMode.classList.add('hidden');
+      });
+
+      // Text input events
+      generateBtn.addEventListener('click', () => {
+        if (textInput.value) {
+          generateTextHashes(textInput.value);
+        }
+      });
+
+      textInput.addEventListener('input', debounce(() => {
+        if (liveHashCheckbox.checked && textInput.value) {
+          generateTextHashes(textInput.value);
+        }
+      }, 300));
+
+      liveHashCheckbox.addEventListener('change', () => {
+        if (liveHashCheckbox.checked && textInput.value) {
+          generateTextHashes(textInput.value);
+        }
+      });
+
+      uppercaseCheckbox.addEventListener('change', () => {
+        if (textInput.value) {
+          generateTextHashes(textInput.value);
+        }
+      });
+
+      // File input events
+      browseBtn.addEventListener('click', () => fileInput.click());
+      fileDropZone.parentElement.addEventListener('click', (e) => {
+        if (e.target !== browseBtn) fileInput.click();
+      });
+
+      fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) handleFile(file);
+      });
+
+      // Drag and drop
+      const dropZone = fileDropZone.parentElement;
+      dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('border-blue-500', 'bg-blue-50', 'dark:bg-blue-900/20');
+      });
+
+      dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('border-blue-500', 'bg-blue-50', 'dark:bg-blue-900/20');
+      });
+
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('border-blue-500', 'bg-blue-50', 'dark:bg-blue-900/20');
+        const file = e.dataTransfer.files[0];
+        if (file) handleFile(file);
+      });
+
+      function handleFile(file) {
+        fileName.textContent = file.name;
+        fileSize.textContent = formatFileSize(file.size);
+        fileDropZone.classList.add('hidden');
+        fileInfo.classList.remove('hidden');
+        generateFileHashes(file);
+      }
+
+      function formatFileSize(bytes) {
+        if (bytes === 0) return '0 B';
+        const k = 1024;
+        const sizes = ['B', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+      }
+
+      // Copy buttons
+      document.querySelectorAll('[data-copy]').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const type = btn.dataset.copy;
+          const value = outputs[type].textContent;
+          if (value && value !== '-') {
+            await copyToClipboard(value);
+            toast.success('Copied!');
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

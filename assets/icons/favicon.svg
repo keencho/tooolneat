@@ -1,4 +1,27 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="6" fill="#3B82F6"/>
-  <path d="M8 11h16M8 16h12M8 21h8" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e40af"/>
+      <stop offset="100%" style="stop-color:#3b82f6"/>
+    </linearGradient>
+    <linearGradient id="head" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e2e8f0"/>
+      <stop offset="100%" style="stop-color:#64748b"/>
+    </linearGradient>
+    <linearGradient id="handle" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#fbbf24"/>
+      <stop offset="100%" style="stop-color:#d97706"/>
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="6" fill="url(#bg)"/>
+  <g transform="translate(16, 16) rotate(-45)">
+    <!-- Handle -->
+    <rect x="-2" y="2" width="4" height="10" rx="1" fill="url(#handle)"/>
+    <!-- Hammer head -->
+    <rect x="-8" y="-5" width="16" height="8" rx="1.5" fill="url(#head)"/>
+    <!-- Striking face -->
+    <rect x="6" y="-5" width="3" height="8" rx="1" fill="#475569"/>
+    <!-- Claw -->
+    <path d="M-8 -5 L-8 3 L-6 3 L-6 -1 L-4 -1 L-4 3 L-2 3 L-2 -4 Q-2 -5 -3 -5 Z" fill="#475569"/>
+  </g>
 </svg>

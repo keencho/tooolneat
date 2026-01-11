@@ -3,16 +3,14 @@
 (function() {
   'use strict';
 
-  // Get current language from URL or localStorage
+  // Get current language from URL path (URL is the source of truth)
   const getLanguage = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const urlLang = urlParams.get('lang');
-
-    if (urlLang && ['ko', 'en'].includes(urlLang)) {
-      return urlLang;
+    const pathname = window.location.pathname;
+    // URL path determines language - /en/ = English, otherwise Korean
+    if (pathname.startsWith('/en/') || pathname === '/en') {
+      return 'en';
     }
-
-    return localStorage.getItem('lang') || 'ko';
+    return 'ko';
   };
 
   // Get base path for locales (상대경로)
@@ -108,23 +106,22 @@
     });
   };
 
-  // Switch language
+  // Switch language - redirect to /en/ or / URL
   window.switchLanguage = (lang) => {
-    if (lang === currentLang) return;
+    const currentPath = window.location.pathname;
+    const isOnEnglish = currentPath.startsWith('/en/') || currentPath === '/en';
 
-    currentLang = lang;
-    localStorage.setItem('lang', lang);
-
-    // Update URL without reload
-    const url = new URL(window.location);
-    if (lang === 'ko') {
-      url.searchParams.delete('lang');
-    } else {
-      url.searchParams.set('lang', lang);
+    if (lang === 'en' && !isOnEnglish) {
+      // Switch to English - add /en/ prefix
+      window.location.href = '/en' + currentPath;
+    } else if (lang === 'ko' && isOnEnglish) {
+      // Switch to Korean - remove /en/ prefix
+      if (currentPath === '/en' || currentPath === '/en/') {
+        window.location.href = '/';
+      } else {
+        window.location.href = currentPath.replace(/^\/en/, '');
+      }
     }
-    window.history.replaceState({}, '', url);
-
-    loadTranslations(lang);
   };
 
   // Get translation value

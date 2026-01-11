@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Encoder/Decoder - Toolneat</title>
+  <meta name="description" content="Encode or decode URLs online. Supports encodeURIComponent, encodeURI, and full encoding methods.">
+
+  <!-- Canonical & hreflang -->
+  <link rel="canonical" href="https://toolneat.com/en/tools/dev/url-encoder/">
+  <link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/dev/url-encoder/">
+  <link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/dev/url-encoder/">
+  <link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/dev/url-encoder/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Toolneat">
+  <meta property="og:title" content="URL Encoder/Decoder - Toolneat">
+  <meta property="og:description" content="Encode or decode URLs online. Supports encodeURIComponent, encodeURI, and full encoding methods.">
+  <meta property="og:url" content="https://toolneat.com/en/tools/dev/url-encoder/">
+  <meta property="og:image" content="https://toolneat.com/assets/images/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#2563eb">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../../../../assets/icons/favicon.svg">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../../../../assets/css/output.css">
+
+  <!-- JS -->
+  <script src="../../../../assets/js/common.js"></script>
+  <script>
+    // Force English language
+    localStorage.setItem('toolneat-lang', 'en');
+  </script>
+  <script src="../../../../assets/js/i18n.js"></script>
+  <script src="../../../../assets/js/components.js"></script>
+</head>
+<body class="min-h-screen flex flex-col">
+  <!-- Header -->
+  <div id="header"></div>
+
+  <!-- Main Content -->
+  <main class="flex-1 py-8 md:py-12">
+    <div class="container-main">
+      <!-- Page Title -->
+      <div class="mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          URL Encoder/Decoder
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400">
+          Encode or decode URLs and text strings.
+        </p>
+      </div>
+
+      <!-- Encoding Methods Info -->
+      <div class="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+        <p class="text-sm font-medium text-blue-700 dark:text-blue-300 mb-2">Encoding Methods Guide</p>
+        <ul class="text-xs text-blue-600 dark:text-blue-400 space-y-0.5">
+          <li><strong>encodeURIComponent</strong>: Use for query parameter values (recommended)</li>
+          <li><strong>encodeURI</strong>: Use for full URLs (preserves /, ?, #, etc.)</li>
+          <li><strong>Full Encode</strong>: Encode all special characters</li>
+        </ul>
+      </div>
+
+      <!-- Ad Container (Top) -->
+      <div class="ad-container mb-6">
+
+      </div>
+
+      <!-- Tool Card -->
+      <div class="card">
+        <!-- Options Bar -->
+        <div class="flex flex-wrap items-center gap-3 mb-4 pb-4 border-b border-gray-100 dark:border-gray-700">
+          <div class="flex shrink-0">
+            <button id="encode-tab" class="py-1.5 px-3 text-sm font-medium rounded-l-lg border border-r-0 border-gray-200 dark:border-gray-700 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">Encode</button>
+            <button id="decode-tab" class="py-1.5 px-3 text-sm font-medium rounded-r-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700">Decode</button>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <span class="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">Method</span>
+            <select id="encode-type" class="input py-1 px-2 w-auto text-sm">
+              <option value="component">Component</option>
+              <option value="uri">URI</option>
+              <option value="all">Full</option>
+            </select>
+          </div>
+          <label class="flex items-center gap-1.5 text-sm text-gray-600 dark:text-gray-400 cursor-pointer shrink-0">
+            <input type="checkbox" id="live-convert" checked class="rounded border-gray-300 dark:border-gray-600">
+            <span class="whitespace-nowrap">Live</span>
+          </label>
+          <div class="flex gap-2 ml-auto shrink-0">
+            <button id="convert-btn" class="btn btn-primary text-sm py-1.5 px-3"><span id="convert-text">Encode</span></button>
+            <button id="swap-btn" class="btn btn-secondary text-sm p-1.5" title="Swap input/output">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+            </button>
+            <button id="clear-btn" class="btn btn-secondary text-sm py-1.5 px-3">Clear</button>
+          </div>
+        </div>
+
+        <!-- Two Column Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <!-- Input Section -->
+          <div class="flex flex-col">
+            <div class="flex items-center justify-between mb-2">
+              <span id="input-label" class="text-sm font-medium text-gray-700 dark:text-gray-300">URL or Text</span>
+            </div>
+            <textarea
+              id="input-text"
+              class="textarea flex-1 min-h-[250px] font-mono text-sm"
+              placeholder="Enter URL or text to encode..."
+            ></textarea>
+          </div>
+
+          <!-- Output Section -->
+          <div class="flex flex-col">
+            <div class="flex items-center justify-between mb-2">
+              <span id="output-label" class="text-sm font-medium text-gray-700 dark:text-gray-300">Encoded Result</span>
+              <button id="copy-btn" class="text-xs text-blue-600 dark:text-blue-400 hover:underline">Copy</button>
+            </div>
+            <textarea
+              id="output-text"
+              class="textarea flex-1 min-h-[250px] font-mono text-sm bg-gray-50 dark:bg-gray-900"
+              readonly
+              placeholder="Result will appear here..."
+            ></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ad Container (Bottom) -->
+      <div class="ad-container mt-6">
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Tool Script -->
+  <script>
+    (function() {
+      'use strict';
+
+      const input = document.getElementById('input-text');
+      const output = document.getElementById('output-text');
+      const encodeTab = document.getElementById('encode-tab');
+      const decodeTab = document.getElementById('decode-tab');
+      const convertBtn = document.getElementById('convert-btn');
+      const convertText = document.getElementById('convert-text');
+      const copyBtn = document.getElementById('copy-btn');
+      const swapBtn = document.getElementById('swap-btn');
+      const clearBtn = document.getElementById('clear-btn');
+      const encodeTypeSelect = document.getElementById('encode-type');
+      const liveConvertCheckbox = document.getElementById('live-convert');
+      const inputLabel = document.getElementById('input-label');
+      const outputLabel = document.getElementById('output-label');
+
+      let isEncodeMode = true;
+
+      // Tab switching
+      encodeTab.addEventListener('click', () => setMode(true));
+      decodeTab.addEventListener('click', () => setMode(false));
+
+      function setMode(encode) {
+        isEncodeMode = encode;
+
+        if (encode) {
+          encodeTab.classList.add('bg-blue-50', 'dark:bg-blue-900/30', 'text-blue-600', 'dark:text-blue-400');
+          encodeTab.classList.remove('bg-white', 'dark:bg-gray-800', 'text-gray-600', 'dark:text-gray-400');
+          decodeTab.classList.remove('bg-blue-50', 'dark:bg-blue-900/30', 'text-blue-600', 'dark:text-blue-400');
+          decodeTab.classList.add('bg-white', 'dark:bg-gray-800', 'text-gray-600', 'dark:text-gray-400');
+          inputLabel.textContent = 'URL or Text';
+          outputLabel.textContent = 'Encoded Result';
+          convertText.textContent = 'Encode';
+          encodeTypeSelect.disabled = false;
+        } else {
+          decodeTab.classList.add('bg-blue-50', 'dark:bg-blue-900/30', 'text-blue-600', 'dark:text-blue-400');
+          decodeTab.classList.remove('bg-white', 'dark:bg-gray-800', 'text-gray-600', 'dark:text-gray-400');
+          encodeTab.classList.remove('bg-blue-50', 'dark:bg-blue-900/30', 'text-blue-600', 'dark:text-blue-400');
+          encodeTab.classList.add('bg-white', 'dark:bg-gray-800', 'text-gray-600', 'dark:text-gray-400');
+          inputLabel.textContent = 'Encoded URL';
+          outputLabel.textContent = 'Decoded Result';
+          convertText.textContent = 'Decode';
+          encodeTypeSelect.disabled = true;
+        }
+
+        if (liveConvertCheckbox.checked) {
+          convert();
+        }
+      }
+
+      // Convert
+      convertBtn.addEventListener('click', convert);
+
+      function convert() {
+        const text = input.value;
+
+        if (!text.trim()) {
+          output.value = '';
+          return;
+        }
+
+        try {
+          let result;
+
+          if (isEncodeMode) {
+            const type = encodeTypeSelect.value;
+
+            switch (type) {
+              case 'component':
+                result = encodeURIComponent(text);
+                break;
+              case 'uri':
+                result = encodeURI(text);
+                break;
+              case 'all':
+                result = text.split('').map(char => {
+                  const code = char.charCodeAt(0);
+                  if (code > 127 || /[^a-zA-Z0-9]/.test(char)) {
+                    return '%' + code.toString(16).toUpperCase().padStart(2, '0');
+                  }
+                  return char;
+                }).join('');
+                break;
+            }
+          } else {
+            try {
+              result = decodeURIComponent(text);
+            } catch {
+              result = decodeURI(text);
+            }
+          }
+
+          output.value = result;
+
+        } catch (e) {
+          output.value = 'Conversion error';
+          toast.error('Invalid input');
+        }
+      }
+
+      // Live convert
+      input.addEventListener('input', () => {
+        if (liveConvertCheckbox.checked) {
+          convert();
+        }
+      });
+
+      liveConvertCheckbox.addEventListener('change', () => {
+        if (liveConvertCheckbox.checked) {
+          convert();
+        }
+      });
+
+      encodeTypeSelect.addEventListener('change', () => {
+        if (liveConvertCheckbox.checked) {
+          convert();
+        }
+      });
+
+      // Copy
+      copyBtn.addEventListener('click', async () => {
+        if (!output.value) {
+          toast.warning('Nothing to copy');
+          return;
+        }
+
+        await copyToClipboard(output.value);
+        toast.success('Copied!');
+      });
+
+      // Swap
+      swapBtn.addEventListener('click', () => {
+        const temp = output.value;
+        if (!temp) return;
+
+        input.value = temp;
+        output.value = '';
+        setMode(!isEncodeMode);
+
+        if (liveConvertCheckbox.checked) {
+          convert();
+        }
+      });
+
+      // Clear
+      clearBtn.addEventListener('click', () => {
+        input.value = '';
+        output.value = '';
+        input.focus();
+      });
+    })();
+  </script>
+</body>
+</html>

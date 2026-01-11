@@ -174,8 +174,71 @@ input[type="time"]::-webkit-calendar-picker-indicator:hover {
   @apply text-blue-500 dark:text-blue-400;
 }
 
+/* Mega Menu */
+.nav-mega-menu {
+  @apply absolute top-full left-1/2 -translate-x-1/2 mt-1;
+  @apply grid grid-cols-4 gap-6 min-w-[720px] p-6;
+  @apply bg-white dark:bg-gray-800 rounded-xl shadow-lg;
+  @apply border border-gray-100 dark:border-gray-700;
+  @apply opacity-0 invisible translate-y-2;
+  @apply transition-all duration-200;
+  @apply z-50;
+}
+
+.nav-dropdown:hover .nav-mega-menu {
+  @apply opacity-100 visible translate-y-0;
+}
+
+.mega-column {
+  @apply flex flex-col gap-1;
+}
+
+.mega-title {
+  @apply text-xs font-semibold uppercase tracking-wide;
+  @apply text-gray-400 dark:text-gray-500;
+  @apply pb-2 mb-1 border-b border-gray-100 dark:border-gray-700;
+}
+
+.mega-link {
+  @apply block px-2 py-1.5 rounded-md text-sm;
+  @apply text-gray-600 dark:text-gray-400;
+  @apply hover:bg-gray-50 dark:hover:bg-gray-700;
+  @apply hover:text-gray-900 dark:hover:text-white;
+  @apply transition-all duration-150;
+}
+
+/* Mobile Sub-Accordion */
+.mobile-sub-accordion {
+  @apply mb-1;
+}
+
+.mobile-sub-accordion-btn {
+  @apply cursor-pointer bg-transparent border-none text-left;
+}
+
+.mobile-sub-accordion-btn svg {
+  @apply transition-transform duration-200;
+}
+
+.mobile-sub-accordion-btn.active svg {
+  @apply rotate-180;
+}
+
+.mobile-sub-content {
+  @apply pt-1;
+}
+
+.mobile-sub-content a:hover {
+  @apply text-blue-600 dark:text-blue-400;
+}
+
 .ad-container {
-  @apply w-full flex justify-center py-4;
+  @apply w-full flex justify-center;
+}
+
+/* 광고 코드가 있을 때만 스타일 적용 (ins 태그는 AdSense가 생성) */
+.ad-container:has(ins), .ad-container:has(.ad-placeholder) {
+  @apply py-4;
   @apply bg-gray-50 dark:bg-gray-800/50;
   @apply border-y border-gray-100 dark:border-gray-800;
 }

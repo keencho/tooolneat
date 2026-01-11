@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Base64 Encoder/Decoder - Toolneat</title>
+  <meta name="description" content="Encode text to Base64 or decode Base64 to text. Free online tool with URL-safe option.">
+
+  <!-- Canonical & hreflang -->
+  <link rel="canonical" href="https://toolneat.com/en/tools/dev/base64/">
+  <link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/dev/base64/">
+  <link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/dev/base64/">
+  <link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/dev/base64/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Toolneat">
+  <meta property="og:title" content="Base64 Encoder/Decoder - Toolneat">
+  <meta property="og:description" content="Encode text to Base64 or decode Base64 to text. Free online tool with URL-safe option.">
+  <meta property="og:url" content="https://toolneat.com/en/tools/dev/base64/">
+  <meta property="og:image" content="https://toolneat.com/assets/images/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#2563eb">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../../../../assets/icons/favicon.svg">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../../../../assets/css/output.css">
+
+  <!-- JS -->
+  <script src="../../../../assets/js/common.js"></script>
+  <script>
+    // Force English language
+    localStorage.setItem('toolneat-lang', 'en');
+  </script>
+  <script src="../../../../assets/js/i18n.js"></script>
+  <script src="../../../../assets/js/components.js"></script>
+</head>
+<body class="min-h-screen flex flex-col">
+  <!-- Header -->
+  <div id="header"></div>
+
+  <!-- Main Content -->
+  <main class="flex-1 py-8 md:py-12">
+    <div class="container-main">
+      <!-- Page Title -->
+      <div class="mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          Base64 Encoder/Decoder
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400">
+          Base64 encodes binary data into ASCII characters. Widely used for email attachments, data URIs, and API tokens. The URL-safe option converts +/= characters to URL-friendly alternatives.
+        </p>
+      </div>
+
+      <!-- Ad Container (Top) -->
+      <div class="ad-container mb-6">
+
+      </div>
+
+      <!-- Tool Card -->
+      <div class="card">
+        <!-- Options Bar -->
+        <div class="flex flex-wrap items-center gap-3 mb-4 pb-4 border-b border-gray-100 dark:border-gray-700">
+          <div class="flex shrink-0">
+            <button id="encode-tab" class="py-1.5 px-3 text-sm font-medium rounded-l-lg border border-r-0 border-gray-200 dark:border-gray-700 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">Encode</button>
+            <button id="decode-tab" class="py-1.5 px-3 text-sm font-medium rounded-r-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700">Decode</button>
+          </div>
+          <label class="flex items-center gap-1.5 text-sm text-gray-600 dark:text-gray-400 cursor-pointer shrink-0">
+            <input type="checkbox" id="url-safe" class="rounded border-gray-300 dark:border-gray-600">
+            <span class="whitespace-nowrap">URL-safe</span>
+          </label>
+          <label class="flex items-center gap-1.5 text-sm text-gray-600 dark:text-gray-400 cursor-pointer shrink-0">
+            <input type="checkbox" id="live-convert" checked class="rounded border-gray-300 dark:border-gray-600">
+            <span class="whitespace-nowrap">Live</span>
+          </label>
+          <div class="flex gap-2 ml-auto shrink-0">
+            <button id="convert-btn" class="btn btn-primary text-sm py-1.5 px-3"><span id="convert-text">Encode</span></button>
+            <button id="swap-btn" class="btn btn-secondary text-sm p-1.5" title="Swap">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+            </button>
+            <button id="clear-btn" class="btn btn-secondary text-sm py-1.5 px-3">Clear</button>
+          </div>
+        </div>
+
+        <!-- Error Message -->
+        <div id="error-message" class="hidden mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+          <p class="text-sm text-red-600 dark:text-red-300" id="error-text"></p>
+        </div>
+
+        <!-- Two Column Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <!-- Input Section -->
+          <div class="flex flex-col">
+            <div class="flex items-center justify-between mb-2">
+              <span id="input-label" class="text-sm font-medium text-gray-700 dark:text-gray-300">Text Input</span>
+              <span id="input-size" class="text-xs text-gray-400"></span>
+            </div>
+            <textarea
+              id="input-text"
+              class="textarea flex-1 min-h-[250px] font-mono text-sm"
+              placeholder="Enter text to convert..."
+            ></textarea>
+          </div>
+
+          <!-- Output Section -->
+          <div class="flex flex-col">
+            <div class="flex items-center justify-between mb-2">
+              <span id="output-label" class="text-sm font-medium text-gray-700 dark:text-gray-300">Base64 Output</span>
+              <div class="flex items-center gap-2">
+                <span id="output-size" class="text-xs text-gray-400"></span>
+                <button id="copy-btn" class="text-xs text-blue-600 dark:text-blue-400 hover:underline">Copy</button>
+              </div>
+            </div>
+            <textarea
+              id="output-text"
+              class="textarea flex-1 min-h-[250px] font-mono text-sm bg-gray-50 dark:bg-gray-900"
+              readonly
+              placeholder="Result will appear here..."
+            ></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ad Container (Bottom) -->
+      <div class="ad-container mt-6">
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Tool Script -->
+  <script>
+    (function() {
+      'use strict';
+
+      const input = document.getElementById('input-text');
+      const output = document.getElementById('output-text');
+      const encodeTab = document.getElementById('encode-tab');
+      const decodeTab = document.getElementById('decode-tab');
+      const convertBtn = document.getElementById('convert-btn');
+      const convertText = document.getElementById('convert-text');
+      const copyBtn = document.getElementById('copy-btn');
+      const swapBtn = document.getElementById('swap-btn');
+      const clearBtn = document.getElementById('clear-btn');
+      const urlSafeCheckbox = document.getElementById('url-safe');
+      const liveConvertCheckbox = document.getElementById('live-convert');
+      const inputLabel = document.getElementById('input-label');
+      const outputLabel = document.getElementById('output-label');
+      const inputSize = document.getElementById('input-size');
+      const outputSize = document.getElementById('output-size');
+      const errorMessage = document.getElementById('error-message');
+      const errorText = document.getElementById('error-text');
+
+      let isEncodeMode = true;
+
+      // Update labels based on mode
+      function updateLabels() {
+        if (isEncodeMode) {
+          inputLabel.textContent = 'Text Input';
+          outputLabel.textContent = 'Base64 Output';
+          convertText.textContent = 'Encode';
+        } else {
+          inputLabel.textContent = 'Base64 Input';
+          outputLabel.textContent = 'Text Output';
+          convertText.textContent = 'Decode';
+        }
+      }
+
+      // Tab switching
+      encodeTab.addEventListener('click', () => setMode(true));
+      decodeTab.addEventListener('click', () => setMode(false));
+
+      function setMode(encode) {
+        isEncodeMode = encode;
+
+        if (encode) {
+          encodeTab.classList.add('bg-blue-50', 'dark:bg-blue-900/30', 'text-blue-600', 'dark:text-blue-400');
+          encodeTab.classList.remove('bg-white', 'dark:bg-gray-800', 'text-gray-600', 'dark:text-gray-400');
+          decodeTab.classList.remove('bg-blue-50', 'dark:bg-blue-900/30', 'text-blue-600', 'dark:text-blue-400');
+          decodeTab.classList.add('bg-white', 'dark:bg-gray-800', 'text-gray-600', 'dark:text-gray-400');
+        } else {
+          decodeTab.classList.add('bg-blue-50', 'dark:bg-blue-900/30', 'text-blue-600', 'dark:text-blue-400');
+          decodeTab.classList.remove('bg-white', 'dark:bg-gray-800', 'text-gray-600', 'dark:text-gray-400');
+          encodeTab.classList.remove('bg-blue-50', 'dark:bg-blue-900/30', 'text-blue-600', 'dark:text-blue-400');
+          encodeTab.classList.add('bg-white', 'dark:bg-gray-800', 'text-gray-600', 'dark:text-gray-400');
+        }
+
+        updateLabels();
+
+        if (liveConvertCheckbox.checked) {
+          convert();
+        }
+      }
+
+      // Convert
+      convertBtn.addEventListener('click', convert);
+
+      function convert() {
+        const text = input.value;
+        hideError();
+
+        if (!text.trim()) {
+          output.value = '';
+          outputSize.textContent = '';
+          return;
+        }
+
+        try {
+          let result;
+
+          if (isEncodeMode) {
+            result = btoa(unescape(encodeURIComponent(text)));
+
+            if (urlSafeCheckbox.checked) {
+              result = result.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+            }
+          } else {
+            let base64 = text.trim();
+
+            if (urlSafeCheckbox.checked) {
+              base64 = base64.replace(/-/g, '+').replace(/_/g, '/');
+              while (base64.length % 4) base64 += '=';
+            }
+
+            result = decodeURIComponent(escape(atob(base64)));
+          }
+
+          output.value = result;
+          outputSize.textContent = formatBytes(new Blob([result]).size);
+
+        } catch (e) {
+          showError(isEncodeMode ? 'Failed to encode. Please check your input.' : 'Failed to decode. Invalid Base64 string.');
+          output.value = '';
+          outputSize.textContent = '';
+        }
+      }
+
+      // Live convert
+      input.addEventListener('input', () => {
+        inputSize.textContent = formatBytes(new Blob([input.value]).size);
+
+        if (liveConvertCheckbox.checked) {
+          convert();
+        }
+      });
+
+      liveConvertCheckbox.addEventListener('change', () => {
+        if (liveConvertCheckbox.checked) {
+          convert();
+        }
+      });
+
+      urlSafeCheckbox.addEventListener('change', () => {
+        if (liveConvertCheckbox.checked) {
+          convert();
+        }
+      });
+
+      // Copy
+      copyBtn.addEventListener('click', async () => {
+        if (!output.value) {
+          toast.warning('Nothing to copy');
+          return;
+        }
+
+        await copyToClipboard(output.value);
+        toast.success('Copied!');
+      });
+
+      // Swap
+      swapBtn.addEventListener('click', () => {
+        const temp = output.value;
+        if (!temp) return;
+
+        input.value = temp;
+        output.value = '';
+        setMode(!isEncodeMode);
+        inputSize.textContent = formatBytes(new Blob([input.value]).size);
+        outputSize.textContent = '';
+
+        if (liveConvertCheckbox.checked) {
+          convert();
+        }
+      });
+
+      // Clear
+      clearBtn.addEventListener('click', () => {
+        input.value = '';
+        output.value = '';
+        inputSize.textContent = '';
+        outputSize.textContent = '';
+        hideError();
+        input.focus();
+      });
+
+      function showError(msg) {
+        errorMessage.classList.remove('hidden');
+        errorText.textContent = msg;
+      }
+
+      function hideError() {
+        errorMessage.classList.add('hidden');
+      }
+
+      function formatBytes(bytes) {
+        if (bytes === 0) return '0 B';
+        const k = 1024;
+        const sizes = ['B', 'KB', 'MB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+      }
+    })();
+  </script>
+</body>
+</html>

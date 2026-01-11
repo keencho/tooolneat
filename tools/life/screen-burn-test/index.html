@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>번인 테스트 - Toolneat</title>
+  <meta name="description" content="OLED 모니터의 번인(잔상) 현상을 확인하기 위한 화면 테스트 도구입니다.">
+  <meta name="theme-color" content="#2563eb">
+
+  <link rel="canonical" href="https://toolneat.com/tools/life/screen-burn-test/">
+  <link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/screen-burn-test/">
+  <link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/screen-burn-test/">
+  <link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/screen-burn-test/">
+
+  <meta property="og:title" content="번인 테스트 - Toolneat">
+  <meta property="og:description" content="OLED 모니터의 번인(잔상) 현상을 확인하기 위한 화면 테스트 도구입니다.">
+  <meta property="og:url" content="https://toolneat.com/tools/life/screen-burn-test/">
+  <meta property="og:type" content="website">
+
+  <link rel="icon" type="image/svg+xml" href="../../../assets/icons/favicon.svg">
+  <link rel="stylesheet" href="../../../assets/css/output.css">
+
+  <script src="../../../assets/js/common.js"></script>
+  <script src="../../../assets/js/i18n.js"></script>
+  <script src="../../../assets/js/components.js"></script>
+  <style>
+    #fullscreen-overlay { position: fixed; inset: 0; z-index: 9999; display: none; overflow: hidden; }
+    #fullscreen-overlay.active { display: block; }
+    #fullscreen-hint { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.7); color: white; padding: 8px 16px; border-radius: 8px; font-size: 14px; opacity: 1; transition: opacity 0.3s; z-index: 10; }
+    #fullscreen-overlay:not(:hover) #fullscreen-hint { opacity: 0; }
+    .pattern-gray { background: linear-gradient(to right, #000 0%, #fff 100%); }
+    .pattern-gray50 { background: #808080; }
+    .pattern-checker { background: repeating-conic-gradient(#000 0% 25%, #fff 0% 50%) 50% / 40px 40px; }
+    .pattern-sliding { background: #808080; }
+    #sliding-bar { position: absolute; top: 0; width: 100px; height: 100%; background: #fff; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <div id="header"></div>
+  <main class="flex-1 py-8 md:py-12">
+    <div class="container-main">
+      <!-- Page Title -->
+      <div class="mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2" data-i18n="tools.screenBurnTest.title">
+          번인 테스트
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400" data-i18n="tools.screenBurnTest.descriptionLong">
+          OLED 모니터에서 발생할 수 있는 번인(화면 잔상)을 확인합니다. 회색 화면에서 이전 이미지의 흔적이 보이면 번인이 발생한 것입니다.
+        </p>
+      </div>
+
+      <!-- Ad Container (Top) -->
+      <div class="ad-container mb-6"></div>
+
+      <!-- Tool Card -->
+      <div class="card">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+          <button onclick="startTest('gray50')" class="p-4 rounded-xl bg-gray-500 hover:ring-4 ring-gray-400 transition-all text-white font-medium shadow-lg">50% 회색</button>
+          <button onclick="startTest('gray')" class="p-4 rounded-xl bg-gradient-to-r from-black to-white hover:ring-4 ring-gray-400 transition-all text-gray-700 font-medium shadow-lg">그라데이션</button>
+          <button onclick="startTest('checker')" class="p-4 rounded-xl hover:ring-4 ring-gray-400 transition-all font-medium shadow-lg" style="background: repeating-conic-gradient(#000 0% 25%, #fff 0% 50%) 50% / 20px 20px;">체커보드</button>
+          <button onclick="startTest('sliding')" class="p-4 rounded-xl bg-gray-600 hover:ring-4 ring-gray-400 transition-all text-white font-medium shadow-lg">슬라이딩 바</button>
+        </div>
+        <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">사용 방법</h3>
+          <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+            <li>• 패턴 버튼 클릭 → 전체화면 모드로 전환</li>
+            <li>• ← → 또는 클릭으로 패턴 변경</li>
+            <li>• ESC 키로 종료</li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-8 p-6 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">번인(Burn-In)이란?</h2>
+        <div class="text-gray-600 dark:text-gray-400 space-y-2">
+          <p><strong>번인</strong>은 OLED 디스플레이에서 같은 이미지가 오래 표시될 때 발생하는 영구적인 잔상입니다.</p>
+          <p>작업표시줄, 앱 아이콘, 상태바 등 고정된 UI 요소가 오래 표시되면 번인이 발생할 수 있습니다.</p>
+        </div>
+      </div>
+      <div class="ad-container mt-8"></div>
+    </div>
+  </main>
+  <div id="footer"></div>
+  <div id="fullscreen-overlay">
+    <div id="sliding-bar" style="display:none;"></div>
+    <div id="fullscreen-hint">클릭 또는 ← → 키로 패턴 변경 | ESC로 종료</div>
+  </div>
+  <script>
+    const patterns = ['gray50', 'gray', 'checker', 'sliding'];
+    let currentIndex = 0, animationId = null;
+    const overlay = document.getElementById('fullscreen-overlay');
+    const slidingBar = document.getElementById('sliding-bar');
+    function applyPattern(p) {
+      overlay.className = 'active';
+      slidingBar.style.display = 'none';
+      if (animationId) { cancelAnimationFrame(animationId); animationId = null; }
+      overlay.classList.add('pattern-' + p);
+      if (p === 'sliding') { slidingBar.style.display = 'block'; animateSliding(); }
+    }
+    function animateSliding() {
+      let pos = 0;
+      const w = window.innerWidth;
+      function step() { pos = (pos + 2) % (w + 100); slidingBar.style.left = (pos - 100) + 'px'; animationId = requestAnimationFrame(step); }
+      step();
+    }
+    function startTest(p) {
+      currentIndex = patterns.indexOf(p);
+      if (currentIndex === -1) currentIndex = 0;
+      applyPattern(patterns[currentIndex]);
+      if (overlay.requestFullscreen) overlay.requestFullscreen();
+      else if (overlay.webkitRequestFullscreen) overlay.webkitRequestFullscreen();
+    }
+    function nextPattern() { currentIndex = (currentIndex + 1) % patterns.length; applyPattern(patterns[currentIndex]); }
+    function prevPattern() { currentIndex = (currentIndex - 1 + patterns.length) % patterns.length; applyPattern(patterns[currentIndex]); }
+    function exitTest() {
+      overlay.classList.remove('active');
+      if (animationId) { cancelAnimationFrame(animationId); animationId = null; }
+      if (document.fullscreenElement) document.exitFullscreen();
+    }
+    overlay.addEventListener('click', (e) => { if (e.target !== slidingBar) nextPattern(); });
+    document.addEventListener('keydown', (e) => {
+      if (!overlay.classList.contains('active')) return;
+      if (e.key === 'ArrowRight' || e.key === ' ') nextPattern();
+      else if (e.key === 'ArrowLeft') prevPattern();
+      else if (e.key === 'Escape') exitTest();
+    });
+    document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement) exitTest(); });
+  </script>
+</body>
+</html>

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lorem Ipsum Generator - Toolneat</title>
+  <meta name="description" content="Generate Lorem Ipsum placeholder text for design and layout testing. Create paragraphs, sentences, or words.">
+
+  <!-- Canonical & hreflang -->
+  <link rel="canonical" href="https://toolneat.com/en/tools/dev/lorem-ipsum/">
+  <link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/dev/lorem-ipsum/">
+  <link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/dev/lorem-ipsum/">
+  <link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/dev/lorem-ipsum/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Toolneat">
+  <meta property="og:title" content="Lorem Ipsum Generator - Toolneat">
+  <meta property="og:description" content="Generate Lorem Ipsum placeholder text for design and layout testing. Create paragraphs, sentences, or words.">
+  <meta property="og:url" content="https://toolneat.com/en/tools/dev/lorem-ipsum/">
+  <meta property="og:image" content="https://toolneat.com/assets/images/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#2563eb">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../../../../assets/icons/favicon.svg">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../../../../assets/css/output.css">
+
+  <!-- JS -->
+  <script src="../../../../assets/js/common.js"></script>
+  <script>
+    // Force English language
+    localStorage.setItem('toolneat-lang', 'en');
+  </script>
+  <script src="../../../../assets/js/i18n.js"></script>
+  <script src="../../../../assets/js/components.js"></script>
+
+  <style>
+    .type-btn {
+      padding: 0.75rem 1.25rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 0.75rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .type-btn:hover {
+      border-color: #d1d5db;
+    }
+    .dark .type-btn {
+      border-color: #374151;
+    }
+    .dark .type-btn:hover {
+      border-color: #4b5563;
+    }
+    .type-btn.active {
+      border-color: #2563eb;
+      background-color: #eff6ff;
+    }
+    .dark .type-btn.active {
+      border-color: #3b82f6;
+      background-color: #1e3a5f;
+    }
+    .output-text {
+      line-height: 1.75;
+    }
+    .output-text p {
+      margin-bottom: 1rem;
+    }
+    .output-text p:last-child {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <!-- Header -->
+  <div id="header"></div>
+
+  <!-- Main Content -->
+  <main class="flex-1 py-8 md:py-12">
+    <div class="container-main">
+      <!-- Page Title -->
+      <div class="mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          Lorem Ipsum Generator
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400">
+          Generate Lorem Ipsum placeholder text for design and layout testing. Create text by paragraphs, sentences, or words.
+        </p>
+      </div>
+
+      <!-- Ad Container (Top) -->
+      <div class="ad-container mb-6">
+
+      </div>
+
+      <!-- Tool Card -->
+      <div class="card">
+        <!-- Type Selection -->
+        <div class="mb-6">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Generate By</label>
+          <div class="grid grid-cols-3 gap-3">
+            <button class="type-btn active" data-type="paragraphs">
+              <div class="font-medium text-gray-900 dark:text-white">Paragraphs</div>
+              <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Multiple sentences</div>
+            </button>
+            <button class="type-btn" data-type="sentences">
+              <div class="font-medium text-gray-900 dark:text-white">Sentences</div>
+              <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Individual sentences</div>
+            </button>
+            <button class="type-btn" data-type="words">
+              <div class="font-medium text-gray-900 dark:text-white">Words</div>
+              <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Individual words</div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Count & Options -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Count</label>
+            <input type="number" id="count" class="input text-center" value="3" min="1" max="100">
+          </div>
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Options</label>
+            <div class="flex flex-col gap-2">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="start-lorem" class="w-4 h-4 rounded border-gray-300 dark:border-gray-600" checked>
+                <span class="text-sm text-gray-700 dark:text-gray-300">Start with "Lorem ipsum..."</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" id="html-format" class="w-4 h-4 rounded border-gray-300 dark:border-gray-600">
+                <span class="text-sm text-gray-700 dark:text-gray-300">HTML format (&lt;p&gt; tags)</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Generate Button -->
+        <button id="generate-btn" class="btn btn-primary w-full mb-6">Generate</button>
+
+        <!-- Output -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Output</label>
+            <div class="flex items-center gap-3">
+              <span id="char-count" class="text-xs text-gray-500 dark:text-gray-400">0 chars</span>
+              <button id="copy-btn" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">Copy</button>
+            </div>
+          </div>
+          <div id="output-container" class="textarea h-64 overflow-y-auto">
+            <div id="output" class="output-text text-gray-700 dark:text-gray-300"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Card -->
+      <div class="card mt-6">
+        <h3 class="font-medium text-gray-900 dark:text-white mb-4">What is Lorem Ipsum?</h3>
+        <div class="text-sm text-gray-600 dark:text-gray-400 space-y-3">
+          <p>
+            Lorem Ipsum is the standard dummy text used in the publishing and graphic design industries. It has been used since the 1500s and is widely used for layout and font testing.
+          </p>
+          <p>
+            It is used to preview designs before the actual content is ready. Since it is unreadable text, it helps readers focus on the layout rather than the content.
+          </p>
+        </div>
+      </div>
+
+      <!-- Ad Container (Bottom) -->
+      <div class="ad-container mt-8">
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Tool Script -->
+  <script>
+    (function() {
+      'use strict';
+
+      // Lorem Ipsum word list
+      const words = [
+        'lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur', 'adipiscing', 'elit',
+        'sed', 'do', 'eiusmod', 'tempor', 'incididunt', 'ut', 'labore', 'et', 'dolore',
+        'magna', 'aliqua', 'enim', 'ad', 'minim', 'veniam', 'quis', 'nostrud',
+        'exercitation', 'ullamco', 'laboris', 'nisi', 'aliquip', 'ex', 'ea', 'commodo',
+        'consequat', 'duis', 'aute', 'irure', 'in', 'reprehenderit', 'voluptate',
+        'velit', 'esse', 'cillum', 'fugiat', 'nulla', 'pariatur', 'excepteur', 'sint',
+        'occaecat', 'cupidatat', 'non', 'proident', 'sunt', 'culpa', 'qui', 'officia',
+        'deserunt', 'mollit', 'anim', 'id', 'est', 'laborum', 'perspiciatis', 'unde',
+        'omnis', 'iste', 'natus', 'error', 'voluptatem', 'accusantium', 'doloremque',
+        'laudantium', 'totam', 'rem', 'aperiam', 'eaque', 'ipsa', 'quae', 'ab', 'illo',
+        'inventore', 'veritatis', 'quasi', 'architecto', 'beatae', 'vitae', 'dicta',
+        'explicabo', 'nemo', 'ipsam', 'quia', 'voluptas', 'aspernatur', 'aut', 'odit',
+        'fugit', 'consequuntur', 'magni', 'dolores', 'eos', 'ratione', 'sequi',
+        'nesciunt', 'neque', 'porro', 'quisquam', 'dolorem', 'adipisci', 'numquam',
+        'eius', 'modi', 'tempora', 'magnam', 'quaerat', 'minima', 'nostrum',
+        'exercitationem', 'ullam', 'corporis', 'suscipit', 'laboriosam', 'aliquid',
+        'commodi', 'consequatur', 'autem', 'vel', 'eum', 'iure', 'quam', 'nihil',
+        'molestiae', 'illum', 'quo', 'facilis', 'expedita', 'distinctio', 'nam',
+        'libero', 'tempore', 'cum', 'soluta', 'nobis', 'eligendi', 'optio', 'cumque',
+        'impedit', 'minus', 'quod', 'maxime', 'placeat', 'facere', 'possimus', 'assumenda',
+        'repellendus', 'temporibus', 'quibusdam', 'officiis', 'debitis', 'rerum',
+        'necessitatibus', 'saepe', 'eveniet', 'voluptates', 'repudiandae', 'recusandae',
+        'itaque', 'earum', 'hic', 'tenetur', 'sapiente', 'delectus', 'reiciendis',
+        'voluptatibus', 'maiores', 'alias', 'perferendis', 'doloribus', 'asperiores', 'repellat'
+      ];
+
+      // Classic opening
+      const classicOpening = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit';
+
+      // Elements
+      const typeBtns = document.querySelectorAll('.type-btn');
+      const countInput = document.getElementById('count');
+      const startLoremCheck = document.getElementById('start-lorem');
+      const htmlFormatCheck = document.getElementById('html-format');
+      const generateBtn = document.getElementById('generate-btn');
+      const output = document.getElementById('output');
+      const charCount = document.getElementById('char-count');
+      const copyBtn = document.getElementById('copy-btn');
+
+      let currentType = 'paragraphs';
+      let generatedText = '';
+
+      // Random integer between min and max (inclusive)
+      function randInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      // Get random word
+      function getRandomWord() {
+        return words[randInt(0, words.length - 1)];
+      }
+
+      // Capitalize first letter
+      function capitalize(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+      }
+
+      // Generate a sentence
+      function generateSentence(isFirst = false) {
+        const wordCount = randInt(8, 15);
+        let sentence = [];
+
+        for (let i = 0; i < wordCount; i++) {
+          sentence.push(getRandomWord());
+        }
+
+        // Capitalize first word
+        sentence[0] = capitalize(sentence[0]);
+
+        // Add comma randomly
+        if (wordCount > 6) {
+          const commaPos = randInt(3, wordCount - 3);
+          sentence[commaPos] = sentence[commaPos] + ',';
+        }
+
+        return sentence.join(' ') + '.';
+      }
+
+      // Generate a paragraph
+      function generateParagraph(isFirst = false) {
+        const sentenceCount = randInt(4, 8);
+        let sentences = [];
+
+        for (let i = 0; i < sentenceCount; i++) {
+          sentences.push(generateSentence(isFirst && i === 0));
+        }
+
+        // If first paragraph and startLorem is checked, replace first sentence
+        if (isFirst && startLoremCheck.checked) {
+          sentences[0] = classicOpening + '.';
+        }
+
+        return sentences.join(' ');
+      }
+
+      // Generate text
+      function generateText() {
+        const count = Math.min(Math.max(parseInt(countInput.value) || 1, 1), 100);
+        let result = [];
+
+        if (currentType === 'paragraphs') {
+          for (let i = 0; i < count; i++) {
+            result.push(generateParagraph(i === 0));
+          }
+        } else if (currentType === 'sentences') {
+          for (let i = 0; i < count; i++) {
+            let sentence = generateSentence();
+            if (i === 0 && startLoremCheck.checked) {
+              sentence = classicOpening + '.';
+            }
+            result.push(sentence);
+          }
+        } else if (currentType === 'words') {
+          if (startLoremCheck.checked) {
+            result = ['Lorem', 'ipsum'];
+            for (let i = 2; i < count; i++) {
+              result.push(getRandomWord());
+            }
+          } else {
+            for (let i = 0; i < count; i++) {
+              result.push(getRandomWord());
+            }
+          }
+        }
+
+        // Format output
+        if (currentType === 'words') {
+          generatedText = result.join(' ');
+        } else if (htmlFormatCheck.checked) {
+          generatedText = result.map(p => `<p>${p}</p>`).join('\n');
+        } else {
+          generatedText = result.join('\n\n');
+        }
+
+        // Display
+        if (htmlFormatCheck.checked && currentType !== 'words') {
+          output.innerHTML = `<pre class="text-sm font-mono whitespace-pre-wrap">${escapeHtml(generatedText)}</pre>`;
+        } else {
+          output.innerHTML = result.map(p => `<p>${p}</p>`).join('');
+        }
+
+        // Update char count
+        charCount.textContent = `${generatedText.length} chars`;
+      }
+
+      // Escape HTML
+      function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      // Type selection
+      typeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          typeBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentType = btn.dataset.type;
+
+          // Update count default
+          if (currentType === 'paragraphs') {
+            countInput.value = 3;
+          } else if (currentType === 'sentences') {
+            countInput.value = 5;
+          } else {
+            countInput.value = 50;
+          }
+
+          generateText();
+        });
+      });
+
+      // Generate button
+      generateBtn.addEventListener('click', generateText);
+
+      // Options change
+      startLoremCheck.addEventListener('change', generateText);
+      htmlFormatCheck.addEventListener('change', generateText);
+
+      // Copy button
+      copyBtn.addEventListener('click', async () => {
+        if (!generatedText) {
+          toast.warning('Nothing to copy');
+          return;
+        }
+        await copyToClipboard(generatedText);
+        toast.success('Copied!');
+      });
+
+      // Count input change
+      countInput.addEventListener('change', () => {
+        let val = parseInt(countInput.value) || 1;
+        val = Math.min(Math.max(val, 1), 100);
+        countInput.value = val;
+        generateText();
+      });
+
+      // Initial generation
+      generateText();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stuck Pixel Fixer - Toolneat</title>
+  <meta name="description" content="Free online tool to fix stuck pixels on your monitor. Rapidly flashing colors stimulate stuck pixels and may restore them to normal operation.">
+  <meta name="theme-color" content="#2563eb">
+
+  <link rel="canonical" href="https://toolneat.com/en/tools/life/pixel-fixer/">
+  <link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/pixel-fixer/">
+  <link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/pixel-fixer/">
+  <link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/pixel-fixer/">
+
+  <meta property="og:title" content="Stuck Pixel Fixer - Toolneat">
+  <meta property="og:description" content="Free online tool to fix stuck pixels on your monitor.">
+  <meta property="og:url" content="https://toolneat.com/en/tools/life/pixel-fixer/">
+  <meta property="og:type" content="website">
+
+  <link rel="icon" type="image/svg+xml" href="../../../../assets/icons/favicon.svg">
+  <link rel="stylesheet" href="../../../../assets/css/output.css">
+
+  <script src="../../../../assets/js/common.js"></script>
+  <script src="../../../../assets/js/i18n.js"></script>
+  <script src="../../../../assets/js/components.js"></script>
+  <style>
+    #fixer-box {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      cursor: move;
+      border: 2px solid rgba(255,255,255,0.5);
+      border-radius: 4px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      overflow: hidden;
+    }
+    #fixer-box canvas {
+      width: 100%;
+      height: 100%;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+    #fixer-container {
+      position: relative;
+      width: 100%;
+      height: 400px;
+      background: #1a1a1a;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    #fullscreen-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      background: #000;
+    }
+    #fullscreen-overlay.active {
+      display: block;
+    }
+    #fullscreen-fixer {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      cursor: move;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    #fullscreen-fixer canvas {
+      width: 100%;
+      height: 100%;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+    #fullscreen-hint {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      opacity: 1;
+      transition: opacity 0.3s;
+      z-index: 10;
+      white-space: nowrap;
+    }
+    #fullscreen-overlay:not(:hover) #fullscreen-hint {
+      opacity: 0;
+    }
+    #timer-display {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-family: monospace;
+      z-index: 10;
+    }
+    .size-btn.active {
+      ring-width: 2px;
+      --tw-ring-color: #3b82f6;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <div id="header"></div>
+
+  <main class="flex-1 py-8 md:py-12">
+    <div class="container-main">
+      <!-- Page Title -->
+      <div class="mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          Stuck Pixel Fixer
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400">
+          A tool to repair stuck pixels on your monitor. Drag the box over the stuck pixel and run for at least 10-20 minutes.
+        </p>
+      </div>
+
+      <!-- Ad Container (Top) -->
+      <div class="ad-container mb-6"></div>
+
+      <!-- Tool Card -->
+      <div class="card">
+        <!-- Options -->
+        <div class="flex flex-wrap gap-4 mb-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Size</label>
+            <div class="flex gap-2">
+              <button onclick="setSize(100)" class="size-btn px-3 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-sm hover:bg-gray-200 dark:hover:bg-gray-600">100px</button>
+              <button onclick="setSize(200)" class="size-btn px-3 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-sm hover:bg-gray-200 dark:hover:bg-gray-600 ring-2 ring-blue-500">200px</button>
+              <button onclick="setSize(300)" class="size-btn px-3 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-sm hover:bg-gray-200 dark:hover:bg-gray-600">300px</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Preview Container -->
+        <div id="fixer-container" class="mb-4">
+          <div id="fixer-box">
+            <canvas id="preview-canvas"></canvas>
+          </div>
+          <div class="absolute bottom-3 left-3 text-white/60 text-sm">Drag the box to position</div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex flex-wrap gap-3">
+          <button onclick="startFullscreen()" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-colors">
+            Run Fullscreen
+          </button>
+          <button onclick="togglePreview()" id="preview-btn" class="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-xl transition-colors">
+            Start Preview
+          </button>
+        </div>
+      </div>
+
+      <!-- Info Section -->
+      <div class="mt-8 p-6 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">What is a Stuck Pixel?</h2>
+        <div class="text-gray-600 dark:text-gray-400 space-y-2">
+          <p>A <strong>stuck pixel</strong> is a pixel that remains fixed on a particular color (red, green, or blue). Unlike <strong>dead pixels</strong> which are completely off, stuck pixels may be repairable with software.</p>
+          <p><strong>How it works</strong>: Rapidly changing random colors stimulate the pixel's transistor, encouraging it to return to normal operation. Most stuck pixels recover within 10-20 minutes.</p>
+        </div>
+
+        <h3 class="font-semibold text-gray-900 dark:text-white mt-5 mb-2">Alternative Repair Methods</h3>
+        <div class="text-gray-600 dark:text-gray-400 space-y-2 text-sm">
+          <p><strong>Pressure/Massage Method</strong>: Gently rub or press the affected area with a soft cloth. This helps spread the liquid crystal. It's more effective when combined with this tool.</p>
+          <p><strong>Power Off and Rest</strong>: Turn off the monitor and leave it for 24+ hours. Problems caused by overuse may naturally recover.</p>
+          <p><strong>Wait</strong>: Stuck pixels often fix themselves over time.</p>
+        </div>
+
+        <div class="mt-4 p-3 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg">
+          <p class="text-sm text-yellow-800 dark:text-yellow-200"><strong>Note:</strong> This tool only works on <strong>stuck pixels</strong>. Physically damaged <strong>dead pixels</strong> (completely black spots) cannot be repaired with software.</p>
+        </div>
+      </div>
+
+      <!-- Ad Container (Bottom) -->
+      <div class="ad-container mt-8"></div>
+    </div>
+  </main>
+
+  <div id="footer"></div>
+
+  <!-- Fullscreen Overlay -->
+  <div id="fullscreen-overlay">
+    <div id="timer-display">00:00</div>
+    <div id="fullscreen-fixer">
+      <canvas id="fullscreen-canvas"></canvas>
+    </div>
+    <div id="fullscreen-hint">Drag to position | ESC to exit</div>
+  </div>
+
+  <script>
+    let animationId = null;
+    let isRunning = false;
+    let boxSize = 200;
+    let startTime = null;
+    let timerInterval = null;
+
+    const fixerBox = document.getElementById('fixer-box');
+    const fixerContainer = document.getElementById('fixer-container');
+    const fullscreenOverlay = document.getElementById('fullscreen-overlay');
+    const fullscreenFixer = document.getElementById('fullscreen-fixer');
+    const timerDisplay = document.getElementById('timer-display');
+    const previewBtn = document.getElementById('preview-btn');
+
+    const previewCanvas = document.getElementById('preview-canvas');
+    const fullscreenCanvas = document.getElementById('fullscreen-canvas');
+    const previewCtx = previewCanvas.getContext('2d');
+    const fullscreenCtx = fullscreenCanvas.getContext('2d');
+
+    // Canvas resolution - match actual box size for 1:1 pixel mapping
+    previewCanvas.width = boxSize;
+    previewCanvas.height = boxSize;
+    fullscreenCanvas.width = boxSize;
+    fullscreenCanvas.height = boxSize;
+
+    // Initialize position
+    fixerBox.style.left = '50%';
+    fixerBox.style.top = '50%';
+    fixerBox.style.transform = 'translate(-50%, -50%)';
+    fullscreenFixer.style.left = '50%';
+    fullscreenFixer.style.top = '50%';
+    fullscreenFixer.style.transform = 'translate(-50%, -50%)';
+
+    // Static noise animation (like JScreenFix)
+    function drawNoise(ctx, width, height) {
+      const imageData = ctx.createImageData(width, height);
+      const data = imageData.data;
+
+      for (let i = 0; i < data.length; i += 4) {
+        data[i] = Math.random() * 256 | 0;     // R
+        data[i + 1] = Math.random() * 256 | 0; // G
+        data[i + 2] = Math.random() * 256 | 0; // B
+        data[i + 3] = 255;                      // A
+      }
+
+      ctx.putImageData(imageData, 0, 0);
+    }
+
+    function animate(ctx, canvas) {
+      function frame() {
+        drawNoise(ctx, canvas.width, canvas.height);
+        animationId = requestAnimationFrame(frame);
+      }
+      animationId = requestAnimationFrame(frame);
+    }
+
+    function stopAnimation() {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+        animationId = null;
+      }
+    }
+
+    function clearCanvas(ctx, canvas) {
+      ctx.fillStyle = '#333';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function togglePreview() {
+      if (isRunning) {
+        stopAnimation();
+        clearCanvas(previewCtx, previewCanvas);
+        previewBtn.textContent = 'Start Preview';
+        isRunning = false;
+      } else {
+        animate(previewCtx, previewCanvas);
+        previewBtn.textContent = 'Stop Preview';
+        isRunning = true;
+      }
+    }
+
+    function setSize(size) {
+      boxSize = size;
+      fixerBox.style.width = size + 'px';
+      fixerBox.style.height = size + 'px';
+      fullscreenFixer.style.width = size + 'px';
+      fullscreenFixer.style.height = size + 'px';
+
+      // Update canvas size for 1:1 pixel mapping
+      previewCanvas.width = size;
+      previewCanvas.height = size;
+      fullscreenCanvas.width = size;
+      fullscreenCanvas.height = size;
+
+      document.querySelectorAll('.size-btn').forEach(btn => {
+        btn.classList.remove('ring-2', 'ring-blue-500');
+        if (btn.textContent === size + 'px') {
+          btn.classList.add('ring-2', 'ring-blue-500');
+        }
+      });
+    }
+
+    function updateTimer() {
+      if (!startTime) return;
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
+      const mins = Math.floor(elapsed / 60).toString().padStart(2, '0');
+      const secs = (elapsed % 60).toString().padStart(2, '0');
+      timerDisplay.textContent = `${mins}:${secs}`;
+    }
+
+    function startFullscreen() {
+      fullscreenOverlay.classList.add('active');
+      if (fullscreenOverlay.requestFullscreen) {
+        fullscreenOverlay.requestFullscreen();
+      } else if (fullscreenOverlay.webkitRequestFullscreen) {
+        fullscreenOverlay.webkitRequestFullscreen();
+      }
+      animate(fullscreenCtx, fullscreenCanvas);
+      startTime = Date.now();
+      timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    function exitFullscreen() {
+      fullscreenOverlay.classList.remove('active');
+      stopAnimation();
+      clearCanvas(fullscreenCtx, fullscreenCanvas);
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      }
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+      startTime = null;
+    }
+
+    // Drag functionality
+    function makeDraggable(element, container) {
+      let isDragging = false;
+      let startX, startY, initialLeft, initialTop;
+
+      element.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        isDragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+
+        // Get current position
+        const style = window.getComputedStyle(element);
+        if (element.style.transform !== 'none') {
+          element.style.transform = 'none';
+          const containerRect = container.getBoundingClientRect();
+          initialLeft = (containerRect.width - element.offsetWidth) / 2;
+          initialTop = (containerRect.height - element.offsetHeight) / 2;
+          element.style.left = initialLeft + 'px';
+          element.style.top = initialTop + 'px';
+        } else {
+          initialLeft = parseInt(style.left) || 0;
+          initialTop = parseInt(style.top) || 0;
+        }
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+
+        const containerRect = container.getBoundingClientRect();
+        let newLeft = initialLeft + (e.clientX - startX);
+        let newTop = initialTop + (e.clientY - startY);
+
+        // Constrain to container
+        newLeft = Math.max(0, Math.min(newLeft, containerRect.width - element.offsetWidth));
+        newTop = Math.max(0, Math.min(newTop, containerRect.height - element.offsetHeight));
+
+        element.style.left = newLeft + 'px';
+        element.style.top = newTop + 'px';
+      });
+
+      document.addEventListener('mouseup', () => {
+        isDragging = false;
+      });
+
+      // Touch support
+      element.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        isDragging = true;
+        const touch = e.touches[0];
+        startX = touch.clientX;
+        startY = touch.clientY;
+
+        const style = window.getComputedStyle(element);
+        if (element.style.transform !== 'none') {
+          element.style.transform = 'none';
+          const containerRect = container.getBoundingClientRect();
+          initialLeft = (containerRect.width - element.offsetWidth) / 2;
+          initialTop = (containerRect.height - element.offsetHeight) / 2;
+          element.style.left = initialLeft + 'px';
+          element.style.top = initialTop + 'px';
+        } else {
+          initialLeft = parseInt(style.left) || 0;
+          initialTop = parseInt(style.top) || 0;
+        }
+      }, { passive: false });
+
+      document.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        const touch = e.touches[0];
+        const containerRect = container.getBoundingClientRect();
+
+        let newLeft = initialLeft + (touch.clientX - startX);
+        let newTop = initialTop + (touch.clientY - startY);
+
+        newLeft = Math.max(0, Math.min(newLeft, containerRect.width - element.offsetWidth));
+        newTop = Math.max(0, Math.min(newTop, containerRect.height - element.offsetHeight));
+
+        element.style.left = newLeft + 'px';
+        element.style.top = newTop + 'px';
+      }, { passive: true });
+
+      document.addEventListener('touchend', () => {
+        isDragging = false;
+      });
+    }
+
+    makeDraggable(fixerBox, fixerContainer);
+    makeDraggable(fullscreenFixer, fullscreenOverlay);
+
+    // Keyboard events
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && fullscreenOverlay.classList.contains('active')) {
+        exitFullscreen();
+      }
+    });
+
+    document.addEventListener('fullscreenchange', () => {
+      if (!document.fullscreenElement && fullscreenOverlay.classList.contains('active')) {
+        exitFullscreen();
+      }
+    });
+
+    // Initialize
+    clearCanvas(previewCtx, previewCanvas);
+    clearCanvas(fullscreenCtx, fullscreenCanvas);
+  </script>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>화면 색상 테스트 - Toolneat</title>
+  <meta name="description" content="모니터의 색상 균일성과 표현력을 테스트하기 위한 전체화면 색상 및 패턴 테스트 도구입니다.">
+  <meta name="theme-color" content="#2563eb">
+
+  <link rel="canonical" href="https://toolneat.com/tools/life/screen-color-test/">
+  <link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/screen-color-test/">
+  <link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/screen-color-test/">
+  <link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/screen-color-test/">
+
+  <meta property="og:title" content="화면 색상 테스트 - Toolneat">
+  <meta property="og:description" content="모니터의 색상 균일성과 표현력을 테스트하기 위한 전체화면 색상 및 패턴 테스트 도구입니다.">
+  <meta property="og:url" content="https://toolneat.com/tools/life/screen-color-test/">
+  <meta property="og:type" content="website">
+
+  <link rel="icon" type="image/svg+xml" href="../../../assets/icons/favicon.svg">
+  <link rel="stylesheet" href="../../../assets/css/output.css">
+
+  <script src="../../../assets/js/common.js"></script>
+  <script src="../../../assets/js/i18n.js"></script>
+  <script src="../../../assets/js/components.js"></script>
+  <style>
+    #fullscreen-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      cursor: none;
+    }
+    #fullscreen-overlay.active {
+      display: block;
+    }
+    #fullscreen-hint {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      opacity: 1;
+      transition: opacity 0.3s;
+      white-space: nowrap;
+    }
+    #fullscreen-overlay:not(:hover) #fullscreen-hint {
+      opacity: 0;
+    }
+    .pattern-gradient-h {
+      background: linear-gradient(to right, red, yellow, lime, cyan, blue, magenta, red);
+    }
+    .pattern-gradient-v {
+      background: linear-gradient(to bottom, red, yellow, lime, cyan, blue, magenta, red);
+    }
+    .pattern-grayscale {
+      background: linear-gradient(to right, black, white);
+    }
+    .pattern-color-bars {
+      background: linear-gradient(to right,
+        white 0%, white 12.5%,
+        yellow 12.5%, yellow 25%,
+        cyan 25%, cyan 37.5%,
+        lime 37.5%, lime 50%,
+        magenta 50%, magenta 62.5%,
+        red 62.5%, red 75%,
+        blue 75%, blue 87.5%,
+        black 87.5%, black 100%);
+    }
+    .color-btn {
+      transition: all 0.2s;
+    }
+    .color-btn:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <div id="header"></div>
+
+  <main class="flex-1 py-8 md:py-12">
+    <div class="container-main">
+      <!-- Page Title -->
+      <div class="mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2" data-i18n="tools.screenColorTest.title">
+          화면 색상 테스트
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400" data-i18n="tools.screenColorTest.descriptionLong">
+          다양한 색상과 패턴으로 모니터의 색상 균일성, 색재현력, 밴딩 현상을 테스트합니다. 아래 버튼을 클릭하면 전체화면으로 전환됩니다.
+        </p>
+      </div>
+
+      <!-- Ad Container (Top) -->
+      <div class="ad-container mb-6"></div>
+
+      <!-- Tool Card -->
+      <div class="card">
+        <!-- Solid Colors -->
+        <div class="mb-6">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-3">단색</h3>
+          <div class="grid grid-cols-4 sm:grid-cols-8 gap-3">
+            <button onclick="startTest(0)" class="color-btn aspect-square rounded-xl bg-red-500 hover:ring-4 ring-red-300 flex items-center justify-center text-white text-sm font-medium shadow-lg">
+              빨강
+            </button>
+            <button onclick="startTest(1)" class="color-btn aspect-square rounded-xl bg-green-500 hover:ring-4 ring-green-300 flex items-center justify-center text-white text-sm font-medium shadow-lg">
+              초록
+            </button>
+            <button onclick="startTest(2)" class="color-btn aspect-square rounded-xl bg-blue-600 hover:ring-4 ring-blue-300 flex items-center justify-center text-white text-sm font-medium shadow-lg">
+              파랑
+            </button>
+            <button onclick="startTest(3)" class="color-btn aspect-square rounded-xl hover:ring-4 ring-cyan-300 flex items-center justify-center text-white text-sm font-medium shadow-lg" style="background-color: #00ffff;">
+              시안
+            </button>
+            <button onclick="startTest(4)" class="color-btn aspect-square rounded-xl hover:ring-4 ring-pink-300 flex items-center justify-center text-white text-sm font-medium shadow-lg" style="background-color: #ff00ff;">
+              마젠타
+            </button>
+            <button onclick="startTest(5)" class="color-btn aspect-square rounded-xl bg-yellow-400 hover:ring-4 ring-yellow-300 flex items-center justify-center text-gray-800 text-sm font-medium shadow-lg">
+              노랑
+            </button>
+            <button onclick="startTest(6)" class="color-btn aspect-square rounded-xl bg-white border-2 border-gray-200 hover:ring-4 ring-gray-300 flex items-center justify-center text-gray-700 text-sm font-medium shadow-lg">
+              흰색
+            </button>
+            <button onclick="startTest(7)" class="color-btn aspect-square rounded-xl bg-black hover:ring-4 ring-gray-500 flex items-center justify-center text-white text-sm font-medium shadow-lg">
+              검정
+            </button>
+          </div>
+        </div>
+
+        <!-- Patterns -->
+        <div class="mb-6">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-3">패턴</h3>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <button onclick="startTest(8)" class="color-btn h-20 rounded-xl pattern-gradient-h hover:ring-4 ring-purple-300 flex items-center justify-center text-white text-sm font-medium shadow-lg">
+              <span class="bg-black/50 px-2 py-1 rounded">수평 그라디언트</span>
+            </button>
+            <button onclick="startTest(9)" class="color-btn h-20 rounded-xl pattern-gradient-v hover:ring-4 ring-purple-300 flex items-center justify-center text-white text-sm font-medium shadow-lg">
+              <span class="bg-black/50 px-2 py-1 rounded">수직 그라디언트</span>
+            </button>
+            <button onclick="startTest(10)" class="color-btn h-20 rounded-xl pattern-grayscale hover:ring-4 ring-gray-400 flex items-center justify-center text-white text-sm font-medium shadow-lg">
+              <span class="bg-black/50 px-2 py-1 rounded">그레이스케일</span>
+            </button>
+            <button onclick="startTest(11)" class="color-btn h-20 rounded-xl pattern-color-bars hover:ring-4 ring-gray-400 flex items-center justify-center text-white text-sm font-medium shadow-lg">
+              <span class="bg-black/50 px-2 py-1 rounded">컬러바</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">사용 방법</h3>
+          <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+            <li>• 색상/패턴 버튼 클릭 → 전체화면 모드로 전환</li>
+            <li>• <kbd class="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-600 rounded text-xs">←</kbd> <kbd class="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-600 rounded text-xs">→</kbd> 또는 클릭으로 색상/패턴 변경</li>
+            <li>• <kbd class="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-600 rounded text-xs">ESC</kbd> 키로 종료</li>
+            <li>• 화면 전체를 천천히 살펴보며 색상 불균일이나 밴딩 현상이 있는지 확인하세요.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-8 p-6 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">색상 균일성 테스트란?</h2>
+        <div class="text-gray-600 dark:text-gray-400 space-y-2">
+          <p><strong>색상 균일성(Color Uniformity)</strong>: 화면 전체에서 동일한 색상이 균일하게 표시되는지 확인합니다. 모서리나 가장자리에서 색상이 다르게 보이면 균일성 문제가 있을 수 있습니다.</p>
+          <p><strong>밴딩(Banding)</strong>: 그라디언트에서 부드러운 전환 대신 띠 모양의 줄무늬가 보이는 현상입니다. 모니터의 색심도나 패널 품질과 관련이 있습니다.</p>
+          <p><strong>색재현력(Color Gamut)</strong>: 모니터가 얼마나 넓은 범위의 색상을 정확하게 표현할 수 있는지를 나타냅니다. 선명한 빨강, 초록, 파랑이 잘 표시되는지 확인하세요.</p>
+          <p><strong>백라이트 블리딩(Backlight Bleed)</strong>: 검정 화면에서 가장자리나 모서리에서 빛이 새어 나오는 현상입니다. 어두운 환경에서 확인하세요.</p>
+        </div>
+      </div>
+
+      <div class="ad-container mt-8"></div>
+    </div>
+  </main>
+
+  <div id="footer"></div>
+
+  <!-- Fullscreen Overlay -->
+  <div id="fullscreen-overlay">
+    <div id="fullscreen-hint">클릭 또는 ← → 키로 패턴 변경 | ESC로 종료</div>
+  </div>
+
+  <script>
+    const patterns = [
+      { type: 'solid', color: '#ff0000', name: '빨강' },
+      { type: 'solid', color: '#00ff00', name: '초록' },
+      { type: 'solid', color: '#0000ff', name: '파랑' },
+      { type: 'solid', color: '#00ffff', name: '시안' },
+      { type: 'solid', color: '#ff00ff', name: '마젠타' },
+      { type: 'solid', color: '#ffff00', name: '노랑' },
+      { type: 'solid', color: '#ffffff', name: '흰색' },
+      { type: 'solid', color: '#000000', name: '검정' },
+      { type: 'gradient', style: 'linear-gradient(to right, red, yellow, lime, cyan, blue, magenta, red)', name: '수평 그라디언트' },
+      { type: 'gradient', style: 'linear-gradient(to bottom, red, yellow, lime, cyan, blue, magenta, red)', name: '수직 그라디언트' },
+      { type: 'gradient', style: 'linear-gradient(to right, black, white)', name: '그레이스케일' },
+      { type: 'gradient', style: 'linear-gradient(to right, white 0%, white 12.5%, yellow 12.5%, yellow 25%, cyan 25%, cyan 37.5%, lime 37.5%, lime 50%, magenta 50%, magenta 62.5%, red 62.5%, red 75%, blue 75%, blue 87.5%, black 87.5%, black 100%)', name: '컬러바' }
+    ];
+
+    let currentIndex = 0;
+    const overlay = document.getElementById('fullscreen-overlay');
+
+    function applyPattern(index) {
+      const pattern = patterns[index];
+      if (pattern.type === 'solid') {
+        overlay.style.background = pattern.color;
+      } else {
+        overlay.style.background = pattern.style;
+      }
+    }
+
+    function startTest(index) {
+      currentIndex = index;
+      applyPattern(currentIndex);
+      overlay.classList.add('active');
+
+      if (overlay.requestFullscreen) {
+        overlay.requestFullscreen();
+      } else if (overlay.webkitRequestFullscreen) {
+        overlay.webkitRequestFullscreen();
+      }
+    }
+
+    function nextPattern() {
+      currentIndex = (currentIndex + 1) % patterns.length;
+      applyPattern(currentIndex);
+    }
+
+    function prevPattern() {
+      currentIndex = (currentIndex - 1 + patterns.length) % patterns.length;
+      applyPattern(currentIndex);
+    }
+
+    function exitTest() {
+      overlay.classList.remove('active');
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      }
+    }
+
+    overlay.addEventListener('click', nextPattern);
+
+    document.addEventListener('keydown', (e) => {
+      if (!overlay.classList.contains('active')) return;
+
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        nextPattern();
+      } else if (e.key === 'ArrowLeft') {
+        prevPattern();
+      } else if (e.key === 'Escape') {
+        exitTest();
+      }
+    });
+
+    document.addEventListener('fullscreenchange', () => {
+      if (!document.fullscreenElement) {
+        overlay.classList.remove('active');
+      }
+    });
+  </script>
+</body>
+</html>

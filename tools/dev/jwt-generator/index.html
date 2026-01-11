@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n-title="tools.jwtGenerator.title">JWT 생성기 - Toolneat</title>
+  <meta name="description" data-i18n-desc="tools.jwtGenerator.description" content="JWT(JSON Web Token)를 생성합니다.">
+
+  <!-- Canonical & hreflang -->
+  <link rel="canonical" href="https://toolneat.com/tools/dev/jwt-generator/">
+  <link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/dev/jwt-generator/">
+  <link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/dev/jwt-generator/">
+  <link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/dev/jwt-generator/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Toolneat">
+  <meta property="og:title" content="JWT 생성기 - Toolneat">
+  <meta property="og:description" content="JWT(JSON Web Token)를 생성합니다.">
+  <meta property="og:url" content="https://toolneat.com/tools/dev/jwt-generator/">
+  <meta property="og:image" content="https://toolneat.com/assets/images/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#2563eb">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../../../assets/icons/favicon.svg">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../../../assets/css/output.css">
+
+  <!-- JS -->
+  <script src="../../../assets/js/common.js"></script>
+  <script src="../../../assets/js/i18n.js"></script>
+  <script src="../../../assets/js/components.js"></script>
+
+  <style>
+    .jwt-output {
+      font-family: ui-monospace, monospace;
+      font-size: 0.75rem;
+      word-break: break-all;
+      line-height: 1.5;
+    }
+    .token-header { color: #d97706; }
+    .token-payload { color: #2563eb; }
+    .token-signature { color: #db2777; }
+    .dark .token-header { color: #fbbf24; }
+    .dark .token-payload { color: #60a5fa; }
+    .dark .token-signature { color: #f472b6; }
+    .claim-input {
+      display: grid;
+      grid-template-columns: 1fr 2fr auto;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    @media (max-width: 640px) {
+      .claim-input {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <!-- Header -->
+  <div id="header"></div>
+
+  <!-- Main Content -->
+  <main class="flex-1 py-8 md:py-12">
+    <div class="container-main">
+      <!-- Page Title -->
+      <div class="mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2" data-i18n="tools.jwtGenerator.title">
+          JWT 생성기
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400" data-i18n="tools.jwtGenerator.descriptionLong">
+          JWT(JSON Web Token)를 생성합니다. Header, Payload를 설정하고 비밀키로 서명합니다.
+        </p>
+      </div>
+
+      <!-- Ad Container (Top) -->
+      <div class="ad-container mb-6">
+        
+      </div>
+
+      <!-- Tool Card -->
+      <div class="card">
+        <!-- Header Section -->
+        <div class="mb-6">
+          <h3 class="font-medium text-gray-900 dark:text-white mb-4">Header</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" data-i18n="tools.jwtGenerator.algorithm">알고리즘</label>
+              <select id="algorithm" class="input">
+                <option value="HS256">HS256 (HMAC SHA-256)</option>
+                <option value="HS384">HS384 (HMAC SHA-384)</option>
+                <option value="HS512">HS512 (HMAC SHA-512)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" data-i18n="tools.jwtGenerator.type">타입</label>
+              <input type="text" id="token-type" class="input font-mono" value="JWT" readonly>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payload Section -->
+        <div class="mb-6 border-t border-gray-100 dark:border-gray-700 pt-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-medium text-gray-900 dark:text-white">Payload</h3>
+            <div class="flex items-center gap-3">
+              <div class="flex bg-gray-100 dark:bg-gray-800 rounded-lg p-0.5">
+                <button id="mode-form" class="px-3 py-1 text-xs font-medium rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm" data-i18n="tools.jwtGenerator.formMode">폼</button>
+                <button id="mode-json" class="px-3 py-1 text-xs font-medium rounded-md text-gray-500 dark:text-gray-400" data-i18n="tools.jwtGenerator.jsonMode">JSON</button>
+              </div>
+              <button id="add-claim" class="text-sm text-blue-600 dark:text-blue-400 hover:underline" data-i18n="tools.jwtGenerator.addClaim">+ 클레임 추가</button>
+            </div>
+          </div>
+
+          <!-- Form Mode -->
+          <div id="form-mode-section">
+          <!-- Standard Claims -->
+          <div class="space-y-3 mb-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">sub (Subject)</label>
+                <input type="text" id="claim-sub" class="input font-mono text-sm" placeholder="1234567890">
+              </div>
+              <div>
+                <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">iss (Issuer)</label>
+                <input type="text" id="claim-iss" class="input font-mono text-sm" placeholder="toolneat.com">
+              </div>
+              <div>
+                <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">aud (Audience)</label>
+                <input type="text" id="claim-aud" class="input font-mono text-sm" placeholder="my-app">
+              </div>
+            </div>
+
+            <!-- Time Claims -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">
+                  exp (Expiration)
+                  <span class="text-gray-400">- <span data-i18n="tools.jwtGenerator.expiresIn">만료 시간</span></span>
+                </label>
+                <div class="grid grid-cols-3 gap-2">
+                  <input type="number" id="exp-value" class="input font-mono text-sm" value="1" min="1">
+                  <select id="exp-unit" class="input text-sm col-span-2">
+                    <option value="hours" data-i18n="tools.jwtGenerator.hours">시간</option>
+                    <option value="days" data-i18n="tools.jwtGenerator.days">일</option>
+                    <option value="minutes" data-i18n="tools.jwtGenerator.minutes">분</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">
+                  iat (Issued At) - <span data-i18n="tools.jwtGenerator.currentTime">현재 시간</span>
+                </label>
+                <input type="text" id="claim-iat" class="input font-mono text-sm bg-gray-50 dark:bg-gray-900" readonly>
+              </div>
+            </div>
+          </div>
+
+          <!-- Custom Claims -->
+          <div id="custom-claims" class="space-y-2">
+            <!-- Dynamic claims will be added here -->
+          </div>
+          </div>
+
+          <!-- JSON Mode -->
+          <div id="json-mode-section" class="hidden">
+            <div class="mb-2">
+              <p class="text-xs text-gray-500 dark:text-gray-400" data-i18n="tools.jwtGenerator.jsonModeDesc">직접 JSON payload를 입력하세요. 유효한 JSON 형식이어야 합니다.</p>
+            </div>
+            <textarea id="json-payload" class="textarea font-mono text-sm h-48" placeholder='{"sub": "1234567890", "name": "John Doe", "iat": 1516239022}'></textarea>
+            <p id="json-error" class="mt-1 text-xs text-red-500 dark:text-red-400 hidden"></p>
+          </div>
+        </div>
+
+        <!-- Secret Key -->
+        <div class="mb-6 border-t border-gray-100 dark:border-gray-700 pt-6">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" data-i18n="tools.jwtGenerator.secretKey">비밀키 (Secret Key)</label>
+          <div class="flex gap-2">
+            <input type="text" id="secret-key" class="input flex-1 font-mono" placeholder="your-256-bit-secret" data-i18n-placeholder="tools.jwtGenerator.secretPlaceholder">
+            <button id="generate-secret" class="btn btn-secondary shrink-0" data-i18n="tools.jwtGenerator.generateSecret">랜덤 생성</button>
+          </div>
+          <p class="mt-1 text-xs text-gray-500 dark:text-gray-400" data-i18n="tools.jwtGenerator.secretNote">비밀키는 안전하게 보관하세요. 절대 공개하지 마세요.</p>
+        </div>
+
+        <!-- Generate Button -->
+        <button id="generate-btn" class="btn btn-primary w-full mb-6" data-i18n="tools.jwtGenerator.generate">JWT 생성</button>
+
+        <!-- Output -->
+        <div id="output-section" class="hidden">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-medium text-gray-900 dark:text-white" data-i18n="tools.jwtGenerator.generatedToken">생성된 JWT</h3>
+            <button id="copy-jwt" class="text-sm text-blue-600 dark:text-blue-400 hover:underline" data-i18n="common.copy">복사</button>
+          </div>
+          <div class="p-4 bg-gray-50 dark:bg-gray-900 rounded-xl">
+            <div id="jwt-output" class="jwt-output"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Box -->
+      <div class="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+        <h3 class="font-medium text-blue-800 dark:text-blue-300 mb-2" data-i18n="tools.jwtGenerator.infoTitle">JWT 구조</h3>
+        <ul class="text-sm text-blue-700 dark:text-blue-400 space-y-1">
+          <li data-i18n="tools.jwtGenerator.info1">Header: 알고리즘과 토큰 타입 정보</li>
+          <li data-i18n="tools.jwtGenerator.info2">Payload: 클레임(사용자 데이터, 만료시간 등)</li>
+          <li data-i18n="tools.jwtGenerator.info3">Signature: Header + Payload + Secret으로 생성된 서명</li>
+        </ul>
+      </div>
+
+      <!-- Ad Container (Bottom) -->
+      <div class="ad-container mt-8">
+        
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Tool Script -->
+  <script>
+    (function() {
+      'use strict';
+
+      const algorithmSelect = document.getElementById('algorithm');
+      const claimSub = document.getElementById('claim-sub');
+      const claimIss = document.getElementById('claim-iss');
+      const claimAud = document.getElementById('claim-aud');
+      const expValue = document.getElementById('exp-value');
+      const expUnit = document.getElementById('exp-unit');
+      const claimIat = document.getElementById('claim-iat');
+      const customClaims = document.getElementById('custom-claims');
+      const addClaimBtn = document.getElementById('add-claim');
+      const secretKey = document.getElementById('secret-key');
+      const generateSecretBtn = document.getElementById('generate-secret');
+      const generateBtn = document.getElementById('generate-btn');
+      const outputSection = document.getElementById('output-section');
+      const jwtOutput = document.getElementById('jwt-output');
+      const copyJwtBtn = document.getElementById('copy-jwt');
+
+      // Mode elements
+      const modeFormBtn = document.getElementById('mode-form');
+      const modeJsonBtn = document.getElementById('mode-json');
+      const formModeSection = document.getElementById('form-mode-section');
+      const jsonModeSection = document.getElementById('json-mode-section');
+      const jsonPayload = document.getElementById('json-payload');
+      const jsonError = document.getElementById('json-error');
+
+      let customClaimCount = 0;
+      let currentMode = 'form';
+
+      // Mode switching
+      function switchMode(mode) {
+        currentMode = mode;
+        if (mode === 'form') {
+          modeFormBtn.classList.add('bg-white', 'dark:bg-gray-700', 'text-gray-900', 'dark:text-white', 'shadow-sm');
+          modeFormBtn.classList.remove('text-gray-500', 'dark:text-gray-400');
+          modeJsonBtn.classList.remove('bg-white', 'dark:bg-gray-700', 'text-gray-900', 'dark:text-white', 'shadow-sm');
+          modeJsonBtn.classList.add('text-gray-500', 'dark:text-gray-400');
+          formModeSection.classList.remove('hidden');
+          jsonModeSection.classList.add('hidden');
+          addClaimBtn.classList.remove('hidden');
+        } else {
+          modeJsonBtn.classList.add('bg-white', 'dark:bg-gray-700', 'text-gray-900', 'dark:text-white', 'shadow-sm');
+          modeJsonBtn.classList.remove('text-gray-500', 'dark:text-gray-400');
+          modeFormBtn.classList.remove('bg-white', 'dark:bg-gray-700', 'text-gray-900', 'dark:text-white', 'shadow-sm');
+          modeFormBtn.classList.add('text-gray-500', 'dark:text-gray-400');
+          formModeSection.classList.add('hidden');
+          jsonModeSection.classList.remove('hidden');
+          addClaimBtn.classList.add('hidden');
+        }
+      }
+
+      modeFormBtn.addEventListener('click', () => switchMode('form'));
+      modeJsonBtn.addEventListener('click', () => switchMode('json'));
+
+      // Update iat display
+      function updateIat() {
+        const now = Math.floor(Date.now() / 1000);
+        claimIat.value = now;
+      }
+
+      // Add custom claim
+      function addCustomClaim() {
+        customClaimCount++;
+        const div = document.createElement('div');
+        div.className = 'claim-input';
+        div.id = `custom-claim-${customClaimCount}`;
+        div.innerHTML = `
+          <input type="text" class="input font-mono text-sm claim-key" placeholder="key">
+          <input type="text" class="input font-mono text-sm claim-value" placeholder="value">
+          <button type="button" class="btn btn-secondary text-xs py-1 px-2 remove-claim" data-id="${customClaimCount}">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        `;
+        customClaims.appendChild(div);
+      }
+
+      // Remove custom claim
+      customClaims.addEventListener('click', (e) => {
+        const btn = e.target.closest('.remove-claim');
+        if (btn) {
+          const id = btn.dataset.id;
+          document.getElementById(`custom-claim-${id}`).remove();
+        }
+      });
+
+      // Generate random secret
+      function generateRandomSecret() {
+        const array = new Uint8Array(32);
+        crypto.getRandomValues(array);
+        const secret = Array.from(array, b => b.toString(16).padStart(2, '0')).join('');
+        secretKey.value = secret;
+      }
+
+      // Base64URL encode
+      function base64UrlEncode(str) {
+        const base64 = btoa(str);
+        return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+      }
+
+      // Generate JWT
+      async function generateJWT() {
+        const secret = secretKey.value.trim();
+
+        if (!secret) {
+          toast.warning(t('tools.jwtGenerator.enterSecret'));
+          return;
+        }
+
+        // Build header
+        const header = {
+          alg: algorithmSelect.value,
+          typ: 'JWT'
+        };
+
+        // Build payload
+        let payload = {};
+
+        if (currentMode === 'json') {
+          // JSON mode
+          const jsonText = jsonPayload.value.trim();
+          if (!jsonText) {
+            toast.warning(t('tools.jwtGenerator.enterPayload'));
+            return;
+          }
+          try {
+            payload = JSON.parse(jsonText);
+            if (typeof payload !== 'object' || Array.isArray(payload)) {
+              throw new Error('Payload must be an object');
+            }
+            jsonError.classList.add('hidden');
+          } catch (e) {
+            jsonError.textContent = t('tools.jwtGenerator.invalidJson') + ': ' + e.message;
+            jsonError.classList.remove('hidden');
+            return;
+          }
+        } else {
+          // Form mode
+          if (claimSub.value.trim()) payload.sub = claimSub.value.trim();
+          if (claimIss.value.trim()) payload.iss = claimIss.value.trim();
+          if (claimAud.value.trim()) payload.aud = claimAud.value.trim();
+
+          // Add iat (always include)
+          payload.iat = Math.floor(Date.now() / 1000);
+
+          // Add exp
+          const expVal = parseInt(expValue.value) || 1;
+          const unit = expUnit.value;
+          let expSeconds;
+          if (unit === 'minutes') expSeconds = expVal * 60;
+          else if (unit === 'hours') expSeconds = expVal * 3600;
+          else if (unit === 'days') expSeconds = expVal * 86400;
+          payload.exp = Math.floor(Date.now() / 1000) + expSeconds;
+
+          // Add custom claims
+          customClaims.querySelectorAll('.claim-input').forEach(row => {
+            const key = row.querySelector('.claim-key').value.trim();
+            const value = row.querySelector('.claim-value').value.trim();
+            if (key && value) {
+              // Try to parse as JSON/number
+              try {
+                payload[key] = JSON.parse(value);
+              } catch {
+                payload[key] = value;
+              }
+            }
+          });
+        }
+
+        // Encode header and payload
+        const headerB64 = base64UrlEncode(JSON.stringify(header));
+        const payloadB64 = base64UrlEncode(JSON.stringify(payload));
+        const data = headerB64 + '.' + payloadB64;
+
+        // Sign
+        const alg = algorithmSelect.value;
+        const algMap = {
+          'HS256': { name: 'HMAC', hash: 'SHA-256' },
+          'HS384': { name: 'HMAC', hash: 'SHA-384' },
+          'HS512': { name: 'HMAC', hash: 'SHA-512' }
+        };
+
+        try {
+          const encoder = new TextEncoder();
+          const keyData = encoder.encode(secret);
+          const dataBytes = encoder.encode(data);
+
+          const cryptoKey = await crypto.subtle.importKey(
+            'raw',
+            keyData,
+            algMap[alg],
+            false,
+            ['sign']
+          );
+
+          const signatureBytes = await crypto.subtle.sign(
+            algMap[alg].name,
+            cryptoKey,
+            dataBytes
+          );
+
+          const signatureB64 = btoa(String.fromCharCode(...new Uint8Array(signatureBytes)))
+            .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+
+          const jwt = `${headerB64}.${payloadB64}.${signatureB64}`;
+
+          // Display result
+          jwtOutput.innerHTML = `<span class="token-header">${headerB64}</span>.<span class="token-payload">${payloadB64}</span>.<span class="token-signature">${signatureB64}</span>`;
+          outputSection.classList.remove('hidden');
+
+          // Store for copying
+          jwtOutput.dataset.jwt = jwt;
+
+          toast.success(t('tools.jwtGenerator.generated'));
+
+        } catch (e) {
+          toast.error(t('tools.jwtGenerator.generateFailed'));
+          console.error(e);
+        }
+      }
+
+      // Copy JWT
+      async function copyJWT() {
+        const jwt = jwtOutput.dataset.jwt;
+        if (jwt) {
+          await copyToClipboard(jwt);
+          toast.success(t('common.copied'));
+        }
+      }
+
+      // Event listeners
+      addClaimBtn.addEventListener('click', addCustomClaim);
+      generateSecretBtn.addEventListener('click', generateRandomSecret);
+      generateBtn.addEventListener('click', generateJWT);
+      copyJwtBtn.addEventListener('click', copyJWT);
+
+      // Initialize
+      updateIat();
+      setInterval(updateIat, 1000);
+
+      // Update select options on language change
+      function updateUI() {
+        expUnit.options[0].text = t('tools.jwtGenerator.hours');
+        expUnit.options[1].text = t('tools.jwtGenerator.days');
+        expUnit.options[2].text = t('tools.jwtGenerator.minutes');
+      }
+
+      document.addEventListener('i18nApplied', updateUI);
+    })();
+  </script>
+</body>
+</html>

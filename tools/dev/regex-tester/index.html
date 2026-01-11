@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n-title="tools.regexTester.title">정규표현식 테스터 - Toolneat</title>
+  <meta name="description" data-i18n-desc="tools.regexTester.description" content="정규표현식을 실시간으로 테스트하고 매칭 결과를 확인합니다.">
+
+  <!-- Canonical & hreflang -->
+  <link rel="canonical" href="https://toolneat.com/tools/dev/regex-tester/">
+  <link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/dev/regex-tester/">
+  <link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/dev/regex-tester/">
+  <link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/dev/regex-tester/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Toolneat">
+  <meta property="og:title" content="정규표현식 테스터 - Toolneat">
+  <meta property="og:description" content="정규표현식을 실시간으로 테스트하고 매칭 결과를 확인합니다.">
+  <meta property="og:url" content="https://toolneat.com/tools/dev/regex-tester/">
+  <meta property="og:image" content="https://toolneat.com/assets/images/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#2563eb">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../../../assets/icons/favicon.svg">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../../../assets/css/output.css">
+
+  <!-- JS -->
+  <script src="../../../assets/js/common.js"></script>
+  <script src="../../../assets/js/i18n.js"></script>
+  <script src="../../../assets/js/components.js"></script>
+
+  <style>
+    .match-highlight {
+      background-color: #fef08a;
+      border-radius: 2px;
+      padding: 0 1px;
+    }
+    .dark .match-highlight {
+      background-color: #854d0e;
+      color: #fef9c3;
+    }
+    .match-group-0 { background-color: #fef08a; }
+    .match-group-1 { background-color: #bbf7d0; }
+    .match-group-2 { background-color: #bfdbfe; }
+    .match-group-3 { background-color: #fbcfe8; }
+    .match-group-4 { background-color: #fed7aa; }
+    .dark .match-group-0 { background-color: #854d0e; color: #fef9c3; }
+    .dark .match-group-1 { background-color: #166534; color: #dcfce7; }
+    .dark .match-group-2 { background-color: #1e40af; color: #dbeafe; }
+    .dark .match-group-3 { background-color: #9d174d; color: #fce7f3; }
+    .dark .match-group-4 { background-color: #9a3412; color: #ffedd5; }
+    .flag-btn {
+      min-width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid;
+      border-radius: 6px;
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .flag-btn.active {
+      background-color: #2563eb;
+      border-color: #2563eb;
+      color: white;
+    }
+    .flag-btn:not(.active) {
+      background-color: transparent;
+      border-color: #d1d5db;
+      color: #6b7280;
+    }
+    .dark .flag-btn:not(.active) {
+      border-color: #4b5563;
+      color: #9ca3af;
+    }
+    .flag-btn:not(.active):hover {
+      border-color: #9ca3af;
+    }
+    .pattern-card {
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.15s;
+    }
+    .pattern-card:hover {
+      background-color: #f3f4f6;
+    }
+    .dark .pattern-card:hover {
+      background-color: #374151;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <!-- Header -->
+  <div id="header"></div>
+
+  <!-- Main Content -->
+  <main class="flex-1 py-8 md:py-12">
+    <div class="container-main">
+      <!-- Page Title -->
+      <div class="mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2" data-i18n="tools.regexTester.title">
+          정규표현식 테스터
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400" data-i18n="tools.regexTester.descriptionLong">
+          정규표현식(Regular Expression)을 실시간으로 테스트하고 매칭 결과를 확인합니다. 패턴 매칭, 그룹 캡처, 문자열 치환 기능을 제공합니다.
+        </p>
+      </div>
+
+      <!-- Ad Container (Top) -->
+      <div class="ad-container mb-6">
+        
+      </div>
+
+      <!-- Tool Card -->
+      <div class="card">
+        <!-- Pattern Input -->
+        <div class="mb-6">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" data-i18n="tools.regexTester.pattern">패턴</label>
+          <div class="flex items-center gap-2">
+            <span class="text-xl text-gray-400 dark:text-gray-500 font-mono">/</span>
+            <input type="text" id="regex-pattern" class="input flex-1 font-mono" placeholder="[a-z]+">
+            <span class="text-xl text-gray-400 dark:text-gray-500 font-mono">/</span>
+            <div id="flags-display" class="text-lg text-blue-600 dark:text-blue-400 font-mono min-w-[40px]">g</div>
+          </div>
+        </div>
+
+        <!-- Flags -->
+        <div class="mb-6">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" data-i18n="tools.regexTester.flags">플래그</label>
+          <div class="flex flex-wrap gap-2">
+            <button class="flag-btn active" data-flag="g" title="Global - 전체 매칭">g</button>
+            <button class="flag-btn" data-flag="i" title="Case Insensitive - 대소문자 무시">i</button>
+            <button class="flag-btn" data-flag="m" title="Multiline - 멀티라인">m</button>
+            <button class="flag-btn" data-flag="s" title="Dotall - .이 줄바꿈 포함">s</button>
+            <button class="flag-btn" data-flag="u" title="Unicode - 유니코드">u</button>
+          </div>
+          <p id="flags-description" class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+            g: 전체 매칭, i: 대소문자 무시, m: 멀티라인, s: .이 줄바꿈 포함, u: 유니코드
+          </p>
+        </div>
+
+        <!-- Error Message -->
+        <div id="error-message" class="hidden mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-600 dark:text-red-400 text-sm"></div>
+
+        <!-- Test String -->
+        <div class="mb-6">
+          <div class="flex items-center justify-between mb-2">
+            <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-i18n="tools.regexTester.testString">테스트 문자열</label>
+            <button id="clear-test" class="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200" data-i18n="common.clear">지우기</button>
+          </div>
+          <textarea id="test-string" class="textarea h-40 font-mono text-sm" placeholder="테스트할 문자열을 입력하세요..."></textarea>
+        </div>
+
+        <!-- Match Results -->
+        <div class="mb-6 p-4 bg-gray-50 dark:bg-gray-900 rounded-xl">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="font-medium text-gray-900 dark:text-white" data-i18n="tools.regexTester.matchResults">매칭 결과</h3>
+            <span id="match-count" class="text-sm text-gray-500 dark:text-gray-400">0 matches</span>
+          </div>
+          <div id="matches-container" class="space-y-2 max-h-60 overflow-y-auto">
+            <p class="text-gray-500 dark:text-gray-400 text-sm" data-i18n="tools.regexTester.noMatches">매칭된 결과가 없습니다.</p>
+          </div>
+        </div>
+
+        <!-- Replace Section -->
+        <div class="border-t border-gray-100 dark:border-gray-700 pt-6">
+          <div class="mb-4">
+            <div class="flex items-center gap-2">
+              <input type="checkbox" id="enable-replace" class="w-4 h-4 rounded border-gray-300 dark:border-gray-600">
+              <label for="enable-replace" class="text-sm font-medium text-gray-700 dark:text-gray-300" data-i18n="tools.regexTester.enableReplace">치환 모드</label>
+            </div>
+            <p class="mt-1 ml-6 text-xs text-gray-500 dark:text-gray-400" data-i18n="tools.regexTester.replaceModeDesc">매칭된 패턴을 다른 문자열로 치환합니다.</p>
+          </div>
+
+          <div id="replace-section" class="hidden space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" data-i18n="tools.regexTester.replaceWith">치환 문자열</label>
+              <input type="text" id="replace-pattern" class="input font-mono" placeholder="$1-$2">
+              <p class="mt-1 text-xs text-gray-500 dark:text-gray-400" data-i18n="tools.regexTester.replaceHint">$1, $2... 로 캡처 그룹 참조, $& 로 전체 매치 참조</p>
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-i18n="tools.regexTester.replaceResult">치환 결과</label>
+                <button id="copy-replace-result" class="text-sm text-blue-600 dark:text-blue-400 hover:underline" data-i18n="common.copy">복사</button>
+              </div>
+              <textarea id="replace-result" class="textarea h-32 font-mono text-sm bg-white dark:bg-gray-800" readonly></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Common Patterns Card -->
+      <div class="card mt-6">
+        <h3 class="font-medium text-gray-900 dark:text-white mb-4" data-i18n="tools.regexTester.commonPatterns">자주 사용하는 패턴</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2" id="common-patterns">
+          <!-- Patterns will be inserted here -->
+        </div>
+      </div>
+
+      <!-- Cheat Sheet Card -->
+      <div class="card mt-6">
+        <h3 class="font-medium text-gray-900 dark:text-white mb-4" data-i18n="tools.regexTester.cheatSheet">정규표현식 치트시트</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+          <!-- Character Classes -->
+          <div>
+            <h4 class="font-medium text-gray-700 dark:text-gray-300 mb-2" data-i18n="tools.regexTester.characterClasses">문자 클래스</h4>
+            <div class="space-y-1 text-gray-600 dark:text-gray-400">
+              <div><code class="text-blue-600 dark:text-blue-400">.</code> - <span data-i18n="tools.regexTester.cheat.dot">모든 문자 (줄바꿈 제외)</span></div>
+              <div><code class="text-blue-600 dark:text-blue-400">\d</code> - <span data-i18n="tools.regexTester.cheat.digit">숫자 [0-9]</span></div>
+              <div><code class="text-blue-600 dark:text-blue-400">\D</code> - <span data-i18n="tools.regexTester.cheat.nonDigit">숫자 아님</span></div>
+              <div><code class="text-blue-600 dark:text-blue-400">\w</code> - <span data-i18n="tools.regexTester.cheat.word">단어 문자 [a-zA-Z0-9_]</span></div>
+              <div><code class="text-blue-600 dark:text-blue-400">\W</code> - <span data-i18n="tools.regexTester.cheat.nonWord">단어 문자 아님</span></div>
+              <div><code class="text-blue-600 dark:text-blue-400">\s</code> - <span data-i18n="tools.regexTester.cheat.whitespace">공백 문자</span></div>
+              <div><code class="text-blue-600 dark:text-blue-400">\S</code> - <span data-i18n="tools.regexTester.cheat.nonWhitespace">공백 아님</span></div>
+            </div>
+          </div>
+
+          <!-- Anchors -->
+          <div>
+            <h4 class="font-medium text-gray-700 dark:text-gray-300 mb-2" data-i18n="tools.regexTester.anchors">앵커</h4>
+            <div class="space-y-1 text-gray-600 dark:text-gray-400">
+              <div><code class="text-blue-600 dark:text-blue-400">^</code> - <span data-i18n="tools.regexTester.cheat.start">문자열/줄 시작</span></div>
+              <div><code class="text-blue-600 dark:text-blue-400">$</code> - <span data-i18n="tools.regexTester.cheat.end">문자열/줄 끝</span></div>
+              <div><code class="text-blue-600 dark:text-blue-400">\b</code> - <span data-i18n="tools.regexTester.cheat.boundary">단어 경계</span></div>
+              <div><code class="text-blue-600 dark:text-blue-400">\B</code> - <span data-i18n="tools.regexTester.cheat.nonBoundary">단어 경계 아님</span></div>
+            </div>
+          </div>
+
+          <!-- Quantifiers -->
+          <div>
+            <h4 class="font-medium text-gray-700 dark:text-gray-300 mb-2" data-i18n="tools.regexTester.quantifiers">수량자</h4>
+            <div class="space-y-1 text-gray-600 dark:text-gray-400">
+              <div><code class="text-blue-600 dark:text-blue-400">*</code> - <span data-i18n="tools.regexTester.cheat.zeroOrMore">0회 이상</span></div>
+              <div><code class="text-blue-600 dark:text-blue-400">+</code> - <span data-i18n="tools.regexTester.cheat.oneOrMore">1회 이상</span></div>
+              <div><code class="text-blue-600 dark:text-blue-400">?</code> - <span data-i18n="tools.regexTester.cheat.optional">0 또는 1회</span></div>
+              <div><code class="text-blue-600 dark:text-blue-400">{n}</code> - <span data-i18n="tools.regexTester.cheat.exactN">정확히 n회</span></div>
+              <div><code class="text-blue-600 dark:text-blue-400">{n,}</code> - <span data-i18n="tools.regexTester.cheat.nOrMore">n회 이상</span></div>
+              <div><code class="text-blue-600 dark:text-blue-400">{n,m}</code> - <span data-i18n="tools.regexTester.cheat.nToM">n~m회</span></div>
+            </div>
+          </div>
+
+          <!-- Groups -->
+          <div>
+            <h4 class="font-medium text-gray-700 dark:text-gray-300 mb-2" data-i18n="tools.regexTester.groups">그룹</h4>
+            <div class="space-y-1 text-gray-600 dark:text-gray-400">
+              <div><code class="text-blue-600 dark:text-blue-400">(abc)</code> - <span data-i18n="tools.regexTester.cheat.captureGroup">캡처 그룹</span></div>
+              <div><code class="text-blue-600 dark:text-blue-400">(?:abc)</code> - <span data-i18n="tools.regexTester.cheat.nonCapture">비캡처 그룹</span></div>
+              <div><code class="text-blue-600 dark:text-blue-400">(?&lt;name&gt;abc)</code> - <span data-i18n="tools.regexTester.cheat.namedGroup">명명된 그룹</span></div>
+              <div><code class="text-blue-600 dark:text-blue-400">\1</code> - <span data-i18n="tools.regexTester.cheat.backref">역참조</span></div>
+            </div>
+          </div>
+
+          <!-- Lookaround -->
+          <div>
+            <h4 class="font-medium text-gray-700 dark:text-gray-300 mb-2" data-i18n="tools.regexTester.lookaround">전후방탐색</h4>
+            <div class="space-y-1 text-gray-600 dark:text-gray-400">
+              <div><code class="text-blue-600 dark:text-blue-400">(?=abc)</code> - <span data-i18n="tools.regexTester.cheat.lookahead">긍정 전방탐색</span></div>
+              <div><code class="text-blue-600 dark:text-blue-400">(?!abc)</code> - <span data-i18n="tools.regexTester.cheat.negLookahead">부정 전방탐색</span></div>
+              <div><code class="text-blue-600 dark:text-blue-400">(?&lt;=abc)</code> - <span data-i18n="tools.regexTester.cheat.lookbehind">긍정 후방탐색</span></div>
+              <div><code class="text-blue-600 dark:text-blue-400">(?&lt;!abc)</code> - <span data-i18n="tools.regexTester.cheat.negLookbehind">부정 후방탐색</span></div>
+            </div>
+          </div>
+
+          <!-- Special -->
+          <div>
+            <h4 class="font-medium text-gray-700 dark:text-gray-300 mb-2" data-i18n="tools.regexTester.special">특수문자</h4>
+            <div class="space-y-1 text-gray-600 dark:text-gray-400">
+              <div><code class="text-blue-600 dark:text-blue-400">[abc]</code> - <span data-i18n="tools.regexTester.cheat.charSet">문자 집합</span></div>
+              <div><code class="text-blue-600 dark:text-blue-400">[^abc]</code> - <span data-i18n="tools.regexTester.cheat.negCharSet">부정 문자 집합</span></div>
+              <div><code class="text-blue-600 dark:text-blue-400">[a-z]</code> - <span data-i18n="tools.regexTester.cheat.range">문자 범위</span></div>
+              <div><code class="text-blue-600 dark:text-blue-400">a|b</code> - <span data-i18n="tools.regexTester.cheat.alternation">OR (택일)</span></div>
+              <div><code class="text-blue-600 dark:text-blue-400">\</code> - <span data-i18n="tools.regexTester.cheat.escape">이스케이프</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ad Container (Bottom) -->
+      <div class="ad-container mt-8">
+        
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Tool Script -->
+  <script>
+    (function() {
+      'use strict';
+
+      const patternInput = document.getElementById('regex-pattern');
+      const flagsDisplay = document.getElementById('flags-display');
+      const flagButtons = document.querySelectorAll('.flag-btn');
+      const testStringInput = document.getElementById('test-string');
+      const clearTestBtn = document.getElementById('clear-test');
+      const errorMessage = document.getElementById('error-message');
+      const matchCount = document.getElementById('match-count');
+      const matchesContainer = document.getElementById('matches-container');
+      const enableReplace = document.getElementById('enable-replace');
+      const replaceSection = document.getElementById('replace-section');
+      const replacePattern = document.getElementById('replace-pattern');
+      const replaceResult = document.getElementById('replace-result');
+      const copyReplaceBtn = document.getElementById('copy-replace-result');
+      const commonPatternsContainer = document.getElementById('common-patterns');
+
+      // Common patterns with i18n keys
+      const commonPatterns = [
+        { pattern: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}', label: 'tools.regexTester.patterns.email', labelFallback: '이메일' },
+        { pattern: 'https?:\\/\\/[\\w\\-._~:/?#[\\]@!$&\'()*+,;=%]+', label: 'tools.regexTester.patterns.url', labelFallback: 'URL' },
+        { pattern: '01[016789]-?\\d{3,4}-?\\d{4}', label: 'tools.regexTester.patterns.phoneKr', labelFallback: '전화번호 (한국)' },
+        { pattern: '\\d{3}-?\\d{3,4}-?\\d{4}', label: 'tools.regexTester.patterns.phoneUs', labelFallback: '전화번호 (미국)' },
+        { pattern: '\\d{6}-?[1-4]\\d{6}', label: 'tools.regexTester.patterns.ssnKr', labelFallback: '주민등록번호' },
+        { pattern: '\\d{4}[-\\/]\\d{2}[-\\/]\\d{2}', label: 'tools.regexTester.patterns.dateYmd', labelFallback: '날짜 (YYYY-MM-DD)' },
+        { pattern: '\\d{2}[-\\/]\\d{2}[-\\/]\\d{4}', label: 'tools.regexTester.patterns.dateMdy', labelFallback: '날짜 (MM/DD/YYYY)' },
+        { pattern: '\\d{1,2}:\\d{2}(:\\d{2})?', label: 'tools.regexTester.patterns.time', labelFallback: '시간 (HH:MM:SS)' },
+        { pattern: '#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3})', label: 'tools.regexTester.patterns.hexColor', labelFallback: 'HEX 색상코드' },
+        { pattern: '((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)', label: 'tools.regexTester.patterns.ipv4', labelFallback: 'IPv4 주소' },
+        { pattern: '[가-힣]+', label: 'tools.regexTester.patterns.korean', labelFallback: '한글' },
+        { pattern: '[\\u3040-\\u309f\\u30a0-\\u30ff]+', label: 'tools.regexTester.patterns.japanese', labelFallback: '일본어' },
+        { pattern: '<[^>]+>', label: 'tools.regexTester.patterns.htmlTag', labelFallback: 'HTML 태그' },
+        { pattern: '^\\s+|\\s+$', label: 'tools.regexTester.patterns.trimWhitespace', labelFallback: '앞뒤 공백' },
+        { pattern: '\\b\\w+\\b', label: 'tools.regexTester.patterns.words', labelFallback: '단어' }
+      ];
+
+      // Current state
+      let currentFlags = 'g';
+
+      // Initialize common patterns
+      function initCommonPatterns() {
+        commonPatternsContainer.innerHTML = '';
+        commonPatterns.forEach(({ pattern, label, labelFallback }) => {
+          const card = document.createElement('div');
+          card.className = 'pattern-card';
+          const translatedLabel = t(label) || labelFallback;
+          card.innerHTML = `
+            <div class="text-sm font-medium text-gray-700 dark:text-gray-300">${escapeHtml(translatedLabel)}</div>
+            <code class="text-xs text-gray-500 dark:text-gray-400 break-all">${escapeHtml(pattern)}</code>
+          `;
+          card.addEventListener('click', () => {
+            patternInput.value = pattern;
+            runTest();
+          });
+          commonPatternsContainer.appendChild(card);
+        });
+      }
+
+      // Update flags display
+      function updateFlagsDisplay() {
+        const activeFlags = Array.from(flagButtons)
+          .filter(btn => btn.classList.contains('active'))
+          .map(btn => btn.dataset.flag)
+          .join('');
+        currentFlags = activeFlags;
+        flagsDisplay.textContent = activeFlags || '-';
+      }
+
+      // Escape HTML entities
+      function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      // Run regex test
+      function runTest() {
+        const pattern = patternInput.value;
+        const testString = testStringInput.value;
+
+        // Reset error
+        errorMessage.classList.add('hidden');
+        errorMessage.textContent = '';
+
+        // If empty pattern or test string
+        if (!pattern || !testString) {
+          matchCount.textContent = '0 ' + t('tools.regexTester.matches');
+          matchesContainer.innerHTML = `<p class="text-gray-500 dark:text-gray-400 text-sm" data-i18n="tools.regexTester.noMatches">${t('tools.regexTester.noMatches')}</p>`;
+          replaceResult.value = '';
+          return;
+        }
+
+        // Try to create regex
+        let regex;
+        try {
+          regex = new RegExp(pattern, currentFlags);
+        } catch (e) {
+          errorMessage.textContent = e.message;
+          errorMessage.classList.remove('hidden');
+          matchCount.textContent = '0 ' + t('tools.regexTester.matches');
+          matchesContainer.innerHTML = `<p class="text-gray-500 dark:text-gray-400 text-sm" data-i18n="tools.regexTester.noMatches">${t('tools.regexTester.noMatches')}</p>`;
+          replaceResult.value = '';
+          return;
+        }
+
+        // Find all matches
+        const matches = [];
+        let match;
+
+        // Clone regex for matchAll
+        const regexForMatch = new RegExp(pattern, currentFlags.includes('g') ? currentFlags : currentFlags + 'g');
+
+        // Prevent infinite loop for empty matches
+        const maxIterations = 10000;
+        let iterations = 0;
+
+        while ((match = regexForMatch.exec(testString)) !== null && iterations < maxIterations) {
+          iterations++;
+
+          // Prevent infinite loop on zero-length match
+          if (match.index === regexForMatch.lastIndex) {
+            regexForMatch.lastIndex++;
+          }
+
+          matches.push({
+            index: match.index,
+            match: match[0],
+            groups: match.slice(1),
+            namedGroups: match.groups || {}
+          });
+
+          // If not global flag, only one match
+          if (!currentFlags.includes('g')) break;
+        }
+
+        // Update match count
+        const matchText = matches.length === 1 ? t('tools.regexTester.match') : t('tools.regexTester.matches');
+        matchCount.textContent = `${matches.length} ${matchText}`;
+
+        // Display matches
+        if (matches.length === 0) {
+          matchesContainer.innerHTML = `<p class="text-gray-500 dark:text-gray-400 text-sm" data-i18n="tools.regexTester.noMatches">${t('tools.regexTester.noMatches')}</p>`;
+        } else {
+          matchesContainer.innerHTML = matches.map((m, i) => {
+            let groupsHtml = '';
+            if (m.groups.length > 0) {
+              groupsHtml = m.groups.map((g, gi) =>
+                `<span class="inline-flex items-center gap-1 px-2 py-0.5 bg-gray-100 dark:bg-gray-700 rounded text-xs">
+                  <span class="text-gray-500">$${gi + 1}:</span>
+                  <code class="text-gray-700 dark:text-gray-300">${escapeHtml(g || '(empty)')}</code>
+                </span>`
+              ).join(' ');
+            }
+
+            // Named groups
+            const namedGroupsKeys = Object.keys(m.namedGroups);
+            if (namedGroupsKeys.length > 0) {
+              groupsHtml += ' ' + namedGroupsKeys.map(key =>
+                `<span class="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-50 dark:bg-blue-900/30 rounded text-xs">
+                  <span class="text-blue-500">${key}:</span>
+                  <code class="text-blue-700 dark:text-blue-300">${escapeHtml(m.namedGroups[key] || '(empty)')}</code>
+                </span>`
+              ).join(' ');
+            }
+
+            return `
+              <div class="p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                <div class="flex items-start gap-3">
+                  <span class="shrink-0 w-6 h-6 flex items-center justify-center bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 text-xs font-medium rounded">${i + 1}</span>
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-1">
+                      <code class="text-sm font-mono text-gray-900 dark:text-white break-all">${escapeHtml(m.match)}</code>
+                      <span class="text-xs text-gray-400">index: ${m.index}</span>
+                    </div>
+                    ${groupsHtml ? `<div class="flex flex-wrap gap-1">${groupsHtml}</div>` : ''}
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+
+        // Update replace result
+        if (enableReplace.checked) {
+          try {
+            replaceResult.value = testString.replace(regex, replacePattern.value);
+          } catch (e) {
+            replaceResult.value = t('tools.regexTester.replaceError') + ': ' + e.message;
+          }
+        }
+      }
+
+      // Flag button click
+      flagButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          btn.classList.toggle('active');
+          updateFlagsDisplay();
+          runTest();
+        });
+      });
+
+      // Pattern input
+      patternInput.addEventListener('input', runTest);
+
+      // Test string input
+      testStringInput.addEventListener('input', () => {
+        runTest();
+      });
+
+      // Clear test string
+      clearTestBtn.addEventListener('click', () => {
+        testStringInput.value = '';
+        runTest();
+      });
+
+      // Enable replace toggle
+      enableReplace.addEventListener('change', () => {
+        replaceSection.classList.toggle('hidden', !enableReplace.checked);
+        if (enableReplace.checked) {
+          runTest();
+        }
+      });
+
+      // Replace pattern input
+      replacePattern.addEventListener('input', runTest);
+
+      // Copy replace result
+      copyReplaceBtn.addEventListener('click', async () => {
+        if (!replaceResult.value) {
+          toast.warning(t('common.nothingToCopy'));
+          return;
+        }
+        await copyToClipboard(replaceResult.value);
+        toast.success(t('common.copied'));
+      });
+
+      // Update UI texts on language change
+      function updateUITexts() {
+        // Update flags description
+        document.getElementById('flags-description').textContent =
+          'g: ' + t('tools.regexTester.flagG') + ', ' +
+          'i: ' + t('tools.regexTester.flagI') + ', ' +
+          'm: ' + t('tools.regexTester.flagM') + ', ' +
+          's: ' + t('tools.regexTester.flagS') + ', ' +
+          'u: ' + t('tools.regexTester.flagU');
+
+        // Update flag button titles
+        flagButtons.forEach(btn => {
+          const flag = btn.dataset.flag;
+          btn.title = t(`tools.regexTester.flagTitle${flag.toUpperCase()}`);
+        });
+
+        // Re-render common patterns
+        initCommonPatterns();
+
+        // Re-run test to update texts
+        runTest();
+      }
+
+      // Listen for language change
+      document.addEventListener('i18nApplied', updateUITexts);
+
+      // Initialize
+      initCommonPatterns();
+      updateFlagsDisplay();
+
+      // Set sample pattern and test string
+      patternInput.value = '([a-z]+)@([a-z]+)\\.([a-z]{2,})';
+      testStringInput.value = 'Contact us at info@example.com or support@toolneat.org for help.\nYou can also email sales@company.co.kr';
+
+      // Delay initial test to ensure layout is ready
+      requestAnimationFrame(() => {
+        runTest();
+      });
+    })();
+  </script>
+</body>
+</html>

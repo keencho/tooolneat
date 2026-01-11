@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n-title="tools.colorConverter.title">색상 변환기 - Toolneat</title>
+  <meta name="description" data-i18n-desc="tools.colorConverter.description" content="HEX, RGB, HSL 색상 코드를 변환합니다.">
+
+  <!-- Canonical & hreflang -->
+  <link rel="canonical" href="https://toolneat.com/tools/dev/color-converter/">
+  <link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/dev/color-converter/">
+  <link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/dev/color-converter/">
+  <link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/dev/color-converter/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Toolneat">
+  <meta property="og:title" content="색상 변환기 - Toolneat">
+  <meta property="og:description" content="HEX, RGB, HSL 색상 코드를 변환합니다.">
+  <meta property="og:url" content="https://toolneat.com/tools/dev/color-converter/">
+  <meta property="og:image" content="https://toolneat.com/assets/images/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#2563eb">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../../../assets/icons/favicon.svg">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../../../assets/css/output.css">
+
+  <!-- JS -->
+  <script src="../../../assets/js/common.js"></script>
+  <script src="../../../assets/js/i18n.js"></script>
+  <script src="../../../assets/js/components.js"></script>
+
+  <style>
+    .color-preview {
+      width: 100%;
+      height: 120px;
+      border-radius: 12px;
+      border: 2px solid rgba(0, 0, 0, 0.1);
+      transition: background-color 0.2s;
+    }
+    .dark .color-preview {
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+    .color-input-wrapper {
+      position: relative;
+    }
+    .color-picker-btn {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      border: 2px solid #e5e7eb;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .dark .color-picker-btn {
+      border-color: #4b5563;
+    }
+    .color-picker-btn input[type="color"] {
+      position: absolute;
+      top: -8px;
+      left: -8px;
+      width: 48px;
+      height: 48px;
+      border: none;
+      cursor: pointer;
+    }
+    .format-card {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .dark .format-card {
+      background: #1f2937;
+    }
+    .format-value {
+      font-family: ui-monospace, monospace;
+      font-size: 14px;
+    }
+    .copy-btn-sm {
+      padding: 4px 8px;
+      font-size: 12px;
+    }
+    .color-swatch {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      border: 2px solid rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .color-swatch:hover {
+      transform: scale(1.1);
+    }
+    .dark .color-swatch {
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <!-- Header -->
+  <div id="header"></div>
+
+  <!-- Main Content -->
+  <main class="flex-1 py-8 md:py-12">
+    <div class="container-main">
+      <!-- Page Title -->
+      <div class="mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2" data-i18n="tools.colorConverter.title">
+          색상 변환기
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400" data-i18n="tools.colorConverter.descriptionLong">
+          HEX, RGB, HSL 색상 코드를 실시간으로 변환합니다. 색상 선택기로 원하는 색상을 쉽게 찾을 수 있습니다.
+        </p>
+      </div>
+
+      <!-- Ad Container (Top) -->
+      <div class="ad-container mb-6">
+        
+      </div>
+
+      <!-- Tool Card -->
+      <div class="card">
+        <!-- Color Preview & Picker -->
+        <div class="mb-6">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Color Preview -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" data-i18n="tools.colorConverter.preview">미리보기</label>
+              <div id="color-preview" class="color-preview" style="background-color: #3b82f6;"></div>
+            </div>
+
+            <!-- Color Input -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" data-i18n="tools.colorConverter.colorPicker">색상 선택</label>
+              <div class="color-input-wrapper mb-4">
+                <input type="text" id="hex-input" class="input py-3 pr-12 font-mono" value="#3b82f6" placeholder="#000000">
+                <div class="color-picker-btn">
+                  <input type="color" id="color-picker" value="#3b82f6">
+                </div>
+              </div>
+
+              <!-- Quick Colors -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" data-i18n="tools.colorConverter.quickColors">빠른 선택</label>
+                <div class="flex flex-wrap gap-2">
+                  <div class="color-swatch" style="background: #ef4444;" data-color="#ef4444"></div>
+                  <div class="color-swatch" style="background: #f97316;" data-color="#f97316"></div>
+                  <div class="color-swatch" style="background: #eab308;" data-color="#eab308"></div>
+                  <div class="color-swatch" style="background: #22c55e;" data-color="#22c55e"></div>
+                  <div class="color-swatch" style="background: #14b8a6;" data-color="#14b8a6"></div>
+                  <div class="color-swatch" style="background: #3b82f6;" data-color="#3b82f6"></div>
+                  <div class="color-swatch" style="background: #8b5cf6;" data-color="#8b5cf6"></div>
+                  <div class="color-swatch" style="background: #ec4899;" data-color="#ec4899"></div>
+                  <div class="color-swatch" style="background: #000000;" data-color="#000000"></div>
+                  <div class="color-swatch" style="background: #ffffff;" data-color="#ffffff"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Color Formats -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+          <!-- HEX -->
+          <div class="format-card">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm font-medium text-gray-700 dark:text-gray-300">HEX</span>
+              <button class="btn btn-secondary copy-btn-sm" data-copy="hex" data-i18n="common.copy">복사</button>
+            </div>
+            <input type="text" id="hex-output" class="input py-2 format-value" value="#3b82f6" readonly>
+          </div>
+
+          <!-- RGB -->
+          <div class="format-card">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm font-medium text-gray-700 dark:text-gray-300">RGB</span>
+              <button class="btn btn-secondary copy-btn-sm" data-copy="rgb" data-i18n="common.copy">복사</button>
+            </div>
+            <input type="text" id="rgb-output" class="input py-2 format-value" value="rgb(59, 130, 246)" readonly>
+          </div>
+
+          <!-- HSL -->
+          <div class="format-card">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm font-medium text-gray-700 dark:text-gray-300">HSL</span>
+              <button class="btn btn-secondary copy-btn-sm" data-copy="hsl" data-i18n="common.copy">복사</button>
+            </div>
+            <input type="text" id="hsl-output" class="input py-2 format-value" value="hsl(217, 91%, 60%)" readonly>
+          </div>
+
+          <!-- RGBA -->
+          <div class="format-card">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm font-medium text-gray-700 dark:text-gray-300">RGBA</span>
+              <button class="btn btn-secondary copy-btn-sm" data-copy="rgba" data-i18n="common.copy">복사</button>
+            </div>
+            <div class="flex gap-2">
+              <input type="text" id="rgba-output" class="input py-2 format-value flex-1" value="rgba(59, 130, 246, 1)" readonly>
+            </div>
+          </div>
+
+          <!-- HSLA -->
+          <div class="format-card">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm font-medium text-gray-700 dark:text-gray-300">HSLA</span>
+              <button class="btn btn-secondary copy-btn-sm" data-copy="hsla" data-i18n="common.copy">복사</button>
+            </div>
+            <input type="text" id="hsla-output" class="input py-2 format-value" value="hsla(217, 91%, 60%, 1)" readonly>
+          </div>
+
+          <!-- HEX8 (with alpha) -->
+          <div class="format-card">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-sm font-medium text-gray-700 dark:text-gray-300">HEX8</span>
+              <button class="btn btn-secondary copy-btn-sm" data-copy="hex8" data-i18n="common.copy">복사</button>
+            </div>
+            <input type="text" id="hex8-output" class="input py-2 format-value" value="#3b82f6ff" readonly>
+          </div>
+        </div>
+
+        <!-- Alpha Slider -->
+        <div class="mb-6">
+          <div class="flex items-center justify-between mb-2">
+            <label class="text-sm font-medium text-gray-700 dark:text-gray-300" data-i18n="tools.colorConverter.opacity">투명도 (Alpha)</label>
+            <span id="alpha-value" class="text-sm text-gray-500 dark:text-gray-400">100%</span>
+          </div>
+          <input type="range" id="alpha-slider" class="w-full" min="0" max="100" value="100">
+        </div>
+
+        <!-- RGB Sliders -->
+        <div class="border-t border-gray-100 dark:border-gray-700 pt-6">
+          <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4" data-i18n="tools.colorConverter.rgbSliders">RGB 조절</h3>
+          <div class="space-y-4">
+            <div class="flex items-center gap-4">
+              <span class="w-8 text-sm font-medium text-red-500">R</span>
+              <input type="range" id="r-slider" class="flex-1" min="0" max="255" value="59">
+              <input type="number" id="r-input" class="input w-20 py-1 text-center text-sm" min="0" max="255" value="59">
+            </div>
+            <div class="flex items-center gap-4">
+              <span class="w-8 text-sm font-medium text-green-500">G</span>
+              <input type="range" id="g-slider" class="flex-1" min="0" max="255" value="130">
+              <input type="number" id="g-input" class="input w-20 py-1 text-center text-sm" min="0" max="255" value="130">
+            </div>
+            <div class="flex items-center gap-4">
+              <span class="w-8 text-sm font-medium text-blue-500">B</span>
+              <input type="range" id="b-slider" class="flex-1" min="0" max="255" value="246">
+              <input type="number" id="b-input" class="input w-20 py-1 text-center text-sm" min="0" max="255" value="246">
+            </div>
+          </div>
+        </div>
+
+        <!-- Complementary Colors -->
+        <div class="border-t border-gray-100 dark:border-gray-700 pt-6 mt-6">
+          <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4" data-i18n="tools.colorConverter.relatedColors">관련 색상</h3>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mb-2" data-i18n="tools.colorConverter.complementary">보색</p>
+              <div class="flex items-center gap-8">
+                <div id="complementary-color" class="color-swatch w-full h-12" style="background: #f6a43b;"></div>
+                <p id="complementary-hex" class="text-xs text-center mt-1 font-mono text-gray-600 dark:text-gray-400">#f6a43b</p>
+                <div></div>
+              </div>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mb-2" data-i18n="tools.colorConverter.lighter">밝게</p>
+              <div class="flex items-center gap-8">
+                <div id="lighter-color" class="color-swatch w-full h-12" style="background: #6ba3f8;"></div>
+                <p id="lighter-hex" class="text-xs text-center mt-1 font-mono text-gray-600 dark:text-gray-400">#6ba3f8</p>
+              </div>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mb-2" data-i18n="tools.colorConverter.darker">어둡게</p>
+              <div class="flex items-center gap-8">
+                <div id="darker-color" class="color-swatch w-full h-12" style="background: #2563eb;"></div>
+                <p id="darker-hex" class="text-xs text-center mt-1 font-mono text-gray-600 dark:text-gray-400">#2563eb</p>
+              </div>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mb-2" data-i18n="tools.colorConverter.saturated">채도 높게</p>
+              <div class="flex items-center gap-8">
+                <div id="saturated-color" class="color-swatch w-full h-12" style="background: #0070ff;"></div>
+                <p id="saturated-hex" class="text-xs text-center mt-1 font-mono text-gray-600 dark:text-gray-400">#0070ff</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Box -->
+      <div class="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+        <h3 class="font-medium text-blue-800 dark:text-blue-300 mb-2" data-i18n="tools.colorConverter.infoTitle">색상 형식 안내</h3>
+        <ul class="text-sm text-blue-700 dark:text-blue-400 space-y-1">
+          <li data-i18n="tools.colorConverter.infoHex">• HEX: 웹에서 가장 많이 사용되는 16진수 형식 (#RRGGBB)</li>
+          <li data-i18n="tools.colorConverter.infoRgb">• RGB: 빨강, 초록, 파랑 값 (0-255)</li>
+          <li data-i18n="tools.colorConverter.infoHsl">• HSL: 색상(Hue), 채도(Saturation), 명도(Lightness)</li>
+        </ul>
+      </div>
+
+      <!-- Ad Container (Bottom) -->
+      <div class="ad-container mt-8">
+        
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Tool Script -->
+  <script>
+    (function() {
+      'use strict';
+
+      // Elements
+      const colorPicker = document.getElementById('color-picker');
+      const hexInput = document.getElementById('hex-input');
+      const colorPreview = document.getElementById('color-preview');
+      const alphaSlider = document.getElementById('alpha-slider');
+      const alphaValue = document.getElementById('alpha-value');
+
+      const hexOutput = document.getElementById('hex-output');
+      const rgbOutput = document.getElementById('rgb-output');
+      const hslOutput = document.getElementById('hsl-output');
+      const rgbaOutput = document.getElementById('rgba-output');
+      const hslaOutput = document.getElementById('hsla-output');
+      const hex8Output = document.getElementById('hex8-output');
+
+      const rSlider = document.getElementById('r-slider');
+      const gSlider = document.getElementById('g-slider');
+      const bSlider = document.getElementById('b-slider');
+      const rInput = document.getElementById('r-input');
+      const gInput = document.getElementById('g-input');
+      const bInput = document.getElementById('b-input');
+
+      const quickColors = document.querySelectorAll('.color-swatch[data-color]');
+      const copyBtns = document.querySelectorAll('[data-copy]');
+
+      // Current color state
+      let currentColor = { r: 59, g: 130, b: 246 };
+      let currentAlpha = 1;
+
+      // Color conversion functions
+      function hexToRgb(hex) {
+        hex = hex.replace(/^#/, '');
+        if (hex.length === 3) {
+          hex = hex.split('').map(c => c + c).join('');
+        }
+        const num = parseInt(hex, 16);
+        return {
+          r: (num >> 16) & 255,
+          g: (num >> 8) & 255,
+          b: num & 255
+        };
+      }
+
+      function rgbToHex(r, g, b) {
+        return '#' + [r, g, b].map(x => {
+          const hex = Math.round(x).toString(16);
+          return hex.length === 1 ? '0' + hex : hex;
+        }).join('');
+      }
+
+      function rgbToHsl(r, g, b) {
+        r /= 255;
+        g /= 255;
+        b /= 255;
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
+        let h, s, l = (max + min) / 2;
+
+        if (max === min) {
+          h = s = 0;
+        } else {
+          const d = max - min;
+          s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+          switch (max) {
+            case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+            case g: h = ((b - r) / d + 2) / 6; break;
+            case b: h = ((r - g) / d + 4) / 6; break;
+          }
+        }
+
+        return {
+          h: Math.round(h * 360),
+          s: Math.round(s * 100),
+          l: Math.round(l * 100)
+        };
+      }
+
+      function hslToRgb(h, s, l) {
+        h /= 360;
+        s /= 100;
+        l /= 100;
+        let r, g, b;
+
+        if (s === 0) {
+          r = g = b = l;
+        } else {
+          const hue2rgb = (p, q, t) => {
+            if (t < 0) t += 1;
+            if (t > 1) t -= 1;
+            if (t < 1/6) return p + (q - p) * 6 * t;
+            if (t < 1/2) return q;
+            if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+            return p;
+          };
+          const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+          const p = 2 * l - q;
+          r = hue2rgb(p, q, h + 1/3);
+          g = hue2rgb(p, q, h);
+          b = hue2rgb(p, q, h - 1/3);
+        }
+
+        return {
+          r: Math.round(r * 255),
+          g: Math.round(g * 255),
+          b: Math.round(b * 255)
+        };
+      }
+
+      // Update all displays
+      function updateColor(r, g, b, fromSlider = false) {
+        currentColor = { r, g, b };
+        const hex = rgbToHex(r, g, b);
+        const hsl = rgbToHsl(r, g, b);
+        const alpha = currentAlpha;
+
+        // Update preview
+        colorPreview.style.backgroundColor = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+
+        // Update outputs
+        hexOutput.value = hex;
+        rgbOutput.value = `rgb(${r}, ${g}, ${b})`;
+        hslOutput.value = `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
+        rgbaOutput.value = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        hslaOutput.value = `hsla(${hsl.h}, ${hsl.s}%, ${hsl.l}%, ${alpha})`;
+
+        const alphaHex = Math.round(alpha * 255).toString(16).padStart(2, '0');
+        hex8Output.value = hex + alphaHex;
+
+        // Update inputs
+        if (!fromSlider) {
+          hexInput.value = hex;
+          colorPicker.value = hex;
+        }
+
+        // Update RGB sliders
+        rSlider.value = r;
+        gSlider.value = g;
+        bSlider.value = b;
+        rInput.value = r;
+        gInput.value = g;
+        bInput.value = b;
+
+        // Update related colors
+        updateRelatedColors(r, g, b, hsl);
+      }
+
+      // Update related colors
+      function updateRelatedColors(r, g, b, hsl) {
+        // Complementary (opposite hue)
+        const compHsl = { h: (hsl.h + 180) % 360, s: hsl.s, l: hsl.l };
+        const compRgb = hslToRgb(compHsl.h, compHsl.s, compHsl.l);
+        const compHex = rgbToHex(compRgb.r, compRgb.g, compRgb.b);
+        document.getElementById('complementary-color').style.backgroundColor = compHex;
+        document.getElementById('complementary-hex').textContent = compHex;
+
+        // Lighter
+        const lighterHsl = { h: hsl.h, s: hsl.s, l: Math.min(100, hsl.l + 15) };
+        const lighterRgb = hslToRgb(lighterHsl.h, lighterHsl.s, lighterHsl.l);
+        const lighterHex = rgbToHex(lighterRgb.r, lighterRgb.g, lighterRgb.b);
+        document.getElementById('lighter-color').style.backgroundColor = lighterHex;
+        document.getElementById('lighter-hex').textContent = lighterHex;
+
+        // Darker
+        const darkerHsl = { h: hsl.h, s: hsl.s, l: Math.max(0, hsl.l - 15) };
+        const darkerRgb = hslToRgb(darkerHsl.h, darkerHsl.s, darkerHsl.l);
+        const darkerHex = rgbToHex(darkerRgb.r, darkerRgb.g, darkerRgb.b);
+        document.getElementById('darker-color').style.backgroundColor = darkerHex;
+        document.getElementById('darker-hex').textContent = darkerHex;
+
+        // Saturated
+        const satHsl = { h: hsl.h, s: Math.min(100, hsl.s + 20), l: hsl.l };
+        const satRgb = hslToRgb(satHsl.h, satHsl.s, satHsl.l);
+        const satHex = rgbToHex(satRgb.r, satRgb.g, satRgb.b);
+        document.getElementById('saturated-color').style.backgroundColor = satHex;
+        document.getElementById('saturated-hex').textContent = satHex;
+      }
+
+      // Parse color input (HEX, RGB, HSL)
+      function parseColorInput(value) {
+        value = value.trim().toLowerCase();
+
+        // HEX
+        if (value.startsWith('#') || /^[0-9a-f]{3,8}$/i.test(value)) {
+          const hex = value.startsWith('#') ? value : '#' + value;
+          if (/^#([0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(hex)) {
+            return hexToRgb(hex);
+          }
+        }
+
+        // RGB/RGBA
+        const rgbMatch = value.match(/rgba?\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+        if (rgbMatch) {
+          return {
+            r: Math.min(255, parseInt(rgbMatch[1])),
+            g: Math.min(255, parseInt(rgbMatch[2])),
+            b: Math.min(255, parseInt(rgbMatch[3]))
+          };
+        }
+
+        // HSL/HSLA
+        const hslMatch = value.match(/hsla?\s*\(\s*(\d+)\s*,\s*(\d+)%?\s*,\s*(\d+)%?/);
+        if (hslMatch) {
+          return hslToRgb(
+            parseInt(hslMatch[1]),
+            parseInt(hslMatch[2]),
+            parseInt(hslMatch[3])
+          );
+        }
+
+        return null;
+      }
+
+      // Event listeners
+      colorPicker.addEventListener('input', (e) => {
+        const rgb = hexToRgb(e.target.value);
+        hexInput.value = e.target.value;
+        updateColor(rgb.r, rgb.g, rgb.b, true);
+      });
+
+      hexInput.addEventListener('input', debounce((e) => {
+        const rgb = parseColorInput(e.target.value);
+        if (rgb) {
+          colorPicker.value = rgbToHex(rgb.r, rgb.g, rgb.b);
+          updateColor(rgb.r, rgb.g, rgb.b, true);
+        }
+      }, 150));
+
+      alphaSlider.addEventListener('input', (e) => {
+        currentAlpha = e.target.value / 100;
+        alphaValue.textContent = e.target.value + '%';
+        updateColor(currentColor.r, currentColor.g, currentColor.b, true);
+      });
+
+      // RGB Sliders
+      [rSlider, gSlider, bSlider].forEach((slider, i) => {
+        slider.addEventListener('input', () => {
+          const r = parseInt(rSlider.value);
+          const g = parseInt(gSlider.value);
+          const b = parseInt(bSlider.value);
+          [rInput, gInput, bInput][i].value = slider.value;
+          updateColor(r, g, b, true);
+          hexInput.value = rgbToHex(r, g, b);
+          colorPicker.value = rgbToHex(r, g, b);
+        });
+      });
+
+      // RGB Inputs
+      [rInput, gInput, bInput].forEach((input, i) => {
+        input.addEventListener('input', () => {
+          let val = parseInt(input.value) || 0;
+          val = Math.max(0, Math.min(255, val));
+          input.value = val;
+          [rSlider, gSlider, bSlider][i].value = val;
+          const r = parseInt(rInput.value);
+          const g = parseInt(gInput.value);
+          const b = parseInt(bInput.value);
+          updateColor(r, g, b, true);
+          hexInput.value = rgbToHex(r, g, b);
+          colorPicker.value = rgbToHex(r, g, b);
+        });
+      });
+
+      // Quick colors
+      quickColors.forEach(swatch => {
+        swatch.addEventListener('click', () => {
+          const hex = swatch.dataset.color;
+          const rgb = hexToRgb(hex);
+          hexInput.value = hex;
+          colorPicker.value = hex;
+          updateColor(rgb.r, rgb.g, rgb.b);
+        });
+      });
+
+      // Related color swatches (click to apply)
+      document.querySelectorAll('#complementary-color, #lighter-color, #darker-color, #saturated-color').forEach(el => {
+        el.addEventListener('click', () => {
+          const hex = el.nextElementSibling.textContent;
+          const rgb = hexToRgb(hex);
+          hexInput.value = hex;
+          colorPicker.value = hex;
+          updateColor(rgb.r, rgb.g, rgb.b);
+        });
+      });
+
+      // Copy buttons
+      copyBtns.forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const format = btn.dataset.copy;
+          let value = '';
+          switch (format) {
+            case 'hex': value = hexOutput.value; break;
+            case 'rgb': value = rgbOutput.value; break;
+            case 'hsl': value = hslOutput.value; break;
+            case 'rgba': value = rgbaOutput.value; break;
+            case 'hsla': value = hslaOutput.value; break;
+            case 'hex8': value = hex8Output.value; break;
+          }
+          await copyToClipboard(value);
+          toast.success(t('common.copied'));
+        });
+      });
+
+      // Initialize
+      updateColor(59, 130, 246);
+    })();
+  </script>
+</body>
+</html>

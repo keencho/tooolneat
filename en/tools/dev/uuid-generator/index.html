@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UUID Generator - Toolneat</title>
+  <meta name="description" content="Generate unique UUIDs online. Supports v7 (time-sortable), v4 (random), and v1 (timestamp) versions.">
+
+  <!-- Canonical & hreflang -->
+  <link rel="canonical" href="https://toolneat.com/en/tools/dev/uuid-generator/">
+  <link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/dev/uuid-generator/">
+  <link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/dev/uuid-generator/">
+  <link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/dev/uuid-generator/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Toolneat">
+  <meta property="og:title" content="UUID Generator - Toolneat">
+  <meta property="og:description" content="Generate unique UUIDs online. Supports v7 (time-sortable), v4 (random), and v1 (timestamp) versions.">
+  <meta property="og:url" content="https://toolneat.com/en/tools/dev/uuid-generator/">
+  <meta property="og:image" content="https://toolneat.com/assets/images/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#2563eb">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../../../../assets/icons/favicon.svg">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../../../../assets/css/output.css">
+
+  <!-- JS -->
+  <script src="../../../../assets/js/common.js"></script>
+  <script>
+    // Force English language
+    localStorage.setItem('toolneat-lang', 'en');
+  </script>
+  <script src="../../../../assets/js/i18n.js"></script>
+  <script src="../../../../assets/js/components.js"></script>
+</head>
+<body class="min-h-screen flex flex-col">
+  <!-- Header -->
+  <div id="header"></div>
+
+  <!-- Main Content -->
+  <main class="flex-1 py-8 md:py-12">
+    <div class="container-main">
+      <!-- Page Title -->
+      <div class="mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          UUID Generator
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400">
+          UUID (Universally Unique Identifier) is a globally unique identifier. Widely used for database keys, API tokens, and session IDs. Supports v7 (time-sortable), v4 (random), and v1 (timestamp) versions.
+        </p>
+      </div>
+
+      <!-- Ad Container (Top) -->
+      <div class="ad-container mb-6">
+
+      </div>
+
+      <!-- Tool Card -->
+      <div class="card">
+        <!-- Single UUID Display -->
+        <div class="mb-6">
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 p-4 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl">
+            <code id="single-uuid" class="flex-1 text-lg md:text-xl font-mono text-gray-900 dark:text-white break-all text-center sm:text-left">
+              -
+            </code>
+            <div class="flex gap-2 justify-center sm:justify-end shrink-0">
+              <button id="copy-single" class="btn btn-secondary p-2" title="Copy">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+              </button>
+              <button id="refresh-btn" class="btn btn-primary p-2" title="Generate">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Options -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 pb-6 border-b border-gray-100 dark:border-gray-700">
+          <!-- Version -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Version</label>
+            <select id="uuid-version" class="input py-2 text-sm">
+              <option value="7">v7 (Time-sortable)</option>
+              <option value="4">v4 (Random)</option>
+              <option value="1">v1 (Timestamp)</option>
+            </select>
+          </div>
+
+          <!-- Format -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Format</label>
+            <select id="uuid-format" class="input py-2 text-sm">
+              <option value="lowercase">Lowercase (a-f)</option>
+              <option value="uppercase">Uppercase (A-F)</option>
+            </select>
+          </div>
+
+          <!-- Hyphens -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Separator</label>
+            <select id="uuid-hyphens" class="input py-2 text-sm">
+              <option value="true">With hyphens</option>
+              <option value="false">Without hyphens</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Bulk Generation -->
+        <div class="mb-6">
+          <div class="flex items-center justify-between mb-3">
+            <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Bulk Generate</label>
+            <div class="flex items-center gap-2">
+              <input type="number" id="bulk-count" class="input py-1.5 px-3 w-20 text-sm text-center" value="5" min="1" max="100">
+              <span class="text-sm text-gray-500 dark:text-gray-400">UUIDs</span>
+            </div>
+          </div>
+
+          <button id="bulk-generate-btn" class="btn btn-secondary w-full">
+            Generate Bulk
+          </button>
+        </div>
+
+        <!-- Bulk Output -->
+        <div id="bulk-output-wrapper" class="hidden">
+          <div class="flex items-center justify-between mb-2">
+            <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Output</label>
+            <button id="copy-bulk" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">Copy</button>
+          </div>
+          <textarea id="bulk-output" class="textarea h-48 font-mono text-sm bg-gray-50 dark:bg-gray-900" readonly></textarea>
+        </div>
+      </div>
+
+      <!-- Ad Container (Bottom) -->
+      <div class="ad-container mt-8">
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Tool Script -->
+  <script>
+    (function() {
+      'use strict';
+
+      const singleUuid = document.getElementById('single-uuid');
+      const copySingleBtn = document.getElementById('copy-single');
+      const refreshBtn = document.getElementById('refresh-btn');
+      const versionSelect = document.getElementById('uuid-version');
+      const formatSelect = document.getElementById('uuid-format');
+      const hyphensSelect = document.getElementById('uuid-hyphens');
+      const bulkCount = document.getElementById('bulk-count');
+      const bulkGenerateBtn = document.getElementById('bulk-generate-btn');
+      const bulkOutputWrapper = document.getElementById('bulk-output-wrapper');
+      const bulkOutput = document.getElementById('bulk-output');
+      const copyBulkBtn = document.getElementById('copy-bulk');
+
+      // Generate UUID v7 (RFC 9562 - time-sortable)
+      function uuidv7() {
+        const now = Date.now();
+        const bytes = new Uint8Array(16);
+        crypto.getRandomValues(bytes);
+
+        // 48-bit timestamp (ms since Unix epoch)
+        bytes[0] = (now / 2**40) & 0xff;
+        bytes[1] = (now / 2**32) & 0xff;
+        bytes[2] = (now / 2**24) & 0xff;
+        bytes[3] = (now / 2**16) & 0xff;
+        bytes[4] = (now / 2**8) & 0xff;
+        bytes[5] = now & 0xff;
+
+        // Version 7 (0111)
+        bytes[6] = (bytes[6] & 0x0f) | 0x70;
+
+        // Variant (10xx)
+        bytes[8] = (bytes[8] & 0x3f) | 0x80;
+
+        const hex = Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
+        return `${hex.slice(0,8)}-${hex.slice(8,12)}-${hex.slice(12,16)}-${hex.slice(16,20)}-${hex.slice(20)}`;
+      }
+
+      // Generate UUID v4 (random)
+      function uuidv4() {
+        const bytes = new Uint8Array(16);
+        crypto.getRandomValues(bytes);
+        bytes[6] = (bytes[6] & 0x0f) | 0x40; // Version 4
+        bytes[8] = (bytes[8] & 0x3f) | 0x80; // Variant
+        const hex = Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
+        return `${hex.slice(0,8)}-${hex.slice(8,12)}-${hex.slice(12,16)}-${hex.slice(16,20)}-${hex.slice(20)}`;
+      }
+
+      // Generate UUID v1 (timestamp-based, simplified)
+      function uuidv1() {
+        const now = Date.now();
+        const bytes = new Uint8Array(16);
+        crypto.getRandomValues(bytes);
+
+        // Timestamp (simplified - not full RFC 4122 compliance)
+        const ts = BigInt(now) * 10000n + 0x01b21dd213814000n;
+        bytes[0] = Number((ts >> 24n) & 0xffn);
+        bytes[1] = Number((ts >> 16n) & 0xffn);
+        bytes[2] = Number((ts >> 8n) & 0xffn);
+        bytes[3] = Number(ts & 0xffn);
+        bytes[4] = Number((ts >> 40n) & 0xffn);
+        bytes[5] = Number((ts >> 32n) & 0xffn);
+        bytes[6] = (Number((ts >> 56n) & 0x0fn) | 0x10); // Version 1
+        bytes[7] = Number((ts >> 48n) & 0xffn);
+        bytes[8] = (bytes[8] & 0x3f) | 0x80; // Variant
+
+        const hex = Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
+        return `${hex.slice(0,8)}-${hex.slice(8,12)}-${hex.slice(12,16)}-${hex.slice(16,20)}-${hex.slice(20)}`;
+      }
+
+      // Generate UUID based on options
+      function generateUuid() {
+        const version = versionSelect.value;
+        let uuid = version === '7' ? uuidv7() : version === '1' ? uuidv1() : uuidv4();
+
+        // Apply format
+        if (formatSelect.value === 'uppercase') {
+          uuid = uuid.toUpperCase();
+        }
+
+        // Apply hyphens option
+        if (hyphensSelect.value === 'false') {
+          uuid = uuid.replace(/-/g, '');
+        }
+
+        return uuid;
+      }
+
+      // Update single UUID
+      function updateSingleUuid() {
+        singleUuid.textContent = generateUuid();
+      }
+
+      // Event listeners
+      refreshBtn.addEventListener('click', () => {
+        updateSingleUuid();
+        toast.success('New UUID generated!');
+      });
+
+      copySingleBtn.addEventListener('click', async () => {
+        await copyToClipboard(singleUuid.textContent);
+        toast.success('Copied!');
+      });
+
+      // Options change
+      versionSelect.addEventListener('change', updateSingleUuid);
+      formatSelect.addEventListener('change', updateSingleUuid);
+      hyphensSelect.addEventListener('change', updateSingleUuid);
+
+      // Bulk generation
+      bulkGenerateBtn.addEventListener('click', () => {
+        const count = Math.min(Math.max(parseInt(bulkCount.value) || 1, 1), 100);
+        const uuids = [];
+
+        for (let i = 0; i < count; i++) {
+          uuids.push(generateUuid());
+        }
+
+        bulkOutput.value = uuids.join('\n');
+        bulkOutputWrapper.classList.remove('hidden');
+        toast.success(count + ' UUIDs generated!');
+      });
+
+      copyBulkBtn.addEventListener('click', async () => {
+        if (!bulkOutput.value) {
+          toast.warning('Nothing to copy');
+          return;
+        }
+
+        await copyToClipboard(bulkOutput.value);
+        toast.success('Copied!');
+      });
+
+      // Validate bulk count input
+      bulkCount.addEventListener('change', () => {
+        let val = parseInt(bulkCount.value) || 1;
+        val = Math.min(Math.max(val, 1), 100);
+        bulkCount.value = val;
+      });
+
+      // Initial UUID generation
+      updateSingleUuid();
+    })();
+  </script>
+</body>
+</html>

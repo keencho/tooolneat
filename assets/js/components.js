@@ -97,7 +97,7 @@
       });
     }
 
-    // Mobile accordion
+    // Mobile accordion (1st level)
     document.querySelectorAll('.mobile-accordion-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const accordion = btn.closest('.mobile-accordion');
@@ -106,6 +106,21 @@
 
         content.classList.toggle('hidden');
         arrow.classList.toggle('rotate-180');
+      });
+    });
+
+    // Mobile sub-accordion (2nd level)
+    document.querySelectorAll('.mobile-sub-accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const subAccordion = btn.closest('.mobile-sub-accordion');
+        const content = subAccordion.querySelector('.mobile-sub-content');
+        const arrow = btn.querySelector('svg');
+
+        content.classList.toggle('hidden');
+        btn.classList.toggle('active');
+        if (arrow) {
+          arrow.classList.toggle('rotate-180');
+        }
       });
     });
 

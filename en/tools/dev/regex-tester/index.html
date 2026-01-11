@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Regex Tester - Toolneat</title>
+  <meta name="description" content="Test regular expressions in real-time and see matching results. Free online regex tester with pattern matching, group capture, and string replacement.">
+
+  <!-- Canonical & hreflang -->
+  <link rel="canonical" href="https://toolneat.com/en/tools/dev/regex-tester/">
+  <link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/dev/regex-tester/">
+  <link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/dev/regex-tester/">
+  <link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/dev/regex-tester/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Toolneat">
+  <meta property="og:title" content="Regex Tester - Toolneat">
+  <meta property="og:description" content="Test regular expressions in real-time and see matching results. Free online regex tester with pattern matching, group capture, and string replacement.">
+  <meta property="og:url" content="https://toolneat.com/en/tools/dev/regex-tester/">
+  <meta property="og:image" content="https://toolneat.com/assets/images/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#2563eb">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../../../../assets/icons/favicon.svg">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../../../../assets/css/output.css">
+
+  <!-- JS -->
+  <script src="../../../../assets/js/common.js"></script>
+  <script>
+    // Force English language
+    localStorage.setItem('toolneat-lang', 'en');
+  </script>
+  <script src="../../../../assets/js/i18n.js"></script>
+  <script src="../../../../assets/js/components.js"></script>
+
+  <style>
+    .match-highlight {
+      background-color: #fef08a;
+      border-radius: 2px;
+      padding: 0 1px;
+    }
+    .dark .match-highlight {
+      background-color: #854d0e;
+      color: #fef9c3;
+    }
+    .match-group-0 { background-color: #fef08a; }
+    .match-group-1 { background-color: #bbf7d0; }
+    .match-group-2 { background-color: #bfdbfe; }
+    .match-group-3 { background-color: #fbcfe8; }
+    .match-group-4 { background-color: #fed7aa; }
+    .dark .match-group-0 { background-color: #854d0e; color: #fef9c3; }
+    .dark .match-group-1 { background-color: #166534; color: #dcfce7; }
+    .dark .match-group-2 { background-color: #1e40af; color: #dbeafe; }
+    .dark .match-group-3 { background-color: #9d174d; color: #fce7f3; }
+    .dark .match-group-4 { background-color: #9a3412; color: #ffedd5; }
+    .flag-btn {
+      min-width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid;
+      border-radius: 6px;
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .flag-btn.active {
+      background-color: #2563eb;
+      border-color: #2563eb;
+      color: white;
+    }
+    .flag-btn:not(.active) {
+      background-color: transparent;
+      border-color: #d1d5db;
+      color: #6b7280;
+    }
+    .dark .flag-btn:not(.active) {
+      border-color: #4b5563;
+      color: #9ca3af;
+    }
+    .flag-btn:not(.active):hover {
+      border-color: #9ca3af;
+    }
+    .pattern-card {
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.15s;
+    }
+    .pattern-card:hover {
+      background-color: #f3f4f6;
+    }
+    .dark .pattern-card:hover {
+      background-color: #374151;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <!-- Header -->
+  <div id="header"></div>
+
+  <!-- Main Content -->
+  <main class="flex-1 py-8 md:py-12">
+    <div class="container-main">
+      <!-- Page Title -->
+      <div class="mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          Regex Tester
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400">
+          Test regular expressions in real-time and see matching results. Supports pattern matching, group capture, and string replacement.
+        </p>
+      </div>
+
+      <!-- Ad Container (Top) -->
+      <div class="ad-container mb-6">
+
+      </div>
+
+      <!-- Tool Card -->
+      <div class="card">
+        <!-- Pattern Input -->
+        <div class="mb-6">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Pattern</label>
+          <div class="flex items-center gap-2">
+            <span class="text-xl text-gray-400 dark:text-gray-500 font-mono">/</span>
+            <input type="text" id="regex-pattern" class="input flex-1 font-mono" placeholder="[a-z]+">
+            <span class="text-xl text-gray-400 dark:text-gray-500 font-mono">/</span>
+            <div id="flags-display" class="text-lg text-blue-600 dark:text-blue-400 font-mono min-w-[40px]">g</div>
+          </div>
+        </div>
+
+        <!-- Flags -->
+        <div class="mb-6">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Flags</label>
+          <div class="flex flex-wrap gap-2">
+            <button class="flag-btn active" data-flag="g" title="Global - Match all occurrences">g</button>
+            <button class="flag-btn" data-flag="i" title="Case Insensitive - Ignore case">i</button>
+            <button class="flag-btn" data-flag="m" title="Multiline - ^ and $ match line boundaries">m</button>
+            <button class="flag-btn" data-flag="s" title="Dotall - . matches newlines">s</button>
+            <button class="flag-btn" data-flag="u" title="Unicode - Enable Unicode support">u</button>
+          </div>
+          <p id="flags-description" class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+            g: Global match, i: Case insensitive, m: Multiline, s: Dotall (. matches newlines), u: Unicode
+          </p>
+        </div>
+
+        <!-- Error Message -->
+        <div id="error-message" class="hidden mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-600 dark:text-red-400 text-sm"></div>
+
+        <!-- Test String -->
+        <div class="mb-6">
+          <div class="flex items-center justify-between mb-2">
+            <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Test String</label>
+            <button id="clear-test" class="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">Clear</button>
+          </div>
+          <textarea id="test-string" class="textarea h-40 font-mono text-sm" placeholder="Enter text to test..."></textarea>
+        </div>
+
+        <!-- Match Results -->
+        <div class="mb-6 p-4 bg-gray-50 dark:bg-gray-900 rounded-xl">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="font-medium text-gray-900 dark:text-white">Match Results</h3>
+            <span id="match-count" class="text-sm text-gray-500 dark:text-gray-400">0 matches</span>
+          </div>
+          <div id="matches-container" class="space-y-2 max-h-60 overflow-y-auto">
+            <p class="text-gray-500 dark:text-gray-400 text-sm">No matches found.</p>
+          </div>
+        </div>
+
+        <!-- Replace Section -->
+        <div class="border-t border-gray-100 dark:border-gray-700 pt-6">
+          <div class="mb-4">
+            <div class="flex items-center gap-2">
+              <input type="checkbox" id="enable-replace" class="w-4 h-4 rounded border-gray-300 dark:border-gray-600">
+              <label for="enable-replace" class="text-sm font-medium text-gray-700 dark:text-gray-300">Replace Mode</label>
+            </div>
+            <p class="mt-1 ml-6 text-xs text-gray-500 dark:text-gray-400">Replace matched patterns with another string.</p>
+          </div>
+
+          <div id="replace-section" class="hidden space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Replace With</label>
+              <input type="text" id="replace-pattern" class="input font-mono" placeholder="$1-$2">
+              <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Use $1, $2... to reference capture groups, $& for full match</p>
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Replace Result</label>
+                <button id="copy-replace-result" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">Copy</button>
+              </div>
+              <textarea id="replace-result" class="textarea h-32 font-mono text-sm bg-white dark:bg-gray-800" readonly></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Common Patterns Card -->
+      <div class="card mt-6">
+        <h3 class="font-medium text-gray-900 dark:text-white mb-4">Common Patterns</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2" id="common-patterns">
+          <!-- Patterns will be inserted here -->
+        </div>
+      </div>
+
+      <!-- Cheat Sheet Card -->
+      <div class="card mt-6">
+        <h3 class="font-medium text-gray-900 dark:text-white mb-4">Regex Cheat Sheet</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+          <!-- Character Classes -->
+          <div>
+            <h4 class="font-medium text-gray-700 dark:text-gray-300 mb-2">Character Classes</h4>
+            <div class="space-y-1 text-gray-600 dark:text-gray-400">
+              <div><code class="text-blue-600 dark:text-blue-400">.</code> - Any character (except newline)</div>
+              <div><code class="text-blue-600 dark:text-blue-400">\d</code> - Digit [0-9]</div>
+              <div><code class="text-blue-600 dark:text-blue-400">\D</code> - Non-digit</div>
+              <div><code class="text-blue-600 dark:text-blue-400">\w</code> - Word character [a-zA-Z0-9_]</div>
+              <div><code class="text-blue-600 dark:text-blue-400">\W</code> - Non-word character</div>
+              <div><code class="text-blue-600 dark:text-blue-400">\s</code> - Whitespace</div>
+              <div><code class="text-blue-600 dark:text-blue-400">\S</code> - Non-whitespace</div>
+            </div>
+          </div>
+
+          <!-- Anchors -->
+          <div>
+            <h4 class="font-medium text-gray-700 dark:text-gray-300 mb-2">Anchors</h4>
+            <div class="space-y-1 text-gray-600 dark:text-gray-400">
+              <div><code class="text-blue-600 dark:text-blue-400">^</code> - Start of string/line</div>
+              <div><code class="text-blue-600 dark:text-blue-400">$</code> - End of string/line</div>
+              <div><code class="text-blue-600 dark:text-blue-400">\b</code> - Word boundary</div>
+              <div><code class="text-blue-600 dark:text-blue-400">\B</code> - Non-word boundary</div>
+            </div>
+          </div>
+
+          <!-- Quantifiers -->
+          <div>
+            <h4 class="font-medium text-gray-700 dark:text-gray-300 mb-2">Quantifiers</h4>
+            <div class="space-y-1 text-gray-600 dark:text-gray-400">
+              <div><code class="text-blue-600 dark:text-blue-400">*</code> - 0 or more</div>
+              <div><code class="text-blue-600 dark:text-blue-400">+</code> - 1 or more</div>
+              <div><code class="text-blue-600 dark:text-blue-400">?</code> - 0 or 1</div>
+              <div><code class="text-blue-600 dark:text-blue-400">{n}</code> - Exactly n</div>
+              <div><code class="text-blue-600 dark:text-blue-400">{n,}</code> - n or more</div>
+              <div><code class="text-blue-600 dark:text-blue-400">{n,m}</code> - Between n and m</div>
+            </div>
+          </div>
+
+          <!-- Groups -->
+          <div>
+            <h4 class="font-medium text-gray-700 dark:text-gray-300 mb-2">Groups</h4>
+            <div class="space-y-1 text-gray-600 dark:text-gray-400">
+              <div><code class="text-blue-600 dark:text-blue-400">(abc)</code> - Capture group</div>
+              <div><code class="text-blue-600 dark:text-blue-400">(?:abc)</code> - Non-capture group</div>
+              <div><code class="text-blue-600 dark:text-blue-400">(?&lt;name&gt;abc)</code> - Named group</div>
+              <div><code class="text-blue-600 dark:text-blue-400">\1</code> - Backreference</div>
+            </div>
+          </div>
+
+          <!-- Lookaround -->
+          <div>
+            <h4 class="font-medium text-gray-700 dark:text-gray-300 mb-2">Lookaround</h4>
+            <div class="space-y-1 text-gray-600 dark:text-gray-400">
+              <div><code class="text-blue-600 dark:text-blue-400">(?=abc)</code> - Positive lookahead</div>
+              <div><code class="text-blue-600 dark:text-blue-400">(?!abc)</code> - Negative lookahead</div>
+              <div><code class="text-blue-600 dark:text-blue-400">(?&lt;=abc)</code> - Positive lookbehind</div>
+              <div><code class="text-blue-600 dark:text-blue-400">(?&lt;!abc)</code> - Negative lookbehind</div>
+            </div>
+          </div>
+
+          <!-- Special -->
+          <div>
+            <h4 class="font-medium text-gray-700 dark:text-gray-300 mb-2">Special Characters</h4>
+            <div class="space-y-1 text-gray-600 dark:text-gray-400">
+              <div><code class="text-blue-600 dark:text-blue-400">[abc]</code> - Character set</div>
+              <div><code class="text-blue-600 dark:text-blue-400">[^abc]</code> - Negated set</div>
+              <div><code class="text-blue-600 dark:text-blue-400">[a-z]</code> - Character range</div>
+              <div><code class="text-blue-600 dark:text-blue-400">a|b</code> - Alternation (OR)</div>
+              <div><code class="text-blue-600 dark:text-blue-400">\</code> - Escape character</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ad Container (Bottom) -->
+      <div class="ad-container mt-8">
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Tool Script -->
+  <script>
+    (function() {
+      'use strict';
+
+      const patternInput = document.getElementById('regex-pattern');
+      const flagsDisplay = document.getElementById('flags-display');
+      const flagButtons = document.querySelectorAll('.flag-btn');
+      const testStringInput = document.getElementById('test-string');
+      const clearTestBtn = document.getElementById('clear-test');
+      const errorMessage = document.getElementById('error-message');
+      const matchCount = document.getElementById('match-count');
+      const matchesContainer = document.getElementById('matches-container');
+      const enableReplace = document.getElementById('enable-replace');
+      const replaceSection = document.getElementById('replace-section');
+      const replacePattern = document.getElementById('replace-pattern');
+      const replaceResult = document.getElementById('replace-result');
+      const copyReplaceBtn = document.getElementById('copy-replace-result');
+      const commonPatternsContainer = document.getElementById('common-patterns');
+
+      // Common patterns
+      const commonPatterns = [
+        { pattern: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}', label: 'Email' },
+        { pattern: 'https?:\\/\\/[\\w\\-._~:/?#[\\]@!$&\'()*+,;=%]+', label: 'URL' },
+        { pattern: '\\d{3}-?\\d{3,4}-?\\d{4}', label: 'Phone Number (US)' },
+        { pattern: '\\d{4}[-\\/]\\d{2}[-\\/]\\d{2}', label: 'Date (YYYY-MM-DD)' },
+        { pattern: '\\d{2}[-\\/]\\d{2}[-\\/]\\d{4}', label: 'Date (MM/DD/YYYY)' },
+        { pattern: '\\d{1,2}:\\d{2}(:\\d{2})?', label: 'Time (HH:MM:SS)' },
+        { pattern: '#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3})', label: 'HEX Color' },
+        { pattern: '((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)', label: 'IPv4 Address' },
+        { pattern: '<[^>]+>', label: 'HTML Tag' },
+        { pattern: '^\\s+|\\s+$', label: 'Leading/Trailing Whitespace' },
+        { pattern: '\\b\\w+\\b', label: 'Words' },
+        { pattern: '[A-Z][a-z]+', label: 'Capitalized Words' }
+      ];
+
+      // Current state
+      let currentFlags = 'g';
+
+      // Initialize common patterns
+      function initCommonPatterns() {
+        commonPatternsContainer.innerHTML = '';
+        commonPatterns.forEach(({ pattern, label }) => {
+          const card = document.createElement('div');
+          card.className = 'pattern-card';
+          card.innerHTML = `
+            <div class="text-sm font-medium text-gray-700 dark:text-gray-300">${escapeHtml(label)}</div>
+            <code class="text-xs text-gray-500 dark:text-gray-400 break-all">${escapeHtml(pattern)}</code>
+          `;
+          card.addEventListener('click', () => {
+            patternInput.value = pattern;
+            runTest();
+          });
+          commonPatternsContainer.appendChild(card);
+        });
+      }
+
+      // Update flags display
+      function updateFlagsDisplay() {
+        const activeFlags = Array.from(flagButtons)
+          .filter(btn => btn.classList.contains('active'))
+          .map(btn => btn.dataset.flag)
+          .join('');
+        currentFlags = activeFlags;
+        flagsDisplay.textContent = activeFlags || '-';
+      }
+
+      // Escape HTML entities
+      function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      // Run regex test
+      function runTest() {
+        const pattern = patternInput.value;
+        const testString = testStringInput.value;
+
+        // Reset error
+        errorMessage.classList.add('hidden');
+        errorMessage.textContent = '';
+
+        // If empty pattern or test string
+        if (!pattern || !testString) {
+          matchCount.textContent = '0 matches';
+          matchesContainer.innerHTML = `<p class="text-gray-500 dark:text-gray-400 text-sm">No matches found.</p>`;
+          replaceResult.value = '';
+          return;
+        }
+
+        // Try to create regex
+        let regex;
+        try {
+          regex = new RegExp(pattern, currentFlags);
+        } catch (e) {
+          errorMessage.textContent = e.message;
+          errorMessage.classList.remove('hidden');
+          matchCount.textContent = '0 matches';
+          matchesContainer.innerHTML = `<p class="text-gray-500 dark:text-gray-400 text-sm">No matches found.</p>`;
+          replaceResult.value = '';
+          return;
+        }
+
+        // Find all matches
+        const matches = [];
+        let match;
+
+        // Clone regex for matchAll
+        const regexForMatch = new RegExp(pattern, currentFlags.includes('g') ? currentFlags : currentFlags + 'g');
+
+        // Prevent infinite loop for empty matches
+        const maxIterations = 10000;
+        let iterations = 0;
+
+        while ((match = regexForMatch.exec(testString)) !== null && iterations < maxIterations) {
+          iterations++;
+
+          // Prevent infinite loop on zero-length match
+          if (match.index === regexForMatch.lastIndex) {
+            regexForMatch.lastIndex++;
+          }
+
+          matches.push({
+            index: match.index,
+            match: match[0],
+            groups: match.slice(1),
+            namedGroups: match.groups || {}
+          });
+
+          // If not global flag, only one match
+          if (!currentFlags.includes('g')) break;
+        }
+
+        // Update match count
+        const matchText = matches.length === 1 ? 'match' : 'matches';
+        matchCount.textContent = `${matches.length} ${matchText}`;
+
+        // Display matches
+        if (matches.length === 0) {
+          matchesContainer.innerHTML = `<p class="text-gray-500 dark:text-gray-400 text-sm">No matches found.</p>`;
+        } else {
+          matchesContainer.innerHTML = matches.map((m, i) => {
+            let groupsHtml = '';
+            if (m.groups.length > 0) {
+              groupsHtml = m.groups.map((g, gi) =>
+                `<span class="inline-flex items-center gap-1 px-2 py-0.5 bg-gray-100 dark:bg-gray-700 rounded text-xs">
+                  <span class="text-gray-500">$${gi + 1}:</span>
+                  <code class="text-gray-700 dark:text-gray-300">${escapeHtml(g || '(empty)')}</code>
+                </span>`
+              ).join(' ');
+            }
+
+            // Named groups
+            const namedGroupsKeys = Object.keys(m.namedGroups);
+            if (namedGroupsKeys.length > 0) {
+              groupsHtml += ' ' + namedGroupsKeys.map(key =>
+                `<span class="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-50 dark:bg-blue-900/30 rounded text-xs">
+                  <span class="text-blue-500">${key}:</span>
+                  <code class="text-blue-700 dark:text-blue-300">${escapeHtml(m.namedGroups[key] || '(empty)')}</code>
+                </span>`
+              ).join(' ');
+            }
+
+            return `
+              <div class="p-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                <div class="flex items-start gap-3">
+                  <span class="shrink-0 w-6 h-6 flex items-center justify-center bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 text-xs font-medium rounded">${i + 1}</span>
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-1">
+                      <code class="text-sm font-mono text-gray-900 dark:text-white break-all">${escapeHtml(m.match)}</code>
+                      <span class="text-xs text-gray-400">index: ${m.index}</span>
+                    </div>
+                    ${groupsHtml ? `<div class="flex flex-wrap gap-1">${groupsHtml}</div>` : ''}
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+
+        // Update replace result
+        if (enableReplace.checked) {
+          try {
+            replaceResult.value = testString.replace(regex, replacePattern.value);
+          } catch (e) {
+            replaceResult.value = 'Replace error: ' + e.message;
+          }
+        }
+      }
+
+      // Flag button click
+      flagButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          btn.classList.toggle('active');
+          updateFlagsDisplay();
+          runTest();
+        });
+      });
+
+      // Pattern input
+      patternInput.addEventListener('input', runTest);
+
+      // Test string input
+      testStringInput.addEventListener('input', () => {
+        runTest();
+      });
+
+      // Clear test string
+      clearTestBtn.addEventListener('click', () => {
+        testStringInput.value = '';
+        runTest();
+      });
+
+      // Enable replace toggle
+      enableReplace.addEventListener('change', () => {
+        replaceSection.classList.toggle('hidden', !enableReplace.checked);
+        if (enableReplace.checked) {
+          runTest();
+        }
+      });
+
+      // Replace pattern input
+      replacePattern.addEventListener('input', runTest);
+
+      // Copy replace result
+      copyReplaceBtn.addEventListener('click', async () => {
+        if (!replaceResult.value) {
+          toast.warning('Nothing to copy');
+          return;
+        }
+        await copyToClipboard(replaceResult.value);
+        toast.success('Copied!');
+      });
+
+      // Initialize
+      initCommonPatterns();
+      updateFlagsDisplay();
+
+      // Set sample pattern and test string
+      patternInput.value = '([a-z]+)@([a-z]+)\\.([a-z]{2,})';
+      testStringInput.value = 'Contact us at info@example.com or support@toolneat.org for help.\nYou can also email sales@company.co.kr';
+
+      // Delay initial test to ensure layout is ready
+      requestAnimationFrame(() => {
+        runTest();
+      });
+    })();
+  </script>
+</body>
+</html>

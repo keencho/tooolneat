@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loan Calculator - Toolneat</title>
+  <meta name="description" content="Calculate monthly payments, total interest, and amortization schedule for your loan. Free online loan calculator.">
+
+  <!-- Canonical & hreflang -->
+  <link rel="canonical" href="https://toolneat.com/en/tools/life/loan-calculator/">
+  <link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/loan-calculator/">
+  <link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/loan-calculator/">
+  <link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/loan-calculator/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Toolneat">
+  <meta property="og:title" content="Loan Calculator - Toolneat">
+  <meta property="og:description" content="Calculate monthly payments, total interest, and amortization schedule for your loan.">
+  <meta property="og:url" content="https://toolneat.com/en/tools/life/loan-calculator/">
+  <meta property="og:image" content="https://toolneat.com/assets/images/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#2563eb">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../../../../assets/icons/favicon.svg">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../../../../assets/css/output.css">
+
+  <!-- JS -->
+  <script src="../../../../assets/js/common.js"></script>
+  <script>localStorage.setItem('toolneat-lang', 'en');</script>
+  <script src="../../../../assets/js/i18n.js"></script>
+  <script src="../../../../assets/js/components.js"></script>
+
+  <style>
+    .result-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      text-align: center;
+    }
+    .result-label {
+      font-size: 0.875rem;
+      color: #6b7280;
+      margin-bottom: 0.25rem;
+    }
+    .dark .result-label {
+      color: #9ca3af;
+    }
+    .result-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    .payment-type-btn {
+      padding: 0.75rem 1rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 0.75rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .payment-type-btn:hover {
+      border-color: #d1d5db;
+    }
+    .dark .payment-type-btn {
+      border-color: #374151;
+    }
+    .dark .payment-type-btn:hover {
+      border-color: #4b5563;
+    }
+    .payment-type-btn.active {
+      border-color: #2563eb;
+      background-color: #eff6ff;
+    }
+    .dark .payment-type-btn.active {
+      border-color: #3b82f6;
+      background-color: #1e3a5f;
+    }
+    .schedule-table {
+      font-size: 0.875rem;
+    }
+    .schedule-table th {
+      background-color: #f9fafb;
+      font-weight: 600;
+      padding: 0.75rem 0.5rem;
+      text-align: right;
+      white-space: nowrap;
+    }
+    .dark .schedule-table th {
+      background-color: #1f2937;
+    }
+    .schedule-table td {
+      padding: 0.5rem;
+      text-align: right;
+      border-top: 1px solid #e5e7eb;
+    }
+    .dark .schedule-table td {
+      border-top-color: #374151;
+    }
+    .schedule-table td:first-child,
+    .schedule-table th:first-child {
+      text-align: center;
+    }
+    .bar-container {
+      height: 24px;
+      background-color: #e5e7eb;
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex;
+    }
+    .dark .bar-container {
+      background-color: #374151;
+    }
+    .bar-principal {
+      background-color: #3b82f6;
+      height: 100%;
+    }
+    .bar-interest {
+      background-color: #f97316;
+      height: 100%;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <!-- Header -->
+  <div id="header"></div>
+
+  <!-- Main Content -->
+  <main class="flex-1 py-8 md:py-12">
+    <div class="container-main">
+      <!-- Page Title -->
+      <div class="mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          Loan Calculator
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400">
+          Calculate monthly payments, total payments, and total interest by entering the loan amount, interest rate, and term. Supports amortized, equal principal, and interest-only payment methods.
+        </p>
+      </div>
+
+      <!-- Ad Container (Top) -->
+      <div class="ad-container mb-6">
+
+      </div>
+
+      <!-- Tool Card -->
+      <div class="card">
+        <!-- Input Section -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <!-- Principal -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Loan Amount</label>
+            <div class="flex gap-2">
+              <input type="text" id="principal" class="input flex-1 text-right font-mono" value="250,000" inputmode="numeric">
+              <span class="flex items-center px-3 text-sm text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 rounded-lg shrink-0">$</span>
+            </div>
+          </div>
+
+          <!-- Interest Rate -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Annual Interest Rate</label>
+            <div class="flex gap-2">
+              <input type="text" id="interest-rate" class="input flex-1 text-right font-mono" value="6.5" inputmode="decimal">
+              <span class="flex items-center px-3 text-sm text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 rounded-lg shrink-0">%</span>
+            </div>
+          </div>
+
+          <!-- Term -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Loan Term</label>
+            <div class="flex gap-2">
+              <input type="number" id="term-value" class="input w-2/3 text-right font-mono" value="30" min="1" max="600">
+              <select id="term-unit" class="input w-1/3">
+                <option value="year">Years</option>
+                <option value="month">Months</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment Type -->
+        <div class="mb-6">
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Payment Type</label>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <button class="payment-type-btn active" data-type="equal-payment">
+              <div class="font-medium text-gray-900 dark:text-white">Amortized</div>
+              <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Equal monthly payments</div>
+            </button>
+            <button class="payment-type-btn" data-type="equal-principal">
+              <div class="font-medium text-gray-900 dark:text-white">Equal Principal</div>
+              <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Fixed principal each month</div>
+            </button>
+            <button class="payment-type-btn" data-type="bullet">
+              <div class="font-medium text-gray-900 dark:text-white">Interest Only</div>
+              <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Principal due at maturity</div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Calculate Button -->
+        <button id="calculate-btn" class="btn btn-primary w-full mb-6">Calculate</button>
+
+        <!-- Results Section -->
+        <div id="results-section" class="hidden">
+          <!-- Summary Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+            <div class="result-card bg-blue-50 dark:bg-blue-900/30">
+              <span class="result-label">Monthly Payment</span>
+              <span id="monthly-payment" class="result-value text-blue-600 dark:text-blue-400">-</span>
+              <span id="monthly-payment-range" class="text-xs text-blue-500 dark:text-blue-400 mt-1 hidden"></span>
+            </div>
+            <div class="result-card bg-gray-50 dark:bg-gray-800">
+              <span class="result-label">Total Payment</span>
+              <span id="total-payment" class="result-value text-gray-900 dark:text-white">-</span>
+            </div>
+            <div class="result-card bg-orange-50 dark:bg-orange-900/30">
+              <span class="result-label">Total Interest</span>
+              <span id="total-interest" class="result-value text-orange-600 dark:text-orange-400">-</span>
+            </div>
+          </div>
+
+          <!-- Visual Bar -->
+          <div class="mb-6">
+            <div class="flex items-center justify-between text-sm mb-2">
+              <span class="text-gray-600 dark:text-gray-400">Principal vs Interest</span>
+              <div class="flex items-center gap-4">
+                <span class="flex items-center gap-1.5">
+                  <span class="w-3 h-3 rounded bg-blue-500"></span>
+                  <span class="text-gray-600 dark:text-gray-400">Principal</span>
+                  <span id="principal-percent" class="font-medium text-gray-900 dark:text-white">0%</span>
+                </span>
+                <span class="flex items-center gap-1.5">
+                  <span class="w-3 h-3 rounded bg-orange-500"></span>
+                  <span class="text-gray-600 dark:text-gray-400">Interest</span>
+                  <span id="interest-percent" class="font-medium text-gray-900 dark:text-white">0%</span>
+                </span>
+              </div>
+            </div>
+            <div class="bar-container">
+              <div id="principal-bar" class="bar-principal" style="width: 0%"></div>
+              <div id="interest-bar" class="bar-interest" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <!-- Schedule Toggle -->
+          <div class="border-t border-gray-100 dark:border-gray-700 pt-6">
+            <div class="flex items-center justify-between">
+              <button id="toggle-schedule" class="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
+                <svg id="schedule-arrow" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+                <span>View Amortization Schedule</span>
+              </button>
+              <button id="export-csv" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">Export CSV</button>
+            </div>
+
+            <div id="schedule-section" class="hidden mt-4">
+              <div class="overflow-x-auto">
+                <table class="schedule-table w-full">
+                  <thead>
+                    <tr>
+                      <th>Month</th>
+                      <th>Payment</th>
+                      <th>Principal</th>
+                      <th>Interest</th>
+                      <th>Balance</th>
+                    </tr>
+                  </thead>
+                  <tbody id="schedule-body">
+                  </tbody>
+                </table>
+              </div>
+              <p id="schedule-note" class="text-xs text-gray-500 dark:text-gray-400 mt-3 hidden"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Card -->
+      <div class="card mt-6">
+        <h3 class="font-medium text-gray-900 dark:text-white mb-4">Payment Types Explained</h3>
+        <div class="space-y-4 text-sm text-gray-600 dark:text-gray-400">
+          <div>
+            <h4 class="font-medium text-gray-800 dark:text-gray-200">Amortized (Equal Payment)</h4>
+            <p>Pay the same amount (principal + interest) each month. Interest portion is higher initially and decreases over time, while principal portion increases. Easy to budget with consistent monthly payments.</p>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-800 dark:text-gray-200">Equal Principal</h4>
+            <p>Pay the same principal amount each month, plus interest on the remaining balance. Initial payments are higher but decrease over time. Results in less total interest than amortized loans.</p>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-800 dark:text-gray-200">Interest Only (Bullet)</h4>
+            <p>Pay only interest during the loan term, with the full principal due at maturity. Lowest monthly payments but highest total interest cost.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ad Container (Bottom) -->
+      <div class="ad-container mt-8">
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Tool Script -->
+  <script>
+    (function() {
+      'use strict';
+
+      const principalInput = document.getElementById('principal');
+      const interestRateInput = document.getElementById('interest-rate');
+      const termValueInput = document.getElementById('term-value');
+      const termUnitSelect = document.getElementById('term-unit');
+      const paymentTypeBtns = document.querySelectorAll('.payment-type-btn');
+      const calculateBtn = document.getElementById('calculate-btn');
+      const resultsSection = document.getElementById('results-section');
+      const monthlyPaymentEl = document.getElementById('monthly-payment');
+      const monthlyPaymentRangeEl = document.getElementById('monthly-payment-range');
+      const totalPaymentEl = document.getElementById('total-payment');
+      const totalInterestEl = document.getElementById('total-interest');
+      const principalPercentEl = document.getElementById('principal-percent');
+      const interestPercentEl = document.getElementById('interest-percent');
+      const principalBarEl = document.getElementById('principal-bar');
+      const interestBarEl = document.getElementById('interest-bar');
+      const toggleScheduleBtn = document.getElementById('toggle-schedule');
+      const scheduleSection = document.getElementById('schedule-section');
+      const scheduleArrow = document.getElementById('schedule-arrow');
+      const scheduleBody = document.getElementById('schedule-body');
+      const scheduleNote = document.getElementById('schedule-note');
+      const exportCsvBtn = document.getElementById('export-csv');
+
+      let currentPaymentType = 'equal-payment';
+      let currentSchedule = [];
+
+      // Max term limits
+      const MAX_YEARS = 50;
+      const MAX_MONTHS = 600;
+
+      // Format number with commas
+      function formatNumber(num) {
+        return Math.round(num).toLocaleString('en-US');
+      }
+
+      // Format currency
+      function formatCurrency(num) {
+        return '$' + formatNumber(num);
+      }
+
+      // Parse number from formatted string
+      function parseNumber(str) {
+        return parseFloat(str.replace(/[^\d.-]/g, '')) || 0;
+      }
+
+      // Format input on blur
+      function formatInput(input) {
+        const value = parseNumber(input.value);
+        if (!isNaN(value) && value > 0) {
+          input.value = formatNumber(value);
+        }
+      }
+
+      // Payment type selection
+      paymentTypeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          paymentTypeBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentPaymentType = btn.dataset.type;
+        });
+      });
+
+      // Format principal input
+      principalInput.addEventListener('blur', () => formatInput(principalInput));
+      principalInput.addEventListener('focus', () => {
+        principalInput.value = principalInput.value.replace(/,/g, '');
+      });
+
+      // Calculate loan
+      function calculateLoan() {
+        const principal = parseNumber(principalInput.value);
+        const annualRate = parseFloat(interestRateInput.value) || 0;
+        const termValue = parseInt(termValueInput.value) || 0;
+        const termUnit = termUnitSelect.value;
+
+        // Validate inputs
+        if (principal <= 0 || annualRate <= 0 || termValue <= 0) {
+          toast.warning('Please enter valid loan amount, interest rate, and term.');
+          return;
+        }
+
+        // Validate term limits
+        const maxTerm = termUnit === 'year' ? MAX_YEARS : MAX_MONTHS;
+        if (termValue > maxTerm) {
+          toast.warning('Term is too long. Maximum is ' + maxTerm + ' ' + (termUnit === 'year' ? 'years' : 'months') + '.');
+          termValueInput.value = maxTerm;
+          return;
+        }
+
+        // Convert to months
+        const totalMonths = termUnit === 'year' ? termValue * 12 : termValue;
+        const monthlyRate = annualRate / 100 / 12;
+
+        let schedule = [];
+        let totalPayment = 0;
+        let totalInterest = 0;
+
+        if (currentPaymentType === 'equal-payment') {
+          // Amortized payment
+          // M = P * [r(1+r)^n] / [(1+r)^n - 1]
+          const factor = Math.pow(1 + monthlyRate, totalMonths);
+          const monthlyPayment = principal * (monthlyRate * factor) / (factor - 1);
+
+          let balance = principal;
+          for (let i = 1; i <= totalMonths; i++) {
+            const interest = balance * monthlyRate;
+            const principalPay = monthlyPayment - interest;
+            balance -= principalPay;
+
+            schedule.push({
+              month: i,
+              payment: monthlyPayment,
+              principal: principalPay,
+              interest: interest,
+              balance: Math.max(0, balance)
+            });
+
+            totalInterest += interest;
+          }
+
+          totalPayment = monthlyPayment * totalMonths;
+
+          monthlyPaymentEl.textContent = formatCurrency(monthlyPayment);
+          monthlyPaymentRangeEl.classList.add('hidden');
+
+        } else if (currentPaymentType === 'equal-principal') {
+          // Equal principal payment
+          const monthlyPrincipal = principal / totalMonths;
+          let balance = principal;
+
+          for (let i = 1; i <= totalMonths; i++) {
+            const interest = balance * monthlyRate;
+            const payment = monthlyPrincipal + interest;
+            balance -= monthlyPrincipal;
+
+            schedule.push({
+              month: i,
+              payment: payment,
+              principal: monthlyPrincipal,
+              interest: interest,
+              balance: Math.max(0, balance)
+            });
+
+            totalPayment += payment;
+            totalInterest += interest;
+          }
+
+          const firstPayment = schedule[0].payment;
+          const lastPayment = schedule[schedule.length - 1].payment;
+
+          monthlyPaymentEl.textContent = formatCurrency(firstPayment);
+          monthlyPaymentRangeEl.textContent = '→ ' + formatCurrency(lastPayment);
+          monthlyPaymentRangeEl.classList.remove('hidden');
+
+        } else if (currentPaymentType === 'bullet') {
+          // Interest only (bullet)
+          const monthlyInterest = principal * monthlyRate;
+
+          for (let i = 1; i <= totalMonths; i++) {
+            const isLast = i === totalMonths;
+            schedule.push({
+              month: i,
+              payment: isLast ? principal + monthlyInterest : monthlyInterest,
+              principal: isLast ? principal : 0,
+              interest: monthlyInterest,
+              balance: isLast ? 0 : principal
+            });
+
+            totalInterest += monthlyInterest;
+          }
+
+          totalPayment = principal + totalInterest;
+
+          monthlyPaymentEl.textContent = formatCurrency(monthlyInterest);
+          monthlyPaymentRangeEl.textContent = '(Interest only)';
+          monthlyPaymentRangeEl.classList.remove('hidden');
+        }
+
+        currentSchedule = schedule;
+
+        // Update UI
+        totalPaymentEl.textContent = formatCurrency(totalPayment);
+        totalInterestEl.textContent = formatCurrency(totalInterest);
+
+        // Update bar
+        const principalPercent = (principal / totalPayment * 100).toFixed(1);
+        const interestPercent = (totalInterest / totalPayment * 100).toFixed(1);
+        principalPercentEl.textContent = principalPercent + '%';
+        interestPercentEl.textContent = interestPercent + '%';
+        principalBarEl.style.width = principalPercent + '%';
+        interestBarEl.style.width = interestPercent + '%';
+
+        // Update schedule table
+        updateScheduleTable();
+
+        resultsSection.classList.remove('hidden');
+      }
+
+      // Update schedule table
+      function updateScheduleTable() {
+        const schedule = currentSchedule;
+
+        let rows = '';
+
+        if (schedule.length <= 36) {
+          // Show all
+          schedule.forEach(item => {
+            rows += createScheduleRow(item);
+          });
+        } else {
+          // Show first 12
+          for (let i = 0; i < 12; i++) {
+            rows += createScheduleRow(schedule[i]);
+          }
+
+          // Separator
+          rows += `
+            <tr>
+              <td colspan="5" class="text-center text-gray-400 dark:text-gray-500 py-3">
+                ... ${schedule.length - 24} more months ...
+              </td>
+            </tr>
+          `;
+
+          // Show last 12
+          for (let i = schedule.length - 12; i < schedule.length; i++) {
+            rows += createScheduleRow(schedule[i]);
+          }
+
+          scheduleNote.textContent = 'Full schedule available in CSV export.';
+          scheduleNote.classList.remove('hidden');
+        }
+
+        scheduleBody.innerHTML = rows;
+      }
+
+      function createScheduleRow(item) {
+        return `
+          <tr>
+            <td>${item.month}</td>
+            <td>${formatCurrency(item.payment)}</td>
+            <td>${formatCurrency(item.principal)}</td>
+            <td>${formatCurrency(item.interest)}</td>
+            <td>${formatCurrency(item.balance)}</td>
+          </tr>
+        `;
+      }
+
+      // Toggle schedule visibility
+      toggleScheduleBtn.addEventListener('click', () => {
+        const isHidden = scheduleSection.classList.toggle('hidden');
+        scheduleArrow.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(90deg)';
+      });
+
+      // Export CSV
+      function exportToCsv() {
+        if (currentSchedule.length === 0) {
+          toast.warning('Please calculate the loan first.');
+          return;
+        }
+
+        const headers = ['Month', 'Payment', 'Principal', 'Interest', 'Balance'];
+
+        let csv = '\uFEFF' + headers.join(',') + '\n'; // BOM for Excel
+
+        currentSchedule.forEach(item => {
+          csv += [
+            item.month,
+            Math.round(item.payment),
+            Math.round(item.principal),
+            Math.round(item.interest),
+            Math.round(item.balance)
+          ].join(',') + '\n';
+        });
+
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `loan_schedule_${new Date().toISOString().slice(0,10)}.csv`;
+        link.click();
+        URL.revokeObjectURL(url);
+
+        toast.success('CSV exported successfully!');
+      }
+
+      exportCsvBtn.addEventListener('click', exportToCsv);
+
+      // Calculate button
+      calculateBtn.addEventListener('click', calculateLoan);
+
+      // Enter key to calculate
+      [principalInput, interestRateInput, termValueInput].forEach(input => {
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') calculateLoan();
+        });
+      });
+
+      // Initialize
+      formatInput(principalInput);
+    })();
+  </script>
+</body>
+</html>

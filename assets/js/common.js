@@ -248,3 +248,41 @@ window.toast = (() => {
     info: (msg, duration) => show(msg, 'info', duration)
   };
 })();
+
+// Service Worker Registration
+(function() {
+  'use strict';
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      // Calculate SW path based on current location
+      const swPath = '/sw.js';
+
+      navigator.serviceWorker.register(swPath)
+        .then((registration) => {
+          console.log('[SW] Registered:', registration.scope);
+
+          // Check for updates periodically
+          setInterval(() => {
+            registration.update();
+          }, 60 * 60 * 1000); // Check every hour
+
+          // Handle updates
+          registration.addEventListener('updatefound', () => {
+            const newWorker = registration.installing;
+            console.log('[SW] Update found');
+
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                // New version available
+                console.log('[SW] New version available');
+              }
+            });
+          });
+        })
+        .catch((error) => {
+          console.error('[SW] Registration failed:', error);
+        });
+    });
+  }
+})();
