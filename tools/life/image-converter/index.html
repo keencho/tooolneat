@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8846557285079359" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n-title="tools.imageConverter.title">이미지 형식 변환 - Toolneat</title>
+  <meta name="description" data-i18n-desc="tools.imageConverter.description" content="PNG, JPG, WEBP 등 이미지 형식을 변환합니다.">
+  <link rel="canonical" href="https://toolneat.com/tools/life/image-converter/">
+  <link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/image-converter/">
+  <link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/image-converter/">
+  <link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/image-converter/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Toolneat">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/icons/favicon.svg">
+  <link rel="stylesheet" href="../../../assets/css/output.css">
+  <script src="../../../assets/js/common.js"></script>
+  <script src="../../../assets/js/i18n.js"></script>
+  <script src="../../../assets/js/components.js"></script>
+  <style>
+    .drop-zone { border: 2px dashed #d1d5db; border-radius: 12px; padding: 40px 20px; text-align: center; transition: all 0.3s; cursor: pointer; }
+    .drop-zone:hover, .drop-zone.dragover { border-color: #2563eb; background: #eff6ff; }
+    .dark .drop-zone { border-color: #4b5563; }
+    .dark .drop-zone:hover, .dark .drop-zone.dragover { border-color: #3b82f6; background: #1e3a5f; }
+    .format-btn { padding: 12px 16px; border-radius: 10px; border: 2px solid #e5e7eb; background: white; cursor: pointer; transition: all 0.2s; text-align: center; }
+    .format-btn:hover { border-color: #3b82f6; }
+    .format-btn.active { border-color: #2563eb; background: #eff6ff; }
+    .dark .format-btn { background: #374151; border-color: #4b5563; }
+    .dark .format-btn:hover { border-color: #3b82f6; }
+    .dark .format-btn.active { border-color: #3b82f6; background: #1e3a5f; }
+    .file-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: #f9fafb; border-radius: 8px; }
+    .dark .file-item { background: #374151; }
+    .file-thumb { width: 48px; height: 48px; object-fit: cover; border-radius: 6px; background: #e5e7eb; }
+    .dark .file-thumb { background: #4b5563; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <div id="header"></div>
+  <main class="flex-1 py-8 md:py-12">
+    <div class="container-main">
+      <div class="mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2" data-i18n="tools.imageConverter.title">이미지 형식 변환</h1>
+        <p class="text-gray-600 dark:text-gray-400" data-i18n="tools.imageConverter.descriptionLong">PNG, JPG, WEBP 등 이미지 형식을 변환합니다. 여러 파일을 한번에 변환할 수 있습니다.</p>
+      </div>
+
+      <div class="card">
+        <!-- Upload -->
+        <div id="upload-section">
+          <div class="drop-zone" id="drop-zone">
+            <svg class="w-12 h-12 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            <p class="text-gray-600 dark:text-gray-400 mb-2" data-i18n="tools.imageConverter.dropHere">이미지를 드래그하거나 클릭하여 선택</p>
+            <p class="text-sm text-gray-500" data-i18n="tools.imageConverter.multipleFiles">여러 파일 선택 가능 (최대 20개)</p>
+            <input type="file" id="file-input" accept="image/*" multiple class="hidden">
+          </div>
+        </div>
+
+        <!-- Editor -->
+        <div id="editor-section" class="hidden">
+          <!-- Files List -->
+          <div class="mb-6">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="font-medium text-gray-900 dark:text-white" data-i18n="tools.imageConverter.selectedFiles">선택된 파일</h3>
+              <button id="add-more-btn" class="text-sm text-blue-600 hover:text-blue-700" data-i18n="tools.imageConverter.addMore">+ 파일 추가</button>
+            </div>
+            <div id="files-list" class="space-y-2 max-h-60 overflow-y-auto"></div>
+          </div>
+
+          <!-- Format Selection -->
+          <div class="mb-6">
+            <h3 class="font-medium text-gray-900 dark:text-white mb-3" data-i18n="tools.imageConverter.outputFormat">출력 형식</h3>
+            <div class="grid grid-cols-3 sm:grid-cols-6 gap-3">
+              <button class="format-btn active" data-format="png"><div class="font-bold">PNG</div><div class="text-xs text-gray-500 mt-1" data-i18n="tools.imageConverter.lossless">무손실</div></button>
+              <button class="format-btn" data-format="jpeg"><div class="font-bold">JPG</div><div class="text-xs text-gray-500 mt-1" data-i18n="tools.imageConverter.lossy">손실</div></button>
+              <button class="format-btn" data-format="webp"><div class="font-bold">WEBP</div><div class="text-xs text-gray-500 mt-1" data-i18n="tools.imageConverter.modern">최신</div></button>
+              <button class="format-btn" data-format="gif"><div class="font-bold">GIF</div><div class="text-xs text-gray-500 mt-1">256색</div></button>
+              <button class="format-btn" data-format="bmp"><div class="font-bold">BMP</div><div class="text-xs text-gray-500 mt-1" data-i18n="tools.imageConverter.uncompressed">비압축</div></button>
+              <button class="format-btn" data-format="ico"><div class="font-bold">ICO</div><div class="text-xs text-gray-500 mt-1" data-i18n="tools.imageConverter.icon">아이콘</div></button>
+            </div>
+          </div>
+
+          <!-- Quality (for JPG/WEBP) -->
+          <div id="quality-section" class="mb-6 hidden">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" data-i18n="tools.imageConverter.quality">품질</label>
+            <div class="flex items-center gap-4">
+              <input type="range" id="quality-slider" min="10" max="100" value="90" class="flex-1">
+              <span id="quality-value" class="text-sm font-mono w-12">90%</span>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="flex flex-wrap gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <button id="convert-btn" class="btn btn-primary" data-i18n="tools.imageConverter.convert">변환하기</button>
+            <button id="download-all-btn" class="btn btn-secondary hidden" data-i18n="tools.imageConverter.downloadAll">전체 다운로드</button>
+            <button id="reset-btn" class="btn btn-secondary ml-auto" data-i18n="common.reset">초기화</button>
+          </div>
+
+          <!-- Results -->
+          <div id="results-section" class="mt-6 hidden">
+            <h3 class="font-medium text-gray-900 dark:text-white mb-3" data-i18n="tools.imageConverter.results">변환 결과</h3>
+            <div id="results-list" class="space-y-2"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <section class="mt-8 bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4" data-i18n="tools.imageConverter.faqTitle">이미지 형식 안내</h2>
+        <div class="prose prose-gray dark:prose-invert max-w-none text-sm">
+          <ul class="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-400">
+            <li><strong>PNG:</strong> <span data-i18n="tools.imageConverter.pngDesc">투명 배경 지원, 무손실 압축. 로고, 스크린샷에 적합</span></li>
+            <li><strong>JPG:</strong> <span data-i18n="tools.imageConverter.jpgDesc">사진에 최적화, 작은 파일 크기. 투명도 미지원</span></li>
+            <li><strong>WEBP:</strong> <span data-i18n="tools.imageConverter.webpDesc">최신 포맷, PNG/JPG보다 30% 작은 크기. 웹사이트 권장</span></li>
+            <li><strong>GIF:</strong> <span data-i18n="tools.imageConverter.gifDesc">256색 제한, 애니메이션 지원. 간단한 그래픽에 적합</span></li>
+            <li><strong>BMP:</strong> <span data-i18n="tools.imageConverter.bmpDesc">비압축 포맷, 큰 파일 크기. 편집용</span></li>
+            <li><strong>ICO:</strong> <span data-i18n="tools.imageConverter.icoDesc">Windows 아이콘 포맷. 파비콘에 사용</span></li>
+          </ul>
+          <div class="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+            <p class="text-blue-800 dark:text-blue-300 text-sm" data-i18n="tools.imageConverter.privacyNote">모든 처리는 브라우저에서 이루어지며 서버로 전송되지 않습니다.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <div id="footer"></div>
+
+  <script>
+    (function() {
+      'use strict';
+      const dropZone = document.getElementById('drop-zone');
+      const fileInput = document.getElementById('file-input');
+      const uploadSection = document.getElementById('upload-section');
+      const editorSection = document.getElementById('editor-section');
+      const filesList = document.getElementById('files-list');
+      const formatBtns = document.querySelectorAll('.format-btn');
+      const qualitySection = document.getElementById('quality-section');
+      const qualitySlider = document.getElementById('quality-slider');
+      const qualityValue = document.getElementById('quality-value');
+      const convertBtn = document.getElementById('convert-btn');
+      const downloadAllBtn = document.getElementById('download-all-btn');
+      const resetBtn = document.getElementById('reset-btn');
+      const addMoreBtn = document.getElementById('add-more-btn');
+      const resultsSection = document.getElementById('results-section');
+      const resultsList = document.getElementById('results-list');
+
+      let files = [];
+      let convertedBlobs = [];
+      let selectedFormat = 'png';
+
+      dropZone.addEventListener('click', () => fileInput.click());
+      dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+      dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+      dropZone.addEventListener('drop', (e) => { e.preventDefault(); dropZone.classList.remove('dragover'); handleFiles(e.dataTransfer.files); });
+      fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+      addMoreBtn.addEventListener('click', () => fileInput.click());
+
+      function handleFiles(newFiles) {
+        const arr = Array.from(newFiles).filter(f => f.type.startsWith('image/')).slice(0, 20 - files.length);
+        if (arr.length === 0) return;
+        files = files.concat(arr);
+        renderFilesList();
+        uploadSection.classList.add('hidden');
+        editorSection.classList.remove('hidden');
+      }
+
+      function renderFilesList() {
+        filesList.innerHTML = files.map((f, i) => `
+          <div class="file-item">
+            <img class="file-thumb" src="${URL.createObjectURL(f)}" alt="">
+            <div class="flex-1 min-w-0">
+              <div class="text-sm font-medium text-gray-900 dark:text-white truncate">${f.name}</div>
+              <div class="text-xs text-gray-500">${(f.size/1024).toFixed(1)} KB</div>
+            </div>
+            <button class="text-gray-400 hover:text-red-500" onclick="removeFile(${i})">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+          </div>
+        `).join('');
+      }
+
+      window.removeFile = (i) => { files.splice(i, 1); if (files.length === 0) resetBtn.click(); else renderFilesList(); };
+
+      formatBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          formatBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          selectedFormat = btn.dataset.format;
+          qualitySection.classList.toggle('hidden', !['jpeg', 'webp'].includes(selectedFormat));
+        });
+      });
+
+      qualitySlider.addEventListener('input', () => { qualityValue.textContent = qualitySlider.value + '%'; });
+
+      convertBtn.addEventListener('click', async () => {
+        if (files.length === 0) return;
+        convertBtn.disabled = true;
+        convertBtn.textContent = window.t ? window.t('common.loading') : '변환 중...';
+        convertedBlobs = [];
+        resultsList.innerHTML = '';
+
+        const quality = parseInt(qualitySlider.value) / 100;
+        const mimeType = selectedFormat === 'jpeg' ? 'image/jpeg' : selectedFormat === 'ico' ? 'image/png' : `image/${selectedFormat}`;
+
+        for (const file of files) {
+          try {
+            const blob = await convertImage(file, mimeType, quality);
+            convertedBlobs.push({ name: file.name.replace(/\.[^.]+$/, '') + '.' + (selectedFormat === 'jpeg' ? 'jpg' : selectedFormat), blob });
+          } catch (e) { console.error(e); }
+        }
+
+        renderResults();
+        resultsSection.classList.remove('hidden');
+        downloadAllBtn.classList.remove('hidden');
+        convertBtn.disabled = false;
+        convertBtn.textContent = window.t ? window.t('tools.imageConverter.convert') : '변환하기';
+        toast.success((window.t ? window.t('tools.imageConverter.converted') : '변환 완료!').replace('{n}', convertedBlobs.length));
+      });
+
+      function convertImage(file, mimeType, quality) {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext('2d');
+            if (mimeType === 'image/jpeg') { ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
+            ctx.drawImage(img, 0, 0);
+            canvas.toBlob(blob => blob ? resolve(blob) : reject('Failed'), mimeType, quality);
+          };
+          img.onerror = reject;
+          img.src = URL.createObjectURL(file);
+        });
+      }
+
+      function renderResults() {
+        resultsList.innerHTML = convertedBlobs.map((item, i) => `
+          <div class="file-item">
+            <img class="file-thumb" src="${URL.createObjectURL(item.blob)}" alt="">
+            <div class="flex-1 min-w-0">
+              <div class="text-sm font-medium text-gray-900 dark:text-white truncate">${item.name}</div>
+              <div class="text-xs text-gray-500">${(item.blob.size/1024).toFixed(1)} KB</div>
+            </div>
+            <button class="btn btn-secondary text-sm py-1 px-3" onclick="downloadSingle(${i})" data-i18n="common.download">다운로드</button>
+          </div>
+        `).join('');
+      }
+
+      window.downloadSingle = (i) => { const a = document.createElement('a'); a.href = URL.createObjectURL(convertedBlobs[i].blob); a.download = convertedBlobs[i].name; a.click(); };
+
+      downloadAllBtn.addEventListener('click', () => { convertedBlobs.forEach((_, i) => window.downloadSingle(i)); });
+
+      resetBtn.addEventListener('click', () => {
+        files = []; convertedBlobs = []; fileInput.value = '';
+        uploadSection.classList.remove('hidden');
+        editorSection.classList.add('hidden');
+        resultsSection.classList.add('hidden');
+        downloadAllBtn.classList.add('hidden');
+      });
+    })();
+  </script>
+</body>
+</html>

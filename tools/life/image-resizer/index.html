@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8846557285079359" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n-title="tools.imageResizer.title">이미지 리사이즈 - Toolneat</title>
+  <meta name="description" data-i18n-desc="tools.imageResizer.description" content="이미지 크기를 원하는 사이즈로 변경합니다.">
+  <link rel="canonical" href="https://toolneat.com/tools/life/image-resizer/">
+  <link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/image-resizer/">
+  <link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/image-resizer/">
+  <link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/image-resizer/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Toolneat">
+  <meta property="og:title" content="이미지 리사이즈 - Toolneat">
+  <meta property="og:url" content="https://toolneat.com/tools/life/image-resizer/">
+  <link rel="icon" type="image/svg+xml" href="../../../assets/icons/favicon.svg">
+  <link rel="stylesheet" href="../../../assets/css/output.css">
+  <script src="../../../assets/js/common.js"></script>
+  <script src="../../../assets/js/i18n.js"></script>
+  <script src="../../../assets/js/components.js"></script>
+  <style>
+    .drop-zone {
+      border: 2px dashed #d1d5db;
+      border-radius: 12px;
+      padding: 40px 20px;
+      text-align: center;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    .drop-zone:hover, .drop-zone.dragover {
+      border-color: #2563eb;
+      background: #eff6ff;
+    }
+    .dark .drop-zone {
+      border-color: #4b5563;
+    }
+    .dark .drop-zone:hover, .dark .drop-zone.dragover {
+      border-color: #3b82f6;
+      background: #1e3a5f;
+    }
+    .preview-container {
+      position: relative;
+      background: repeating-conic-gradient(#e5e7eb 0% 25%, transparent 0% 50%) 50% / 16px 16px;
+      border-radius: 8px;
+      min-height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .dark .preview-container {
+      background: repeating-conic-gradient(#374151 0% 25%, #1f2937 0% 50%) 50% / 16px 16px;
+    }
+    .preview-img {
+      max-width: 100%;
+      max-height: 400px;
+      object-fit: contain;
+    }
+    .preset-btn {
+      padding: 6px 12px;
+      font-size: 13px;
+      border-radius: 6px;
+      border: 1px solid #e5e7eb;
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .preset-btn:hover {
+      border-color: #3b82f6;
+      color: #3b82f6;
+    }
+    .dark .preset-btn {
+      background: #374151;
+      border-color: #4b5563;
+      color: #e5e7eb;
+    }
+    .dark .preset-btn:hover {
+      border-color: #3b82f6;
+      color: #60a5fa;
+    }
+    .size-info {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      background: #f3f4f6;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: monospace;
+    }
+    .dark .size-info {
+      background: #374151;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <div id="header"></div>
+  <main class="flex-1 py-8 md:py-12">
+    <div class="container-main">
+      <div class="mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2" data-i18n="tools.imageResizer.title">이미지 리사이즈</h1>
+        <p class="text-gray-600 dark:text-gray-400" data-i18n="tools.imageResizer.descriptionLong">이미지 크기를 원하는 사이즈로 변경합니다. 비율 유지, 픽셀/퍼센트 단위, SNS 프리셋을 지원합니다.</p>
+      </div>
+
+      <div class="card">
+        <!-- Upload Section -->
+        <div id="upload-section">
+          <div class="drop-zone" id="drop-zone">
+            <svg class="w-12 h-12 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            <p class="text-gray-600 dark:text-gray-400 mb-2" data-i18n="tools.imageResizer.dropHere">이미지를 드래그하거나 클릭하여 선택</p>
+            <p class="text-sm text-gray-500">PNG, JPG, WEBP, GIF (최대 20MB)</p>
+            <input type="file" id="file-input" accept="image/*" class="hidden">
+          </div>
+        </div>
+
+        <!-- Editor Section -->
+        <div id="editor-section" class="hidden">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Preview -->
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <h3 class="font-medium text-gray-900 dark:text-white" data-i18n="tools.imageResizer.preview">미리보기</h3>
+                <span id="original-size" class="size-info"></span>
+              </div>
+              <div class="preview-container">
+                <img id="preview-img" class="preview-img" src="" alt="Preview">
+              </div>
+              <div class="mt-2 text-center">
+                <span id="new-size" class="size-info text-blue-600 dark:text-blue-400"></span>
+              </div>
+            </div>
+
+            <!-- Options -->
+            <div>
+              <h3 class="font-medium text-gray-900 dark:text-white mb-4" data-i18n="tools.imageResizer.resizeOptions">리사이즈 옵션</h3>
+
+              <!-- Mode Toggle -->
+              <div class="flex gap-2 mb-4">
+                <button id="mode-pixel" class="flex-1 px-4 py-2 rounded-lg font-medium bg-blue-600 text-white" data-i18n="tools.imageResizer.pixels">픽셀</button>
+                <button id="mode-percent" class="flex-1 px-4 py-2 rounded-lg font-medium bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300" data-i18n="tools.imageResizer.percent">퍼센트</button>
+              </div>
+
+              <!-- Pixel Mode -->
+              <div id="pixel-options">
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" data-i18n="tools.imageResizer.width">너비</label>
+                    <div class="flex">
+                      <input type="number" id="width-input" class="w-full px-3 py-2 rounded-l-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white" min="1" max="10000">
+                      <span class="px-3 py-2 bg-gray-100 dark:bg-gray-600 border border-l-0 border-gray-300 dark:border-gray-600 rounded-r-lg text-gray-600 dark:text-gray-400">px</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" data-i18n="tools.imageResizer.height">높이</label>
+                    <div class="flex">
+                      <input type="number" id="height-input" class="w-full px-3 py-2 rounded-l-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white" min="1" max="10000">
+                      <span class="px-3 py-2 bg-gray-100 dark:bg-gray-600 border border-l-0 border-gray-300 dark:border-gray-600 rounded-r-lg text-gray-600 dark:text-gray-400">px</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Percent Mode -->
+              <div id="percent-options" class="hidden">
+                <div class="mb-4">
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" data-i18n="tools.imageResizer.scale">배율</label>
+                  <div class="flex items-center gap-4">
+                    <input type="range" id="scale-slider" min="10" max="200" value="100" class="flex-1">
+                    <div class="flex">
+                      <input type="number" id="scale-input" class="w-20 px-3 py-2 rounded-l-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-center" min="10" max="200" value="100">
+                      <span class="px-3 py-2 bg-gray-100 dark:bg-gray-600 border border-l-0 border-gray-300 dark:border-gray-600 rounded-r-lg text-gray-600 dark:text-gray-400">%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Aspect Ratio -->
+              <div class="mb-4">
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input type="checkbox" id="keep-ratio" checked class="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                  <span class="text-sm text-gray-700 dark:text-gray-300" data-i18n="tools.imageResizer.keepRatio">비율 유지</span>
+                  <svg id="ratio-icon" class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                  </svg>
+                </label>
+              </div>
+
+              <!-- Presets -->
+              <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" data-i18n="tools.imageResizer.presets">프리셋</label>
+                <div class="flex flex-wrap gap-2">
+                  <button class="preset-btn" data-w="1920" data-h="1080">1920×1080 (FHD)</button>
+                  <button class="preset-btn" data-w="1280" data-h="720">1280×720 (HD)</button>
+                  <button class="preset-btn" data-w="1080" data-h="1080">1080×1080 (IG)</button>
+                  <button class="preset-btn" data-w="1200" data-h="630">1200×630 (OG)</button>
+                  <button class="preset-btn" data-w="800" data-h="600">800×600</button>
+                  <button class="preset-btn" data-w="640" data-h="480">640×480</button>
+                  <button class="preset-btn" data-w="256" data-h="256">256×256</button>
+                  <button class="preset-btn" data-w="128" data-h="128">128×128</button>
+                </div>
+              </div>
+
+              <!-- Actions -->
+              <div class="flex flex-wrap gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+                <button id="apply-btn" class="btn btn-primary" data-i18n="tools.imageResizer.apply">적용</button>
+                <button id="download-btn" class="btn btn-secondary" data-i18n="common.download">다운로드</button>
+                <button id="reset-btn" class="btn btn-secondary ml-auto" data-i18n="common.reset">초기화</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ Section -->
+      <section class="mt-8 bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4" data-i18n="tools.imageResizer.faqTitle">이미지 리사이즈란?</h2>
+        <div class="prose prose-gray dark:prose-invert max-w-none text-sm">
+          <p class="text-gray-600 dark:text-gray-400 mb-4" data-i18n="tools.imageResizer.faqDesc">
+            이미지 리사이즈는 이미지의 크기(해상도)를 변경하는 것입니다. 웹사이트 업로드, SNS 게시, 썸네일 생성 등 다양한 용도로 활용됩니다.
+          </p>
+
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mt-6 mb-3" data-i18n="tools.imageResizer.howToUse">사용 방법</h3>
+          <ol class="list-decimal list-inside space-y-2 text-gray-600 dark:text-gray-400 mb-4">
+            <li data-i18n="tools.imageResizer.step1">이미지를 드래그하거나 클릭하여 업로드합니다</li>
+            <li data-i18n="tools.imageResizer.step2">픽셀 또는 퍼센트로 원하는 크기를 입력합니다</li>
+            <li data-i18n="tools.imageResizer.step3">'적용' 버튼을 클릭하여 리사이즈합니다</li>
+            <li data-i18n="tools.imageResizer.step4">'다운로드' 버튼으로 결과를 저장합니다</li>
+          </ol>
+
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mt-6 mb-3" data-i18n="tools.imageResizer.presetsTitle">프리셋 안내</h3>
+          <ul class="list-disc list-inside space-y-1 text-gray-600 dark:text-gray-400 mb-4">
+            <li><strong>1920×1080 (FHD):</strong> Full HD 해상도, 유튜브 썸네일</li>
+            <li><strong>1080×1080 (IG):</strong> 인스타그램 정사각형 포스트</li>
+            <li><strong>1200×630 (OG):</strong> Open Graph 이미지 (SNS 공유용)</li>
+            <li><strong>256×256, 128×128:</strong> 아이콘, 프로필 이미지</li>
+          </ul>
+
+          <div class="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+            <p class="text-blue-800 dark:text-blue-300 text-sm" data-i18n="tools.imageResizer.privacyNote">
+              모든 처리는 브라우저에서 이루어지며 이미지가 서버로 전송되지 않습니다.
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <div id="footer"></div>
+
+  <script>
+    (function() {
+      'use strict';
+      const dropZone = document.getElementById('drop-zone');
+      const fileInput = document.getElementById('file-input');
+      const uploadSection = document.getElementById('upload-section');
+      const editorSection = document.getElementById('editor-section');
+      const previewImg = document.getElementById('preview-img');
+      const originalSizeEl = document.getElementById('original-size');
+      const newSizeEl = document.getElementById('new-size');
+      const widthInput = document.getElementById('width-input');
+      const heightInput = document.getElementById('height-input');
+      const scaleSlider = document.getElementById('scale-slider');
+      const scaleInput = document.getElementById('scale-input');
+      const keepRatioCheckbox = document.getElementById('keep-ratio');
+      const ratioIcon = document.getElementById('ratio-icon');
+      const modePixel = document.getElementById('mode-pixel');
+      const modePercent = document.getElementById('mode-percent');
+      const pixelOptions = document.getElementById('pixel-options');
+      const percentOptions = document.getElementById('percent-options');
+      const applyBtn = document.getElementById('apply-btn');
+      const downloadBtn = document.getElementById('download-btn');
+      const resetBtn = document.getElementById('reset-btn');
+      const presetBtns = document.querySelectorAll('.preset-btn');
+
+      let originalImage = null;
+      let originalWidth = 0;
+      let originalHeight = 0;
+      let currentBlob = null;
+      let aspectRatio = 1;
+      let isPixelMode = true;
+
+      // Drag & Drop
+      dropZone.addEventListener('click', () => fileInput.click());
+      dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+      dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+        if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+      });
+      fileInput.addEventListener('change', (e) => { if (e.target.files.length) handleFile(e.target.files[0]); });
+
+      function handleFile(file) {
+        if (!file.type.startsWith('image/')) {
+          toast.error(window.t ? window.t('common.invalidInput') : '이미지 파일만 지원합니다.');
+          return;
+        }
+        if (file.size > 20 * 1024 * 1024) {
+          toast.error('20MB 이하 파일만 지원합니다.');
+          return;
+        }
+
+        const img = new Image();
+        img.onload = () => {
+          originalImage = img;
+          originalWidth = img.width;
+          originalHeight = img.height;
+          aspectRatio = img.width / img.height;
+
+          previewImg.src = img.src;
+          originalSizeEl.textContent = `${img.width} × ${img.height} px`;
+          widthInput.value = img.width;
+          heightInput.value = img.height;
+          updateNewSize();
+
+          uploadSection.classList.add('hidden');
+          editorSection.classList.remove('hidden');
+        };
+        img.src = URL.createObjectURL(file);
+      }
+
+      // Mode toggle
+      modePixel.addEventListener('click', () => {
+        isPixelMode = true;
+        modePixel.className = 'flex-1 px-4 py-2 rounded-lg font-medium bg-blue-600 text-white';
+        modePercent.className = 'flex-1 px-4 py-2 rounded-lg font-medium bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300';
+        pixelOptions.classList.remove('hidden');
+        percentOptions.classList.add('hidden');
+        widthInput.value = originalWidth;
+        heightInput.value = originalHeight;
+        updateNewSize();
+      });
+
+      modePercent.addEventListener('click', () => {
+        isPixelMode = false;
+        modePercent.className = 'flex-1 px-4 py-2 rounded-lg font-medium bg-blue-600 text-white';
+        modePixel.className = 'flex-1 px-4 py-2 rounded-lg font-medium bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300';
+        percentOptions.classList.remove('hidden');
+        pixelOptions.classList.add('hidden');
+        scaleSlider.value = 100;
+        scaleInput.value = 100;
+        updateNewSize();
+      });
+
+      // Width/Height input
+      widthInput.addEventListener('input', () => {
+        if (keepRatioCheckbox.checked && originalImage) {
+          heightInput.value = Math.round(widthInput.value / aspectRatio);
+        }
+        updateNewSize();
+      });
+
+      heightInput.addEventListener('input', () => {
+        if (keepRatioCheckbox.checked && originalImage) {
+          widthInput.value = Math.round(heightInput.value * aspectRatio);
+        }
+        updateNewSize();
+      });
+
+      // Scale slider/input
+      scaleSlider.addEventListener('input', () => {
+        scaleInput.value = scaleSlider.value;
+        updateNewSize();
+      });
+
+      scaleInput.addEventListener('input', () => {
+        scaleSlider.value = scaleInput.value;
+        updateNewSize();
+      });
+
+      // Keep ratio checkbox
+      keepRatioCheckbox.addEventListener('change', () => {
+        ratioIcon.classList.toggle('text-blue-600', keepRatioCheckbox.checked);
+        ratioIcon.classList.toggle('text-gray-400', !keepRatioCheckbox.checked);
+        if (keepRatioCheckbox.checked && originalImage) {
+          heightInput.value = Math.round(widthInput.value / aspectRatio);
+          updateNewSize();
+        }
+      });
+
+      // Presets
+      presetBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const w = parseInt(btn.dataset.w);
+          const h = parseInt(btn.dataset.h);
+          if (!isPixelMode) {
+            modePixel.click();
+          }
+          keepRatioCheckbox.checked = false;
+          ratioIcon.classList.remove('text-blue-600');
+          ratioIcon.classList.add('text-gray-400');
+          widthInput.value = w;
+          heightInput.value = h;
+          updateNewSize();
+        });
+      });
+
+      function updateNewSize() {
+        let w, h;
+        if (isPixelMode) {
+          w = parseInt(widthInput.value) || 0;
+          h = parseInt(heightInput.value) || 0;
+        } else {
+          const scale = parseInt(scaleInput.value) / 100;
+          w = Math.round(originalWidth * scale);
+          h = Math.round(originalHeight * scale);
+        }
+        newSizeEl.textContent = `→ ${w} × ${h} px`;
+      }
+
+      // Apply resize
+      applyBtn.addEventListener('click', () => {
+        if (!originalImage) return;
+
+        let w, h;
+        if (isPixelMode) {
+          w = parseInt(widthInput.value) || originalWidth;
+          h = parseInt(heightInput.value) || originalHeight;
+        } else {
+          const scale = parseInt(scaleInput.value) / 100;
+          w = Math.round(originalWidth * scale);
+          h = Math.round(originalHeight * scale);
+        }
+
+        if (w < 1 || h < 1 || w > 10000 || h > 10000) {
+          toast.error(window.t ? window.t('common.invalidInput') : '1~10000px 범위만 지원합니다.');
+          return;
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+
+        // Use better quality for downscaling
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        ctx.drawImage(originalImage, 0, 0, w, h);
+
+        canvas.toBlob((blob) => {
+          currentBlob = blob;
+          previewImg.src = URL.createObjectURL(blob);
+          toast.success(window.t ? window.t('tools.imageResizer.applied') : '적용되었습니다!');
+        }, 'image/png');
+      });
+
+      // Download
+      downloadBtn.addEventListener('click', () => {
+        if (!currentBlob && !originalImage) return;
+
+        const blobToDownload = currentBlob || (function() {
+          const canvas = document.createElement('canvas');
+          canvas.width = originalWidth;
+          canvas.height = originalHeight;
+          canvas.getContext('2d').drawImage(originalImage, 0, 0);
+          return new Promise(r => canvas.toBlob(r, 'image/png'));
+        })();
+
+        if (currentBlob) {
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(currentBlob);
+          a.download = 'resized_image.png';
+          a.click();
+        } else {
+          const canvas = document.createElement('canvas');
+          canvas.width = parseInt(widthInput.value) || originalWidth;
+          canvas.height = parseInt(heightInput.value) || originalHeight;
+          const ctx = canvas.getContext('2d');
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = 'high';
+          ctx.drawImage(originalImage, 0, 0, canvas.width, canvas.height);
+          canvas.toBlob((blob) => {
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'resized_image.png';
+            a.click();
+          }, 'image/png');
+        }
+      });
+
+      // Reset
+      resetBtn.addEventListener('click', () => {
+        originalImage = null;
+        currentBlob = null;
+        fileInput.value = '';
+        uploadSection.classList.remove('hidden');
+        editorSection.classList.add('hidden');
+        scaleSlider.value = 100;
+        scaleInput.value = 100;
+        keepRatioCheckbox.checked = true;
+        ratioIcon.classList.add('text-blue-600');
+        ratioIcon.classList.remove('text-gray-400');
+      });
+    })();
+  </script>
+</body>
+</html>
