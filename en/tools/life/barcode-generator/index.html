@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Barcode Generator - Toolneat</title>
-  <meta name="description" content="Generate various types of barcodes including CODE128, EAN-13, UPC.">
+  <meta name="description" content="Generate barcodes for free online. Supports 18 barcode formats: CODE128 (universal), EAN-13/EAN-8 (international products), UPC-A/UPC-E (US products), CODE39, ITF-14 (logistics), Codabar (libraries, shipping), Pharmacode, MSI and more. Download as PNG or SVG.">
   <link rel="canonical" href="https://toolneat.com/en/tools/life/barcode-generator/">
   <link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/barcode-generator/">
   <link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/barcode-generator/">
@@ -48,12 +48,30 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Barcode Format</label>
             <select id="format" class="input mb-4">
-              <option value="CODE128">CODE128 (All characters)</option>
-              <option value="EAN13">EAN-13 (13 digits)</option>
-              <option value="EAN8">EAN-8 (8 digits)</option>
-              <option value="UPC">UPC (12 digits)</option>
-              <option value="CODE39">CODE39 (Alphanumeric)</option>
-              <option value="ITF14">ITF-14 (14 digits)</option>
+              <optgroup label="General">
+                <option value="CODE128">CODE128 (All characters)</option>
+                <option value="CODE39">CODE39 (Uppercase + Numbers)</option>
+              </optgroup>
+              <optgroup label="Retail/Products">
+                <option value="EAN13">EAN-13 (International, 13 digits)</option>
+                <option value="EAN8">EAN-8 (Small items, 8 digits)</option>
+                <option value="EAN5">EAN-5 (Add-on, 5 digits)</option>
+                <option value="EAN2">EAN-2 (Add-on, 2 digits)</option>
+                <option value="UPC">UPC-A (US/Canada, 12 digits)</option>
+                <option value="UPCE">UPC-E (Compressed, 6 digits)</option>
+              </optgroup>
+              <optgroup label="Logistics/Industrial">
+                <option value="ITF14">ITF-14 (Cartons, 14 digits)</option>
+                <option value="ITF">ITF (Even digit count)</option>
+                <option value="MSI">MSI (Warehouse/Inventory)</option>
+                <option value="MSI10">MSI-10 (1 checksum)</option>
+                <option value="MSI11">MSI-11 (Mod 11)</option>
+                <option value="MSI1010">MSI-1010 (2 checksums)</option>
+              </optgroup>
+              <optgroup label="Special Purpose">
+                <option value="pharmacode">Pharmacode (Pharmaceuticals)</option>
+                <option value="codabar">Codabar (Libraries/Blood banks)</option>
+              </optgroup>
             </select>
 
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Data</label>

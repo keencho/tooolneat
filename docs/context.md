@@ -6,6 +6,10 @@ toolneat/
 ├── assets/
 │   ├── css/
 │   │   └── output.css          # Compiled Tailwind CSS
+│   ├── icons/                  # Favicon files
+│   │   ├── favicon.svg
+│   │   ├── favicon-32x32.png
+│   │   └── favicon-16x16.png
 │   └── js/
 │       ├── common.js           # Theme toggle, common utilities
 │       ├── components.js       # Header/footer loader, nav handlers
@@ -13,28 +17,40 @@ toolneat/
 ├── components/
 │   ├── header.html             # Shared header with navigation
 │   └── footer.html             # Shared footer
+├── docs/
+│   ├── context.md              # Development context (this file)
+│   ├── guide.md                # Operational guide
+│   ├── plan.md                 # Tool expansion plan
+│   └── 00-meta-plan.md         # SEO meta descriptions plan
 ├── locales/
 │   ├── ko.json                 # Korean translations
 │   └── en.json                 # English translations
+├── scripts/
+│   ├── generate-sitemap.js     # Sitemap generator
+│   ├── update-favicon.js       # Favicon updater for all pages
+│   └── update-meta-descriptions.js # SEO meta description updater
 ├── src/
 │   └── input.css               # Tailwind source CSS
 ├── tools/
-│   ├── dev/                    # Developer tools
+│   ├── dev/                    # Developer tools (21 tools)
 │   │   ├── base64/
 │   │   ├── json-formatter/
 │   │   ├── uuid-generator/
-│   │   └── ...
-│   └── life/                   # Lifestyle tools
+│   │   └── ... (see full list below)
+│   └── life/                   # Lifestyle tools (29 tools)
 │       ├── salary-calculator/
 │       ├── qr-generator/
-│       ├── image-compressor/   # NEW
-│       ├── barcode-generator/  # NEW
-│       ├── base-converter/     # NEW
-│       ├── favicon-generator/  # NEW
-│       ├── ascii-unicode/      # NEW
-│       ├── emoji-picker/       # NEW
-│       └── ...
-├── index.html                  # Homepage
+│       ├── image-compressor/
+│       ├── image-resizer/
+│       ├── image-converter/
+│       ├── barcode-generator/
+│       └── ... (see full list below)
+├── en/                         # English version (mirrors tools/)
+│   ├── tools/dev/
+│   └── tools/life/
+├── index.html                  # Homepage (Korean)
+├── en/index.html               # Homepage (English)
+├── sitemap.xml
 ├── package.json
 └── tailwind.config.js
 ```
@@ -182,4 +198,44 @@ function copyToClipboard(text) {
 
 
 ### sitemap.xml
-Must be added to sitemap.xml when creating a new tool page. Set the default to ko according to the existing form, and en needs to be added
+Must be added to sitemap.xml when creating a new tool page. Set the default to ko according to the existing form, and en needs to be added.
+Use `node scripts/generate-sitemap.js` to regenerate sitemap.
+
+---
+
+## SEO Optimization
+
+### Meta Description Guidelines
+- Korean: 80-150 characters
+- English: 150-160 characters (Google optimal)
+- Include action words: "무료", "온라인", "바로 사용"
+- Place main keywords at the beginning
+- Write natural sentences, not keyword lists
+- Make each page description unique
+
+### Favicon Setup (All Pages)
+```html
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+```
+Use absolute paths (`/assets/`) for all favicon links.
+
+### Scripts
+- `node scripts/update-meta-descriptions.js` - Update all meta descriptions
+- `node scripts/update-favicon.js` - Add favicon links to all pages
+- `node scripts/generate-sitemap.js` - Regenerate sitemap.xml
+
+---
+
+## Tool Lists
+
+### Dev Tools (21)
+base64, url-encoder, html-entity, uuid-generator, hash-generator, lorem-ipsum, jwt-generator, jwt-decoder, password-generator, cron-generator, json-formatter, color-converter, timestamp-converter, yaml-json, markdown-preview, case-converter, sql-formatter, css-minifier, line-ending, regex-tester, diff-checker
+
+### Life Tools (29)
+salary-calculator, dday-calculator, bmi-calculator, loan-calculator, age-calculator, percent-calculator, compound-calculator, tip-calculator, character-counter, unit-converter, qr-generator, barcode-generator, favicon-generator, image-compressor, image-resizer, image-converter, base-converter, ascii-unicode, emoji-picker, dead-pixel-test, pixel-fixer, screen-burn-test, screen-color-test, lottery-generator, roulette, dice-roller, coin-flip, typing-test, reaction-test
+
+### Barcode Formats Supported (18)
+CODE128, CODE39, EAN-13, EAN-8, EAN-5, EAN-2, UPC-A, UPC-E, ITF-14, ITF, MSI, MSI-10, MSI-11, MSI-1010, Pharmacode, Codabar

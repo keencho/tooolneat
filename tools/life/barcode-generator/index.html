@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title data-i18n-title="tools.barcodeGenerator.title">바코드 생성기 - Toolneat</title>
-  <meta name="description" data-i18n-desc="tools.barcodeGenerator.description" content="다양한 형식의 바코드를 생성합니다.">
+  <meta name="description" data-i18n-desc="tools.barcodeGenerator.description" content="바코드를 무료로 생성하는 온라인 도구입니다. CODE128(범용), EAN-13/EAN-8(국제 상품 바코드), UPC-A/UPC-E(미국 상품 바코드), CODE39, ITF-14(물류), Codabar(도서관, 택배), Pharmacode(의약품), MSI(창고 재고관리) 등 18종 바코드 형식을 지원합니다.">
   <link rel="canonical" href="https://toolneat.com/tools/life/barcode-generator/">
   <link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/barcode-generator/">
   <link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/barcode-generator/">
@@ -48,12 +48,30 @@
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" data-i18n="tools.barcodeGenerator.format">바코드 형식</label>
             <select id="format" class="input mb-4">
-              <option value="CODE128">CODE128 (모든 문자)</option>
-              <option value="EAN13">EAN-13 (13자리 숫자)</option>
-              <option value="EAN8">EAN-8 (8자리 숫자)</option>
-              <option value="UPC">UPC (12자리 숫자)</option>
-              <option value="CODE39">CODE39 (영문+숫자)</option>
-              <option value="ITF14">ITF-14 (14자리 숫자)</option>
+              <optgroup label="범용">
+                <option value="CODE128">CODE128 (모든 문자)</option>
+                <option value="CODE39">CODE39 (영문대문자+숫자)</option>
+              </optgroup>
+              <optgroup label="상품/유통">
+                <option value="EAN13">EAN-13 (국제상품, 13자리)</option>
+                <option value="EAN8">EAN-8 (소형상품, 8자리)</option>
+                <option value="EAN5">EAN-5 (부가코드, 5자리)</option>
+                <option value="EAN2">EAN-2 (부가코드, 2자리)</option>
+                <option value="UPC">UPC-A (미국상품, 12자리)</option>
+                <option value="UPCE">UPC-E (축약형, 6자리)</option>
+              </optgroup>
+              <optgroup label="물류/산업">
+                <option value="ITF14">ITF-14 (박스/팔레트, 14자리)</option>
+                <option value="ITF">ITF (숫자 짝수개)</option>
+                <option value="MSI">MSI (창고/재고관리)</option>
+                <option value="MSI10">MSI-10 (체크섬 1개)</option>
+                <option value="MSI11">MSI-11 (Mod 11)</option>
+                <option value="MSI1010">MSI-1010 (체크섬 2개)</option>
+              </optgroup>
+              <optgroup label="특수용도">
+                <option value="pharmacode">Pharmacode (의약품)</option>
+                <option value="codabar">Codabar (도서관/혈액은행)</option>
+              </optgroup>
             </select>
 
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" data-i18n="tools.barcodeGenerator.data">데이터</label>
@@ -123,11 +141,14 @@
           <h3 class="text-lg font-semibold text-gray-900 dark:text-white mt-6 mb-3">지원 바코드 형식</h3>
           <ul class="list-disc list-inside space-y-1 text-gray-600 dark:text-gray-400 mb-4">
             <li><strong>CODE128:</strong> 모든 ASCII 문자 지원, 가장 범용적인 형식</li>
-            <li><strong>EAN-13:</strong> 국제 상품 바코드, 13자리 숫자</li>
-            <li><strong>EAN-8:</strong> 소형 제품용, 8자리 숫자</li>
-            <li><strong>UPC:</strong> 미국/캐나다 상품 바코드, 12자리 숫자</li>
             <li><strong>CODE39:</strong> 영문 대문자, 숫자, 특수문자 지원</li>
-            <li><strong>ITF-14:</strong> 물류/배송용, 14자리 숫자</li>
+            <li><strong>EAN-13/8:</strong> 국제 상품 바코드 (13자리/8자리)</li>
+            <li><strong>EAN-5/2:</strong> 잡지 가격, 책 부가정보용 부가코드</li>
+            <li><strong>UPC-A/E:</strong> 미국/캐나다 상품 바코드 (12자리/축약형)</li>
+            <li><strong>ITF-14/ITF:</strong> 물류/배송 박스용 바코드</li>
+            <li><strong>MSI:</strong> 창고, 재고관리 시스템용</li>
+            <li><strong>Pharmacode:</strong> 의약품 포장 전용</li>
+            <li><strong>Codabar:</strong> 도서관, 혈액은행, 택배 송장용</li>
           </ul>
 
           <h3 class="text-lg font-semibold text-gray-900 dark:text-white mt-6 mb-3">자주 묻는 질문</h3>
