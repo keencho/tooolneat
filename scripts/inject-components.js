@@ -2,6 +2,7 @@
  * Component Injector
  * Injects header.html and footer.html into all HTML pages at build time
  * This eliminates runtime fetch requests for faster page loads
+ * Also applies i18n translations to prevent flash of untranslated content
  */
 
 const fs = require('fs');
@@ -9,10 +10,33 @@ const path = require('path');
 
 const ROOT_DIR = path.join(__dirname, '..');
 const COMPONENTS_DIR = path.join(ROOT_DIR, 'components');
+const LOCALES_DIR = path.join(ROOT_DIR, 'locales');
 
 // Read component files
 const headerHtml = fs.readFileSync(path.join(COMPONENTS_DIR, 'header.html'), 'utf-8');
 const footerHtml = fs.readFileSync(path.join(COMPONENTS_DIR, 'footer.html'), 'utf-8');
+
+// Read locale files
+const koLocale = JSON.parse(fs.readFileSync(path.join(LOCALES_DIR, 'ko.json'), 'utf-8'));
+const enLocale = JSON.parse(fs.readFileSync(path.join(LOCALES_DIR, 'en.json'), 'utf-8'));
+
+// Get nested value from object by dot-notation key
+function getNestedValue(obj, key) {
+  return key.split('.').reduce((o, k) => (o && o[k] !== undefined) ? o[k] : null, obj);
+}
+
+// Apply i18n translations to HTML
+function applyTranslations(html, locale) {
+  // Replace data-i18n="key">text</tag> with translated text
+  // Pattern: data-i18n="key.path">anything</
+  return html.replace(/data-i18n="([^"]+)"([^>]*)>([^<]*)</g, (match, key, attrs, text) => {
+    const translated = getNestedValue(locale, key);
+    if (translated && typeof translated === 'string') {
+      return `data-i18n="${key}"${attrs}>${translated}<`;
+    }
+    return match;
+  });
+}
 
 // Find all HTML files recursively
 function findHtmlFiles(dir, files = []) {
@@ -54,10 +78,18 @@ function injectComponents(filePath) {
   const relativePath = path.relative(ROOT_DIR, filePath);
   const isEnglish = relativePath.startsWith('en' + path.sep) || relativePath.startsWith('en/');
 
+  // Select locale
+  const locale = isEnglish ? enLocale : koLocale;
+
   // Prepare header/footer for this page
   let header = headerHtml;
   let footer = footerHtml;
 
+  // Apply translations first
+  header = applyTranslations(header, locale);
+  footer = applyTranslations(footer, locale);
+
+  // Convert links for English pages
   if (isEnglish) {
     header = convertLinksForEnglish(header);
     footer = convertLinksForEnglish(footer);
