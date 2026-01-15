@@ -93,10 +93,10 @@
 
     const modal = document.createElement('div');
     modal.id = 'search-modal';
-    modal.className = 'fixed inset-0 z-[9999] hidden';
+    modal.className = 'fixed inset-0 z-[9999] hidden flex items-center justify-center p-4';
     modal.innerHTML = `
       <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="search-backdrop"></div>
-      <div class="relative max-w-2xl mx-auto mt-[10vh]">
+      <div class="relative w-full max-w-2xl">
         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
           <!-- Search Input -->
           <div class="flex items-center gap-3 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
@@ -123,7 +123,7 @@
           </div>
 
           <!-- Footer -->
-          <div class="flex items-center gap-4 px-4 py-2 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 text-xs text-gray-500 dark:text-gray-400">
+          <div class="flex items-center gap-4 px-4 py-2 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-xs text-gray-500 dark:text-gray-400">
             <span class="flex items-center gap-1">
               <kbd class="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-700 rounded text-[10px]">↑</kbd>
               <kbd class="px-1.5 py-0.5 bg-gray-200 dark:bg-gray-700 rounded text-[10px]">↓</kbd>
