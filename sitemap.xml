@@ -1262,4 +1262,166 @@
     <priority>0.8</priority>
   </url>
 
+  <url>
+    <loc>https://toolneat.com/tools/dev/xml-json</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/dev/xml-json"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/dev/xml-json"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/dev/xml-json"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/en/tools/dev/xml-json</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/dev/xml-json"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/dev/xml-json"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/dev/xml-json"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/tools/pdf/merge-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/pdf/merge-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/pdf/merge-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/pdf/merge-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/en/tools/pdf/merge-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/pdf/merge-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/pdf/merge-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/pdf/merge-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/tools/pdf/split-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/pdf/split-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/pdf/split-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/pdf/split-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/en/tools/pdf/split-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/pdf/split-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/pdf/split-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/pdf/split-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/tools/pdf/compress-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/pdf/compress-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/pdf/compress-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/pdf/compress-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/en/tools/pdf/compress-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/pdf/compress-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/pdf/compress-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/pdf/compress-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/tools/pdf/pdf-to-image</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/pdf/pdf-to-image"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/pdf/pdf-to-image"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/pdf/pdf-to-image"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/en/tools/pdf/pdf-to-image</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/pdf/pdf-to-image"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/pdf/pdf-to-image"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/pdf/pdf-to-image"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/tools/pdf/image-to-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/pdf/image-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/pdf/image-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/pdf/image-to-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/en/tools/pdf/image-to-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/pdf/image-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/pdf/image-to-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/pdf/image-to-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/tools/pdf/rotate-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/pdf/rotate-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/pdf/rotate-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/pdf/rotate-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/en/tools/pdf/rotate-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/pdf/rotate-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/pdf/rotate-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/pdf/rotate-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/tools/pdf/watermark-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/pdf/watermark-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/pdf/watermark-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/pdf/watermark-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/en/tools/pdf/watermark-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/pdf/watermark-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/pdf/watermark-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/pdf/watermark-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/tools/pdf/delete-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/pdf/delete-pdf"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/pdf/delete-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/pdf/delete-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/en/tools/pdf/delete-pdf</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/pdf/delete-pdf"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/pdf/delete-pdf"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/pdf/delete-pdf"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>
