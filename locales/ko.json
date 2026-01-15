@@ -849,6 +849,40 @@
     "ocr": {
       "title": "OCR 텍스트 추출",
       "description": "이미지에서 텍스트를 인식합니다."
+    },
+    "gradientGenerator": {
+      "title": "그라데이션 생성기",
+      "description": "CSS 그라데이션을 시각적으로 생성합니다."
+    },
+    "colorPalette": {
+      "title": "색상 팔레트 추출",
+      "description": "이미지에서 색상 팔레트를 추출합니다."
+    },
+    "compressPdf": {
+      "title": "PDF 압축",
+      "description": "PDF 파일 크기를 줄입니다."
+    },
+    "qrScanner": {
+      "title": "QR 코드 스캐너",
+      "description": "QR 코드를 스캔합니다."
+    },
+    "imageWatermark": {
+      "title": "이미지 워터마크",
+      "description": "이미지에 워터마크를 추가합니다."
+    },
+    "colorPicker": {
+      "title": "색상 피커 (스포이드)",
+      "description": "화면 어디서나 색상을 추출하는 스포이드 도구입니다.",
+      "descriptionLong": "화면 어디서나 색상을 추출합니다. 브라우저 바깥의 다른 앱(Slack, Figma 등)에서도 색상을 추출할 수 있습니다.",
+      "pickColor": "색상 선택",
+      "history": "최근 선택한 색상",
+      "noHistory": "아직 선택한 색상이 없습니다",
+      "notSupported": "브라우저 미지원",
+      "notSupportedDesc": "이 기능은 Chrome 95+ 또는 Edge 95+ 브라우저에서만 사용할 수 있습니다. Safari, Firefox는 아직 지원하지 않습니다.",
+      "tipTitle": "사용 팁",
+      "tip1": "버튼을 클릭하면 스포이드가 활성화됩니다",
+      "tip2": "브라우저 바깥의 앱에서도 색상을 추출할 수 있습니다",
+      "tip3": "ESC 키를 누르면 취소됩니다"
     }
   },
   "common": {

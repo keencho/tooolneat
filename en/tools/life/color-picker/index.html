@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8846557285079359"
+     crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Color Picker (EyeDropper) - Toolneat</title>
+  <meta name="description" content="Pick colors from anywhere on your screen with the EyeDropper tool. Extract colors from any app including Slack, Figma, and more. Works on Chrome and Edge browsers.">
+
+  <!-- Canonical & hreflang -->
+  <link rel="canonical" href="https://toolneat.com/en/tools/life/color-picker/">
+  <link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/color-picker/">
+  <link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/color-picker/">
+  <link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/color-picker/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Toolneat">
+  <meta property="og:title" content="Color Picker (EyeDropper) - Toolneat">
+  <meta property="og:description" content="Pick colors from anywhere on your screen with the EyeDropper tool.">
+  <meta property="og:url" content="https://toolneat.com/en/tools/life/color-picker/">
+  <meta property="og:image" content="https://toolneat.com/assets/images/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#2563eb">
+
+  <!-- Favicon -->
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+  <link rel="stylesheet" href="../../../../assets/css/output.css">
+
+  <!-- JS -->
+  <script src="../../../../assets/js/common.js"></script>
+  <script>
+    // Force English language
+    localStorage.setItem('toolneat-lang', 'en');
+  </script>
+  <script src="../../../../assets/js/i18n.js"></script>
+  <script src="../../../../assets/js/components.js"></script>
+
+  <style>
+    .color-preview-large {
+      width: 100%;
+      height: 200px;
+      border-radius: 16px;
+      border: 3px solid rgba(0, 0, 0, 0.1);
+      transition: background-color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .dark .color-preview-large {
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+    .color-history-item {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      border: 2px solid rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .color-history-item:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    .dark .color-history-item {
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+    .format-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: #f9fafb;
+      border-radius: 8px;
+    }
+    .dark .format-row {
+      background: #1f2937;
+    }
+  </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Color Picker (EyeDropper)",
+  "description": "Pick colors from anywhere on your screen with the EyeDropper tool. Extract colors from any app including Slack, Figma, and more.",
+  "url": "https://toolneat.com/en/tools/life/color-picker",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires Chrome 95+ or Edge 95+",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "Toolneat",
+    "url": "https://toolneat.com"
+  }
+}
+</script>
+</head>
+<body class="min-h-screen flex flex-col">
+  <!-- Header -->
+  <div id="header"></div>
+
+  <!-- Main Content -->
+  <main class="flex-1 py-8 md:py-12">
+    <div class="container-main">
+      <!-- Page Title -->
+      <div class="mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">
+          Color Picker (EyeDropper)
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400">
+          Pick colors from anywhere on your screen. Works outside the browser too - extract colors from any app like Slack, Figma, and more.
+        </p>
+      </div>
+
+      <!-- Ad Container (Top) -->
+      <div class="ad-container mb-6">
+
+      </div>
+
+      <!-- Browser Support Warning -->
+      <div id="browser-warning" class="hidden mb-6 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl border border-yellow-200 dark:border-yellow-800">
+        <div class="flex items-start gap-3">
+          <svg class="w-6 h-6 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+          </svg>
+          <div>
+            <h3 class="font-medium text-yellow-800 dark:text-yellow-300">Browser Not Supported</h3>
+            <p class="text-sm text-yellow-700 dark:text-yellow-400 mt-1">
+              This feature requires Chrome 95+ or Edge 95+. Safari and Firefox are not yet supported.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tool Card -->
+      <div class="card">
+        <!-- Color Preview & Pick Button -->
+        <div class="mb-6">
+          <div class="color-preview-large" id="color-preview" style="background-color: #3b82f6;">
+            <button id="pick-color-btn" class="btn btn-primary text-lg px-8 py-4 shadow-lg hover:shadow-xl transition-all">
+              <svg class="w-6 h-6 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+              </svg>
+              <span>Pick Color</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Color Formats -->
+        <div class="space-y-3 mb-6">
+          <div class="format-row">
+            <span class="text-sm font-medium text-gray-600 dark:text-gray-400 w-16">HEX</span>
+            <input type="text" id="hex-output" class="input py-2 flex-1 font-mono text-sm" value="#3b82f6" readonly>
+            <button class="btn btn-secondary py-2 px-3" data-copy="hex">Copy</button>
+          </div>
+          <div class="format-row">
+            <span class="text-sm font-medium text-gray-600 dark:text-gray-400 w-16">RGB</span>
+            <input type="text" id="rgb-output" class="input py-2 flex-1 font-mono text-sm" value="rgb(59, 130, 246)" readonly>
+            <button class="btn btn-secondary py-2 px-3" data-copy="rgb">Copy</button>
+          </div>
+          <div class="format-row">
+            <span class="text-sm font-medium text-gray-600 dark:text-gray-400 w-16">HSL</span>
+            <input type="text" id="hsl-output" class="input py-2 flex-1 font-mono text-sm" value="hsl(217, 91%, 60%)" readonly>
+            <button class="btn btn-secondary py-2 px-3" data-copy="hsl">Copy</button>
+          </div>
+        </div>
+
+        <!-- Color History -->
+        <div class="border-t border-gray-100 dark:border-gray-700 pt-6">
+          <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Recently Picked Colors</h3>
+          <div id="color-history" class="flex flex-wrap gap-3">
+            <p class="text-sm text-gray-500 dark:text-gray-400">No colors picked yet</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Box -->
+      <div class="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+        <h3 class="font-medium text-blue-800 dark:text-blue-300 mb-2">Tips</h3>
+        <ul class="text-sm text-blue-700 dark:text-blue-400 space-y-1">
+          <li>Click the button to activate the eyedropper</li>
+          <li>You can pick colors from outside the browser too</li>
+          <li>Press ESC to cancel</li>
+        </ul>
+      </div>
+
+      <!-- FAQ Section -->
+      <section class="mt-8 bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">What is Color Picker?</h2>
+        <div class="prose prose-gray dark:prose-invert max-w-none text-sm">
+          <p class="text-gray-600 dark:text-gray-400 mb-4">Color Picker (EyeDropper) is a tool that allows you to extract colors from anywhere on your screen. Using the EyeDropper API, you can pick colors not only from web pages but also from other applications like Slack, Figma, Photoshop, and more.</p>
+
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mt-6 mb-3">How to Use</h3>
+          <ol class="list-decimal list-inside space-y-2 text-gray-600 dark:text-gray-400 mb-4">
+            <li>Click the "Pick Color" button</li>
+            <li>Move your cursor over any color on the screen</li>
+            <li>Click to extract the color</li>
+            <li>Copy the color in HEX, RGB, or HSL format</li>
+          </ol>
+
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mt-6 mb-3">Frequently Asked Questions</h3>
+          <div class="space-y-4">
+            <div>
+              <h4 class="font-medium text-gray-900 dark:text-white">Q: Which browsers are supported?</h4>
+              <p class="text-gray-600 dark:text-gray-400">Chrome 95+ and Edge 95+ are supported. Safari and Firefox do not yet support the EyeDropper API.</p>
+            </div>
+            <div>
+              <h4 class="font-medium text-gray-900 dark:text-white">Q: Can I pick colors from outside the browser?</h4>
+              <p class="text-gray-600 dark:text-gray-400">Yes! Once the eyedropper is activated, you can pick colors from anywhere on your screen, including other applications.</p>
+            </div>
+            <div>
+              <h4 class="font-medium text-gray-900 dark:text-white">Q: The extracted color doesn't seem accurate</h4>
+              <p class="text-gray-600 dark:text-gray-400">Color accuracy may vary slightly depending on your display color profile and browser rendering. For precise colors, check the original source's color code.</p>
+            </div>
+          </div>
+
+          <p class="text-gray-600 dark:text-gray-400 mt-4">All processing is done in your browser. No data is sent to any server.</p>
+        </div>
+      </section>
+
+      <!-- Ad Container (Bottom) -->
+      <div class="ad-container mt-8">
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Tool Script -->
+  <script>
+    (function() {
+      'use strict';
+
+      const pickBtn = document.getElementById('pick-color-btn');
+      const colorPreview = document.getElementById('color-preview');
+      const hexOutput = document.getElementById('hex-output');
+      const rgbOutput = document.getElementById('rgb-output');
+      const hslOutput = document.getElementById('hsl-output');
+      const colorHistory = document.getElementById('color-history');
+      const browserWarning = document.getElementById('browser-warning');
+
+      let history = JSON.parse(localStorage.getItem('toolneat-color-history') || '[]');
+
+      // Check EyeDropper support
+      if (!('EyeDropper' in window)) {
+        browserWarning.classList.remove('hidden');
+        pickBtn.disabled = true;
+        pickBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      }
+
+      // Color conversion functions
+      function hexToRgb(hex) {
+        hex = hex.replace(/^#/, '');
+        const num = parseInt(hex, 16);
+        return {
+          r: (num >> 16) & 255,
+          g: (num >> 8) & 255,
+          b: num & 255
+        };
+      }
+
+      function rgbToHsl(r, g, b) {
+        r /= 255;
+        g /= 255;
+        b /= 255;
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
+        let h, s, l = (max + min) / 2;
+
+        if (max === min) {
+          h = s = 0;
+        } else {
+          const d = max - min;
+          s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+          switch (max) {
+            case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+            case g: h = ((b - r) / d + 2) / 6; break;
+            case b: h = ((r - g) / d + 4) / 6; break;
+          }
+        }
+
+        return {
+          h: Math.round(h * 360),
+          s: Math.round(s * 100),
+          l: Math.round(l * 100)
+        };
+      }
+
+      function updateColor(hex) {
+        const rgb = hexToRgb(hex);
+        const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+
+        colorPreview.style.backgroundColor = hex;
+        hexOutput.value = hex;
+        rgbOutput.value = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+        hslOutput.value = `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
+
+        // Update button text color based on brightness
+        const brightness = (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
+        pickBtn.classList.toggle('text-gray-900', brightness > 128);
+        pickBtn.classList.toggle('bg-white/90', brightness > 128);
+        pickBtn.classList.toggle('hover:bg-white', brightness > 128);
+      }
+
+      function addToHistory(hex) {
+        // Remove if already exists
+        history = history.filter(c => c !== hex);
+        // Add to front
+        history.unshift(hex);
+        // Keep max 12
+        history = history.slice(0, 12);
+        // Save
+        localStorage.setItem('toolneat-color-history', JSON.stringify(history));
+        // Render
+        renderHistory();
+      }
+
+      function renderHistory() {
+        if (history.length === 0) {
+          colorHistory.innerHTML = '<p class="text-sm text-gray-500 dark:text-gray-400">No colors picked yet</p>';
+          return;
+        }
+
+        colorHistory.innerHTML = history.map(hex => `
+          <div class="color-history-item" style="background: ${hex};" data-color="${hex}" title="${hex}"></div>
+        `).join('');
+
+        // Add click handlers
+        colorHistory.querySelectorAll('.color-history-item').forEach(item => {
+          item.addEventListener('click', () => {
+            updateColor(item.dataset.color);
+          });
+        });
+      }
+
+      // Pick color button
+      pickBtn.addEventListener('click', async () => {
+        if (!('EyeDropper' in window)) return;
+
+        try {
+          const eyeDropper = new EyeDropper();
+          const result = await eyeDropper.open();
+          updateColor(result.sRGBHex);
+          addToHistory(result.sRGBHex);
+          toast.success('Copied!');
+        } catch (e) {
+          // User cancelled
+        }
+      });
+
+      // Copy buttons
+      document.querySelectorAll('[data-copy]').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const format = btn.dataset.copy;
+          let value = '';
+          switch (format) {
+            case 'hex': value = hexOutput.value; break;
+            case 'rgb': value = rgbOutput.value; break;
+            case 'hsl': value = hslOutput.value; break;
+          }
+          await copyToClipboard(value);
+          toast.success('Copied!');
+        });
+      });
+
+      // Initialize
+      renderHistory();
+      if (history.length > 0) {
+        updateColor(history[0]);
+      }
+    })();
+  </script>
+</body>
+</html>

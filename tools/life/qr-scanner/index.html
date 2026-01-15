@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8846557285079359" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR코드 스캐너 - Toolneat</title>
+  <meta name="description" content="카메라나 이미지로 QR코드를 스캔하는 무료 온라인 도구입니다. URL, 텍스트, 연락처 정보를 즉시 확인. 앱 설치 없이 브라우저에서 바로 사용 가능합니다.">
+  <link rel="canonical" href="https://toolneat.com/tools/life/qr-scanner/">
+  <link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/qr-scanner/">
+  <link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/qr-scanner/">
+  <link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/qr-scanner/">
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+  <link rel="stylesheet" href="../../../assets/css/output.css">
+  <script src="../../../assets/js/common.js"></script>
+  <script src="../../../assets/js/i18n.js"></script>
+  <script src="../../../assets/js/components.js"></script>
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Toolneat">
+  <meta property="og:title" content="QR코드 스캐너 - Toolneat">
+  <meta property="og:description" content="QR코드를 스캔하는 무료 온라인 도구입니다.">
+  <meta property="og:url" content="https://toolneat.com/tools/life/qr-scanner">
+  <meta property="og:image" content="https://toolneat.com/assets/images/og-image.png">
+  <meta property="og:locale" content="ko_KR">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"QR코드 스캐너","description":"QR코드를 스캔하는 무료 온라인 도구입니다.","url":"https://toolneat.com/tools/life/qr-scanner","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"author":{"@type":"Organization","name":"Toolneat"}}
+  </script>
+  <style>
+    #reader{width:100%;max-width:500px;margin:0 auto}
+    #reader video{border-radius:12px}
+    .tab-btn{padding:12px 24px;border-radius:12px;font-weight:500;transition:all .2s}
+    .tab-btn.active{background:#3b82f6;color:#fff}
+    .tab-btn:not(.active){background:#f3f4f6;color:#6b7280}
+    .dark .tab-btn:not(.active){background:#374151;color:#9ca3af}
+    .result-box{background:#f0fdf4;border:2px solid #22c55e;border-radius:12px;padding:16px}
+    .dark .result-box{background:#14532d}
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <div id="header"></div>
+  <main class="flex-1 py-8 md:py-12">
+    <div class="container-main">
+      <div class="mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">QR코드 스캐너</h1>
+        <p class="text-gray-600 dark:text-gray-400">카메라 또는 이미지로 QR코드를 스캔합니다.</p>
+      </div>
+      <div class="card">
+        <div class="flex gap-2 mb-6 justify-center">
+          <button id="tab-camera" class="tab-btn active">카메라</button>
+          <button id="tab-image" class="tab-btn">이미지 업로드</button>
+        </div>
+        <div id="camera-section">
+          <div id="reader"></div>
+          <div id="camera-placeholder" class="text-center py-12">
+            <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            <button id="start-camera" class="btn btn-primary">카메라 시작</button>
+            <p class="text-sm text-gray-400 mt-2">카메라 권한이 필요합니다</p>
+          </div>
+        </div>
+        <div id="image-section" class="hidden">
+          <div id="drop-zone" class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-12 text-center cursor-pointer hover:border-blue-500 transition-colors">
+            <svg class="w-12 h-12 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <p class="text-gray-600 dark:text-gray-400">QR코드 이미지를 드래그하거나 클릭</p>
+          </div>
+          <input type="file" id="file-input" accept="image/*" class="hidden">
+        </div>
+        <div id="result-section" class="hidden mt-6">
+          <div class="result-box">
+            <p class="text-sm text-green-600 dark:text-green-400 mb-1">스캔 결과</p>
+            <p id="result-text" class="text-gray-900 dark:text-white font-medium break-all"></p>
+          </div>
+          <div class="flex gap-3 mt-4">
+            <button id="copy-btn" class="btn btn-primary flex-1">복사</button>
+            <button id="open-btn" class="btn btn-secondary flex-1 hidden">열기</button>
+          </div>
+        </div>
+      </div>
+      <div class="mt-4 text-center">
+        <a href="/tools/life/qr-generator/" class="text-blue-500 hover:underline">QR코드 생성하기 →</a>
+      </div>
+      <section class="mt-8 bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">QR코드 스캐너란?</h2>
+        <div class="prose prose-gray dark:prose-invert max-w-none text-sm">
+          <p class="text-gray-600 dark:text-gray-400 mb-4">QR코드에 담긴 정보를 읽어내는 도구입니다. URL, 텍스트, 연락처, Wi-Fi 정보 등 다양한 형식을 인식합니다.</p>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mt-6 mb-3">사용 방법</h3>
+          <ol class="list-decimal list-inside space-y-2 text-gray-600 dark:text-gray-400 mb-4">
+            <li>카메라 또는 이미지 업로드 중 선택</li>
+            <li>카메라: QR코드를 화면에 비추기</li>
+            <li>이미지: QR코드가 있는 이미지 업로드</li>
+            <li>결과 확인 및 복사/열기</li>
+          </ol>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mt-6 mb-3">자주 묻는 질문</h3>
+          <div class="space-y-4">
+            <div><h4 class="font-medium text-gray-900 dark:text-white">Q: 카메라가 안 켜져요</h4><p class="text-gray-600 dark:text-gray-400">브라우저에서 카메라 권한을 허용해주세요. HTTPS 환경에서만 작동합니다.</p></div>
+            <div><h4 class="font-medium text-gray-900 dark:text-white">Q: 어떤 QR코드를 인식하나요?</h4><p class="text-gray-600 dark:text-gray-400">URL, 텍스트, vCard, Wi-Fi, 이메일 등 대부분의 QR코드 형식을 지원합니다.</p></div>
+            <div><h4 class="font-medium text-gray-900 dark:text-white">Q: 바코드도 스캔 가능한가요?</h4><p class="text-gray-600 dark:text-gray-400">QR코드 전용입니다. 바코드 생성은 바코드 생성기를 이용해주세요.</p></div>
+          </div>
+          <p class="text-gray-600 dark:text-gray-400 mt-4">모든 처리는 브라우저에서 이루어지며 서버로 전송되지 않습니다.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+  <div id="footer"></div>
+  <script>
+    const tabCamera=document.getElementById('tab-camera'),tabImage=document.getElementById('tab-image'),cameraSection=document.getElementById('camera-section'),imageSection=document.getElementById('image-section'),resultSection=document.getElementById('result-section'),resultText=document.getElementById('result-text'),openBtn=document.getElementById('open-btn'),dropZone=document.getElementById('drop-zone'),fileInput=document.getElementById('file-input'),cameraPlaceholder=document.getElementById('camera-placeholder');
+    let html5QrCode=null,scanResult='';
+
+    tabCamera.addEventListener('click',()=>{
+      tabCamera.classList.add('active');tabImage.classList.remove('active');
+      cameraSection.classList.remove('hidden');imageSection.classList.add('hidden');
+    });
+    tabImage.addEventListener('click',()=>{
+      tabImage.classList.add('active');tabCamera.classList.remove('active');
+      imageSection.classList.remove('hidden');cameraSection.classList.add('hidden');
+      if(html5QrCode&&html5QrCode.isScanning)html5QrCode.stop();
+    });
+
+    document.getElementById('start-camera').addEventListener('click',async()=>{
+      cameraPlaceholder.classList.add('hidden');
+      html5QrCode=new Html5Qrcode('reader');
+      try{
+        await html5QrCode.start({facingMode:'environment'},{fps:10,qrbox:{width:250,height:250}},onScanSuccess,()=>{});
+      }catch(e){
+        toast.error('카메라를 시작할 수 없습니다.');
+        cameraPlaceholder.classList.remove('hidden');
+      }
+    });
+
+    function onScanSuccess(decodedText){
+      scanResult=decodedText;
+      resultText.textContent=decodedText;
+      resultSection.classList.remove('hidden');
+      if(decodedText.startsWith('http')){openBtn.classList.remove('hidden')}else{openBtn.classList.add('hidden')}
+      toast.success('QR코드 스캔 완료!');
+      if(html5QrCode&&html5QrCode.isScanning)html5QrCode.stop();
+    }
+
+    dropZone.addEventListener('click',()=>fileInput.click());
+    dropZone.addEventListener('dragover',e=>{e.preventDefault();dropZone.classList.add('border-blue-500')});
+    dropZone.addEventListener('dragleave',()=>dropZone.classList.remove('border-blue-500'));
+    dropZone.addEventListener('drop',e=>{e.preventDefault();dropZone.classList.remove('border-blue-500');if(e.dataTransfer.files[0])scanImage(e.dataTransfer.files[0])});
+    fileInput.addEventListener('change',e=>{if(e.target.files[0])scanImage(e.target.files[0])});
+
+    async function scanImage(file){
+      const scanner=new Html5Qrcode('reader');
+      try{
+        const result=await scanner.scanFile(file,true);
+        onScanSuccess(result);
+      }catch(e){
+        toast.error('QR코드를 찾을 수 없습니다.');
+      }
+    }
+
+    document.getElementById('copy-btn').addEventListener('click',()=>{
+      navigator.clipboard.writeText(scanResult);
+      toast.success('복사되었습니다!');
+    });
+    openBtn.addEventListener('click',()=>window.open(scanResult,'_blank'));
+  </script>
+</body>
+</html>

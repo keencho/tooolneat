@@ -849,6 +849,40 @@
     "ocr": {
       "title": "OCR Text Extractor",
       "description": "Extract text from images."
+    },
+    "gradientGenerator": {
+      "title": "Gradient Generator",
+      "description": "Create CSS gradients visually."
+    },
+    "colorPalette": {
+      "title": "Color Palette Extractor",
+      "description": "Extract color palette from images."
+    },
+    "compressPdf": {
+      "title": "Compress PDF",
+      "description": "Reduce PDF file size."
+    },
+    "qrScanner": {
+      "title": "QR Code Scanner",
+      "description": "Scan QR codes."
+    },
+    "imageWatermark": {
+      "title": "Image Watermark",
+      "description": "Add watermark to images."
+    },
+    "colorPicker": {
+      "title": "Color Picker (EyeDropper)",
+      "description": "Pick colors from anywhere on your screen.",
+      "descriptionLong": "Pick colors from anywhere on your screen. Works outside the browser too - extract colors from any app like Slack, Figma, and more.",
+      "pickColor": "Pick Color",
+      "history": "Recently Picked Colors",
+      "noHistory": "No colors picked yet",
+      "notSupported": "Browser Not Supported",
+      "notSupportedDesc": "This feature requires Chrome 95+ or Edge 95+. Safari and Firefox are not yet supported.",
+      "tipTitle": "Tips",
+      "tip1": "Click the button to activate the eyedropper",
+      "tip2": "You can pick colors from outside the browser too",
+      "tip3": "Press ESC to cancel"
     }
   },
   "common": {

@@ -140,8 +140,29 @@ Add to `components/header.html`:
 - Desktop mega menu link
 - Mobile accordion link
 
-### 5. Update Homepage
-Add tool card to `index.html` in appropriate section
+### 5. Update Homepage (필수)
+**반드시 `index.html`과 `en/index.html` 모두에 도구 카드 추가**
+
+홈페이지에 도구를 추가하지 않으면 사용자가 새 도구를 발견하기 어려움.
+
+도구 카드 예시:
+```html
+<a href="./tools/dev/tool-name" class="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors group">
+  <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
+    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><!-- icon --></svg>
+  </div>
+  <div class="flex-1 min-w-0">
+    <div class="font-medium text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400" data-i18n="tools.toolName.title">도구 이름</div>
+    <div class="text-xs text-gray-500 dark:text-gray-400" data-i18n="tools.toolName.description">도구 설명</div>
+  </div>
+  <svg class="w-4 h-4 text-gray-400 group-hover:text-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+</a>
+```
+
+**추가 위치**:
+- Dev Tools: 인코딩/생성기/변환기/테스터 섹션 중 적합한 곳
+- Life Tools: 계산기/유틸리티/미디어 등 적합한 섹션
+- PDF Tools: PDF 편집/변환 섹션
 
 ### 6. FAQ Section (필수)
 **모든 도구 페이지에 FAQ 섹션 필수 포함**
@@ -290,14 +311,14 @@ Use absolute paths (`/assets/`) for all favicon links.
 
 ## Tool Lists
 
-### Dev Tools (21)
-base64, url-encoder, html-entity, uuid-generator, hash-generator, lorem-ipsum, jwt-generator, jwt-decoder, password-generator, cron-generator, json-formatter, color-converter, timestamp-converter, yaml-json, markdown-preview, case-converter, sql-formatter, css-minifier, line-ending, regex-tester, diff-checker
+### Dev Tools (23)
+base64, url-encoder, html-entity, uuid-generator, hash-generator, lorem-ipsum, jwt-generator, jwt-decoder, password-generator, cron-generator, gradient-generator, json-formatter, color-converter, color-palette, timestamp-converter, yaml-json, markdown-preview, case-converter, sql-formatter, css-minifier, line-ending, regex-tester, diff-checker
 
-### Life Tools (33)
-salary-calculator, dday-calculator, bmi-calculator, loan-calculator, age-calculator, percent-calculator, compound-calculator, tip-calculator, character-counter, unit-converter, qr-generator, barcode-generator, favicon-generator, image-compressor, image-resizer, image-converter, background-remover, video-to-gif, screen-recorder, ocr, base-converter, ascii-unicode, emoji-picker, dead-pixel-test, pixel-fixer, screen-burn-test, screen-color-test, lottery-generator, roulette, dice-roller, coin-flip, typing-test, reaction-test
+### Life Tools (36)
+salary-calculator, dday-calculator, bmi-calculator, loan-calculator, age-calculator, percent-calculator, compound-calculator, tip-calculator, character-counter, unit-converter, qr-generator, qr-scanner, barcode-generator, favicon-generator, image-compressor, image-resizer, image-converter, image-watermark, color-picker, background-remover, video-to-gif, screen-recorder, ocr, base-converter, ascii-unicode, emoji-picker, dead-pixel-test, pixel-fixer, screen-burn-test, screen-color-test, lottery-generator, roulette, dice-roller, coin-flip, typing-test, reaction-test
 
-### PDF Tools (4)
-merge-pdf, split-pdf, pdf-to-image, image-to-pdf
+### PDF Tools (5)
+merge-pdf, split-pdf, compress-pdf, pdf-to-image, image-to-pdf
 
 ### Barcode Formats Supported (18)
 CODE128, CODE39, EAN-13, EAN-8, EAN-5, EAN-2, UPC-A, UPC-E, ITF-14, ITF, MSI, MSI-10, MSI-11, MSI-1010, Pharmacode, Codabar

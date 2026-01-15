@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8846557285079359"
+     crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n-title="tools.colorPicker.title">색상 피커 (스포이드) - Toolneat</title>
+  <meta name="description" data-i18n-desc="tools.colorPicker.description" content="화면 어디서나 색상을 추출하는 스포이드 도구입니다. 브라우저 바깥의 다른 앱에서도 색상을 추출할 수 있습니다. Chrome, Edge에서 사용 가능합니다.">
+
+  <!-- Canonical & hreflang -->
+  <link rel="canonical" href="https://toolneat.com/tools/life/color-picker/">
+  <link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/color-picker/">
+  <link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/color-picker/">
+  <link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/color-picker/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Toolneat">
+  <meta property="og:title" content="색상 피커 (스포이드) - Toolneat">
+  <meta property="og:description" content="화면 어디서나 색상을 추출하는 스포이드 도구입니다.">
+  <meta property="og:url" content="https://toolneat.com/tools/life/color-picker/">
+  <meta property="og:image" content="https://toolneat.com/assets/images/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#2563eb">
+
+  <!-- Favicon -->
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+  <link rel="stylesheet" href="../../../assets/css/output.css">
+
+  <!-- JS -->
+  <script src="../../../assets/js/common.js"></script>
+  <script src="../../../assets/js/i18n.js"></script>
+  <script src="../../../assets/js/components.js"></script>
+
+  <style>
+    .color-preview-large {
+      width: 100%;
+      height: 200px;
+      border-radius: 16px;
+      border: 3px solid rgba(0, 0, 0, 0.1);
+      transition: background-color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .dark .color-preview-large {
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+    .color-history-item {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      border: 2px solid rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .color-history-item:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    .dark .color-history-item {
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+    .format-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: #f9fafb;
+      border-radius: 8px;
+    }
+    .dark .format-row {
+      background: #1f2937;
+    }
+  </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Color Picker (EyeDropper)",
+  "description": "화면 어디서나 색상을 추출하는 스포이드 도구입니다. 브라우저 바깥의 다른 앱에서도 색상을 추출할 수 있습니다.",
+  "url": "https://toolneat.com/tools/life/color-picker",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires Chrome 95+ or Edge 95+",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "KRW"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "Toolneat",
+    "url": "https://toolneat.com"
+  }
+}
+</script>
+</head>
+<body class="min-h-screen flex flex-col">
+  <!-- Header -->
+  <div id="header"></div>
+
+  <!-- Main Content -->
+  <main class="flex-1 py-8 md:py-12">
+    <div class="container-main">
+      <!-- Page Title -->
+      <div class="mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2" data-i18n="tools.colorPicker.title">
+          색상 피커 (스포이드)
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400" data-i18n="tools.colorPicker.descriptionLong">
+          화면 어디서나 색상을 추출합니다. 브라우저 바깥의 다른 앱(Slack, Figma 등)에서도 색상을 추출할 수 있습니다.
+        </p>
+      </div>
+
+      <!-- Ad Container (Top) -->
+      <div class="ad-container mb-6">
+
+      </div>
+
+      <!-- Browser Support Warning -->
+      <div id="browser-warning" class="hidden mb-6 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl border border-yellow-200 dark:border-yellow-800">
+        <div class="flex items-start gap-3">
+          <svg class="w-6 h-6 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+          </svg>
+          <div>
+            <h3 class="font-medium text-yellow-800 dark:text-yellow-300" data-i18n="tools.colorPicker.notSupported">브라우저 미지원</h3>
+            <p class="text-sm text-yellow-700 dark:text-yellow-400 mt-1" data-i18n="tools.colorPicker.notSupportedDesc">
+              이 기능은 Chrome 95+ 또는 Edge 95+ 브라우저에서만 사용할 수 있습니다. Safari, Firefox는 아직 지원하지 않습니다.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tool Card -->
+      <div class="card">
+        <!-- Color Preview & Pick Button -->
+        <div class="mb-6">
+          <div class="color-preview-large" id="color-preview" style="background-color: #3b82f6;">
+            <button id="pick-color-btn" class="btn btn-primary text-lg px-8 py-4 shadow-lg hover:shadow-xl transition-all">
+              <svg class="w-6 h-6 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+              </svg>
+              <span data-i18n="tools.colorPicker.pickColor">색상 선택</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Color Formats -->
+        <div class="space-y-3 mb-6">
+          <div class="format-row">
+            <span class="text-sm font-medium text-gray-600 dark:text-gray-400 w-16">HEX</span>
+            <input type="text" id="hex-output" class="input py-2 flex-1 font-mono text-sm" value="#3b82f6" readonly>
+            <button class="btn btn-secondary py-2 px-3" data-copy="hex" data-i18n="common.copy">복사</button>
+          </div>
+          <div class="format-row">
+            <span class="text-sm font-medium text-gray-600 dark:text-gray-400 w-16">RGB</span>
+            <input type="text" id="rgb-output" class="input py-2 flex-1 font-mono text-sm" value="rgb(59, 130, 246)" readonly>
+            <button class="btn btn-secondary py-2 px-3" data-copy="rgb" data-i18n="common.copy">복사</button>
+          </div>
+          <div class="format-row">
+            <span class="text-sm font-medium text-gray-600 dark:text-gray-400 w-16">HSL</span>
+            <input type="text" id="hsl-output" class="input py-2 flex-1 font-mono text-sm" value="hsl(217, 91%, 60%)" readonly>
+            <button class="btn btn-secondary py-2 px-3" data-copy="hsl" data-i18n="common.copy">복사</button>
+          </div>
+        </div>
+
+        <!-- Color History -->
+        <div class="border-t border-gray-100 dark:border-gray-700 pt-6">
+          <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3" data-i18n="tools.colorPicker.history">최근 선택한 색상</h3>
+          <div id="color-history" class="flex flex-wrap gap-3">
+            <p class="text-sm text-gray-500 dark:text-gray-400" data-i18n="tools.colorPicker.noHistory">아직 선택한 색상이 없습니다</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Box -->
+      <div class="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+        <h3 class="font-medium text-blue-800 dark:text-blue-300 mb-2" data-i18n="tools.colorPicker.tipTitle">사용 팁</h3>
+        <ul class="text-sm text-blue-700 dark:text-blue-400 space-y-1">
+          <li data-i18n="tools.colorPicker.tip1">버튼을 클릭하면 스포이드가 활성화됩니다</li>
+          <li data-i18n="tools.colorPicker.tip2">브라우저 바깥의 앱에서도 색상을 추출할 수 있습니다</li>
+          <li data-i18n="tools.colorPicker.tip3">ESC 키를 누르면 취소됩니다</li>
+        </ul>
+      </div>
+
+      <!-- FAQ Section -->
+      <section class="mt-8 bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">색상 피커(스포이드)란?</h2>
+        <div class="prose prose-gray dark:prose-invert max-w-none text-sm">
+          <p class="text-gray-600 dark:text-gray-400 mb-4">색상 피커(스포이드)는 화면의 어떤 위치에서든 색상을 추출할 수 있는 도구입니다. EyeDropper API를 사용하여 브라우저뿐만 아니라 다른 앱(Slack, Figma, Photoshop 등)에서도 색상을 추출할 수 있습니다.</p>
+
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mt-6 mb-3">사용 방법</h3>
+          <ol class="list-decimal list-inside space-y-2 text-gray-600 dark:text-gray-400 mb-4">
+            <li>"색상 선택" 버튼을 클릭합니다</li>
+            <li>화면 어디서든 원하는 색상 위에 커서를 놓습니다</li>
+            <li>클릭하면 색상이 추출됩니다</li>
+            <li>HEX, RGB, HSL 형식으로 복사할 수 있습니다</li>
+          </ol>
+
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mt-6 mb-3">자주 묻는 질문</h3>
+          <div class="space-y-4">
+            <div>
+              <h4 class="font-medium text-gray-900 dark:text-white">Q: 어떤 브라우저에서 사용할 수 있나요?</h4>
+              <p class="text-gray-600 dark:text-gray-400">Chrome 95 이상, Edge 95 이상에서 사용 가능합니다. Safari와 Firefox는 아직 EyeDropper API를 지원하지 않습니다.</p>
+            </div>
+            <div>
+              <h4 class="font-medium text-gray-900 dark:text-white">Q: 브라우저 바깥에서도 색상을 추출할 수 있나요?</h4>
+              <p class="text-gray-600 dark:text-gray-400">네, 가능합니다. 스포이드가 활성화되면 화면 전체에서 색상을 추출할 수 있습니다. 다른 앱의 색상도 추출할 수 있습니다.</p>
+            </div>
+            <div>
+              <h4 class="font-medium text-gray-900 dark:text-white">Q: 정확한 색상이 추출되지 않는 것 같아요</h4>
+              <p class="text-gray-600 dark:text-gray-400">디스플레이 색상 프로필, 브라우저 렌더링 등에 따라 약간의 차이가 있을 수 있습니다. 정확한 색상이 필요하면 원본 소스의 색상 코드를 확인하세요.</p>
+            </div>
+          </div>
+
+          <p class="text-gray-600 dark:text-gray-400 mt-4">모든 처리는 브라우저에서 이루어지며 서버로 전송되지 않습니다.</p>
+        </div>
+      </section>
+
+      <!-- Ad Container (Bottom) -->
+      <div class="ad-container mt-8">
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Tool Script -->
+  <script>
+    (function() {
+      'use strict';
+
+      const pickBtn = document.getElementById('pick-color-btn');
+      const colorPreview = document.getElementById('color-preview');
+      const hexOutput = document.getElementById('hex-output');
+      const rgbOutput = document.getElementById('rgb-output');
+      const hslOutput = document.getElementById('hsl-output');
+      const colorHistory = document.getElementById('color-history');
+      const browserWarning = document.getElementById('browser-warning');
+
+      let history = JSON.parse(localStorage.getItem('toolneat-color-history') || '[]');
+
+      // Check EyeDropper support
+      if (!('EyeDropper' in window)) {
+        browserWarning.classList.remove('hidden');
+        pickBtn.disabled = true;
+        pickBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      }
+
+      // Color conversion functions
+      function hexToRgb(hex) {
+        hex = hex.replace(/^#/, '');
+        const num = parseInt(hex, 16);
+        return {
+          r: (num >> 16) & 255,
+          g: (num >> 8) & 255,
+          b: num & 255
+        };
+      }
+
+      function rgbToHsl(r, g, b) {
+        r /= 255;
+        g /= 255;
+        b /= 255;
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
+        let h, s, l = (max + min) / 2;
+
+        if (max === min) {
+          h = s = 0;
+        } else {
+          const d = max - min;
+          s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+          switch (max) {
+            case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+            case g: h = ((b - r) / d + 2) / 6; break;
+            case b: h = ((r - g) / d + 4) / 6; break;
+          }
+        }
+
+        return {
+          h: Math.round(h * 360),
+          s: Math.round(s * 100),
+          l: Math.round(l * 100)
+        };
+      }
+
+      function updateColor(hex) {
+        const rgb = hexToRgb(hex);
+        const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+
+        colorPreview.style.backgroundColor = hex;
+        hexOutput.value = hex;
+        rgbOutput.value = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+        hslOutput.value = `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
+
+        // Update button text color based on brightness
+        const brightness = (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
+        pickBtn.classList.toggle('text-gray-900', brightness > 128);
+        pickBtn.classList.toggle('bg-white/90', brightness > 128);
+        pickBtn.classList.toggle('hover:bg-white', brightness > 128);
+      }
+
+      function addToHistory(hex) {
+        // Remove if already exists
+        history = history.filter(c => c !== hex);
+        // Add to front
+        history.unshift(hex);
+        // Keep max 12
+        history = history.slice(0, 12);
+        // Save
+        localStorage.setItem('toolneat-color-history', JSON.stringify(history));
+        // Render
+        renderHistory();
+      }
+
+      function renderHistory() {
+        if (history.length === 0) {
+          colorHistory.innerHTML = '<p class="text-sm text-gray-500 dark:text-gray-400" data-i18n="tools.colorPicker.noHistory">아직 선택한 색상이 없습니다</p>';
+          return;
+        }
+
+        colorHistory.innerHTML = history.map(hex => `
+          <div class="color-history-item" style="background: ${hex};" data-color="${hex}" title="${hex}"></div>
+        `).join('');
+
+        // Add click handlers
+        colorHistory.querySelectorAll('.color-history-item').forEach(item => {
+          item.addEventListener('click', () => {
+            updateColor(item.dataset.color);
+          });
+        });
+      }
+
+      // Pick color button
+      pickBtn.addEventListener('click', async () => {
+        if (!('EyeDropper' in window)) return;
+
+        try {
+          const eyeDropper = new EyeDropper();
+          const result = await eyeDropper.open();
+          updateColor(result.sRGBHex);
+          addToHistory(result.sRGBHex);
+          toast.success(t('common.copied'));
+        } catch (e) {
+          // User cancelled
+        }
+      });
+
+      // Copy buttons
+      document.querySelectorAll('[data-copy]').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const format = btn.dataset.copy;
+          let value = '';
+          switch (format) {
+            case 'hex': value = hexOutput.value; break;
+            case 'rgb': value = rgbOutput.value; break;
+            case 'hsl': value = hslOutput.value; break;
+          }
+          await copyToClipboard(value);
+          toast.success(t('common.copied'));
+        });
+      });
+
+      // Initialize
+      renderHistory();
+      if (history.length > 0) {
+        updateColor(history[0]);
+      }
+    })();
+  </script>
+</body>
+</html>

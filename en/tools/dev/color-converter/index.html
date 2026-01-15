@@ -170,9 +170,16 @@
             <div>
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Color Picker</label>
               <div class="color-input-wrapper mb-4">
-                <input type="text" id="hex-input" class="input py-3 pr-12 font-mono" value="#3b82f6" placeholder="#000000">
-                <div class="color-picker-btn">
-                  <input type="color" id="color-picker" value="#3b82f6">
+                <input type="text" id="hex-input" class="input py-3 pr-24 font-mono" value="#3b82f6" placeholder="#000000">
+                <div class="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                  <button id="eyedropper-btn" class="hidden w-8 h-8 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center transition-colors" title="Pick color from screen">
+                    <svg class="w-4 h-4 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+                    </svg>
+                  </button>
+                  <div class="color-picker-btn">
+                    <input type="color" id="color-picker" value="#3b82f6">
+                  </div>
                 </div>
               </div>
 
@@ -681,6 +688,26 @@
           toast.success('Copied!');
         });
       });
+
+      // EyeDropper API (Chrome 95+, Edge 95+)
+      const eyedropperBtn = document.getElementById('eyedropper-btn');
+      if ('EyeDropper' in window) {
+        eyedropperBtn.classList.remove('hidden');
+        eyedropperBtn.classList.add('flex');
+        eyedropperBtn.addEventListener('click', async () => {
+          try {
+            const eyeDropper = new EyeDropper();
+            const result = await eyeDropper.open();
+            const rgb = hexToRgb(result.sRGBHex);
+            hexInput.value = result.sRGBHex;
+            colorPicker.value = result.sRGBHex;
+            updateColor(rgb.r, rgb.g, rgb.b);
+            toast.success('Copied!');
+          } catch (e) {
+            // User cancelled
+          }
+        });
+      }
 
       // Initialize
       updateColor(59, 130, 246);

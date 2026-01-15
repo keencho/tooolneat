@@ -129,6 +129,24 @@
   </url>
 
   <url>
+    <loc>https://toolneat.com/tools/dev/color-palette</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/dev/color-palette"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/dev/color-palette"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/dev/color-palette"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/en/tools/dev/color-palette</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/dev/color-palette"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/dev/color-palette"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/dev/color-palette"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
     <loc>https://toolneat.com/tools/dev/cron-generator</loc>
     <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/dev/cron-generator"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/dev/cron-generator"/>
@@ -178,6 +196,24 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/dev/diff-checker"/>
     <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/dev/diff-checker"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/dev/diff-checker"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/tools/dev/gradient-generator</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/dev/gradient-generator"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/dev/gradient-generator"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/dev/gradient-generator"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/en/tools/dev/gradient-generator</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/dev/gradient-generator"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/dev/gradient-generator"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/dev/gradient-generator"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -597,6 +633,24 @@
   </url>
 
   <url>
+    <loc>https://toolneat.com/tools/life/color-palette</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/color-palette"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/color-palette"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/color-palette"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/en/tools/life/color-palette</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/color-palette"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/color-palette"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/color-palette"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
     <loc>https://toolneat.com/tools/life/compound-calculator</loc>
     <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/compound-calculator"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/compound-calculator"/>
@@ -759,6 +813,24 @@
   </url>
 
   <url>
+    <loc>https://toolneat.com/tools/life/image-watermark</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/image-watermark"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/image-watermark"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/image-watermark"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/en/tools/life/image-watermark</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/image-watermark"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/image-watermark"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/image-watermark"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
     <loc>https://toolneat.com/tools/life/loan-calculator</loc>
     <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/loan-calculator"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/loan-calculator"/>
@@ -862,6 +934,24 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/qr-generator"/>
     <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/qr-generator"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/qr-generator"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/tools/life/qr-scanner</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/qr-scanner"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/qr-scanner"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/qr-scanner"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/en/tools/life/qr-scanner</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/qr-scanner"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/qr-scanner"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/qr-scanner"/>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

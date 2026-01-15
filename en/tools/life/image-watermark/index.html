@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8846557285079359" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Watermark - Toolneat</title>
+  <meta name="description" content="Free online tool to add text watermark to images. Customize position, size, opacity. Perfect for copyright protection and branding. All processing in browser.">
+  <link rel="canonical" href="https://toolneat.com/en/tools/life/image-watermark/">
+  <link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/image-watermark/">
+  <link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/image-watermark/">
+  <link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/image-watermark/">
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+  <link rel="stylesheet" href="../../../../assets/css/output.css">
+  <script src="../../../../assets/js/common.js"></script>
+  <script src="../../../../assets/js/i18n.js"></script>
+  <script src="../../../../assets/js/components.js"></script>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Toolneat">
+  <meta property="og:title" content="Image Watermark - Toolneat">
+  <meta property="og:description" content="Free online tool to add watermark to images.">
+  <meta property="og:url" content="https://toolneat.com/en/tools/life/image-watermark">
+  <meta property="og:image" content="https://toolneat.com/assets/images/og-image.png">
+  <meta property="og:locale" content="en_US">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Image Watermark","description":"Free online tool to add watermark to images.","url":"https://toolneat.com/en/tools/life/image-watermark","applicationCategory":"MultimediaApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"Toolneat"}}
+  </script>
+  <style>
+    .preview-container{background:#f3f4f6;border-radius:12px;overflow:hidden;min-height:300px;max-height:70vh;display:flex;align-items:center;justify-content:center;border:2px dashed transparent;transition:border-color .2s}
+    .dark .preview-container{background:#1f2937}
+    .preview-container.drag-over{border-color:#3b82f6}
+    .preview-container canvas{max-width:100%;max-height:100%;object-fit:contain}
+    .position-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+    .position-btn{padding:8px;border-radius:8px;background:#f3f4f6;transition:all .2s;font-size:12px}
+    .dark .position-btn{background:#374151}
+    .position-btn.active{background:#3b82f6;color:#fff}
+    .slider{-webkit-appearance:none;width:100%;height:6px;border-radius:3px;background:#e5e7eb}
+    .dark .slider{background:#374151}
+    .slider::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:#3b82f6;cursor:pointer}
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <div id="header"></div>
+  <main class="flex-1 py-8 md:py-12">
+    <div class="container-main">
+      <div class="mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">Image Watermark</h1>
+        <p class="text-gray-600 dark:text-gray-400">Add text watermark to your images.</p>
+      </div>
+      <div class="space-y-6">
+        <div class="card">
+          <h2 class="font-semibold text-gray-900 dark:text-white mb-4">Preview</h2>
+          <div id="drop-zone" class="preview-container cursor-pointer">
+            <canvas id="canvas" class="hidden"></canvas>
+            <div id="placeholder" class="text-gray-500 dark:text-gray-400 text-center p-8">
+              <svg class="w-16 h-16 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              <p>Drag an image or click to select</p>
+            </div>
+          </div>
+          <input type="file" id="file-input" accept="image/*" class="hidden">
+        </div>
+        <div class="card">
+          <h2 class="font-semibold text-gray-900 dark:text-white mb-4">Watermark Settings</h2>
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Text</label>
+              <input type="text" id="watermark-text" value="© Toolneat" class="input" placeholder="Watermark text">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Position</label>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Drag the watermark in preview to adjust position</p>
+              <div class="position-grid">
+                <button class="position-btn" data-pos="top-left">TL</button>
+                <button class="position-btn" data-pos="top-center">Top</button>
+                <button class="position-btn" data-pos="top-right">TR</button>
+                <button class="position-btn" data-pos="middle-left">ML</button>
+                <button class="position-btn" data-pos="middle-center">Center</button>
+                <button class="position-btn" data-pos="middle-right">MR</button>
+                <button class="position-btn" data-pos="bottom-left">BL</button>
+                <button class="position-btn active" data-pos="bottom-center">Bottom</button>
+                <button class="position-btn" data-pos="bottom-right">BR</button>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Size: <span id="size-value">24</span>px</label>
+              <input type="range" id="font-size" class="slider" min="12" max="72" value="24">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Opacity: <span id="opacity-value">70</span>%</label>
+              <input type="range" id="opacity" class="slider" min="10" max="100" value="70">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Color</label>
+              <div class="flex gap-2">
+                <input type="color" id="text-color" value="#ffffff" class="w-12 h-10 rounded cursor-pointer">
+                <select id="preset-color" class="input flex-1">
+                  <option value="#ffffff">White</option>
+                  <option value="#000000">Black</option>
+                  <option value="#ff0000">Red</option>
+                  <option value="#3b82f6">Blue</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="flex gap-3 mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+            <button id="select-btn" class="btn btn-secondary flex-1">Select Image</button>
+            <button id="download-btn" class="btn btn-primary flex-1" disabled>Download</button>
+          </div>
+        </div>
+      </div>
+      <section class="mt-8 bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">What is Image Watermark?</h2>
+        <div class="prose prose-gray dark:prose-invert max-w-none text-sm">
+          <p class="text-gray-600 dark:text-gray-400 mb-4">A tool to add text overlay on images for copyright protection or branding. Useful for blogs and social media.</p>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mt-6 mb-3">How to Use</h3>
+          <ol class="list-decimal list-inside space-y-2 text-gray-600 dark:text-gray-400 mb-4">
+            <li>Select an image</li>
+            <li>Enter watermark text</li>
+            <li>Adjust position, size, opacity</li>
+            <li>Click download</li>
+          </ol>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mt-6 mb-3">FAQ</h3>
+          <div class="space-y-4">
+            <div><h4 class="font-medium text-gray-900 dark:text-white">Q: Can I add image watermarks?</h4><p class="text-gray-600 dark:text-gray-400">Currently only text watermarks are supported. Image watermarks coming soon.</p></div>
+            <div><h4 class="font-medium text-gray-900 dark:text-white">Q: Can I process multiple images?</h4><p class="text-gray-600 dark:text-gray-400">Currently one image at a time. Batch processing coming soon.</p></div>
+            <div><h4 class="font-medium text-gray-900 dark:text-white">Q: Is original quality preserved?</h4><p class="text-gray-600 dark:text-gray-400">Yes, saved in PNG format at original resolution.</p></div>
+          </div>
+          <p class="text-gray-600 dark:text-gray-400 mt-4">All processing is done in your browser. No data uploaded to servers.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+  <div id="footer"></div>
+  <script>
+    const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d'),placeholder=document.getElementById('placeholder'),fileInput=document.getElementById('file-input'),textInput=document.getElementById('watermark-text'),fontSizeSlider=document.getElementById('font-size'),opacitySlider=document.getElementById('opacity'),textColorInput=document.getElementById('text-color'),presetColor=document.getElementById('preset-color'),downloadBtn=document.getElementById('download-btn'),dropZone=document.getElementById('drop-zone');
+    let img=null,position='bottom-center',customX=null,customY=null,isDragging=false,isHovering=false,dragOffsetX=0,dragOffsetY=0;
+
+    document.getElementById('select-btn').addEventListener('click',()=>fileInput.click());
+    dropZone.addEventListener('click',e=>{if(e.target===dropZone||e.target===placeholder||e.target.closest('#placeholder'))fileInput.click()});
+    fileInput.addEventListener('change',e=>{if(e.target.files[0])loadImage(e.target.files[0])});
+
+    dropZone.addEventListener('dragover',e=>{e.preventDefault();dropZone.classList.add('drag-over')});
+    dropZone.addEventListener('dragleave',()=>dropZone.classList.remove('drag-over'));
+    dropZone.addEventListener('drop',e=>{e.preventDefault();dropZone.classList.remove('drag-over');if(e.dataTransfer.files[0])loadImage(e.dataTransfer.files[0])});
+
+    function loadImage(file){
+      const reader=new FileReader();
+      reader.onload=e=>{
+        img=new Image();
+        img.onload=()=>{
+          canvas.width=img.width;
+          canvas.height=img.height;
+          canvas.classList.remove('hidden');
+          placeholder.classList.add('hidden');
+          downloadBtn.disabled=false;
+          customX=null;customY=null;
+          drawCanvas();
+        };
+        img.src=e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    document.querySelectorAll('.position-btn').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        document.querySelectorAll('.position-btn').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        position=btn.dataset.pos;
+        customX=null;customY=null;
+        drawCanvas();
+      });
+    });
+
+    [textInput,fontSizeSlider,opacitySlider,textColorInput].forEach(el=>{
+      el.addEventListener('input',drawCanvas);
+    });
+    fontSizeSlider.addEventListener('input',e=>document.getElementById('size-value').textContent=e.target.value);
+    opacitySlider.addEventListener('input',e=>document.getElementById('opacity-value').textContent=e.target.value);
+    presetColor.addEventListener('change',e=>{textColorInput.value=e.target.value;drawCanvas()});
+
+    // Canvas coordinate conversion
+    function getCanvasCoords(e){
+      const rect=canvas.getBoundingClientRect();
+      const scaleX=canvas.width/rect.width;
+      const scaleY=canvas.height/rect.height;
+      return{x:(e.clientX-rect.left)*scaleX,y:(e.clientY-rect.top)*scaleY};
+    }
+
+    // Get watermark position
+    function getWatermarkPos(){
+      const text=textInput.value;
+      const fontSize=parseInt(fontSizeSlider.value);
+      ctx.font=`${fontSize}px Arial, sans-serif`;
+      const metrics=ctx.measureText(text);
+      const padding=20;
+      let x,y;
+
+      if(customX!==null&&customY!==null){
+        return{x:customX,y:customY,width:metrics.width,height:fontSize};
+      }
+
+      const [vPos,hPos]=position.split('-');
+      if(hPos==='left')x=padding;
+      else if(hPos==='center')x=(canvas.width-metrics.width)/2;
+      else x=canvas.width-metrics.width-padding;
+
+      if(vPos==='top')y=fontSize+padding;
+      else if(vPos==='middle')y=canvas.height/2;
+      else y=canvas.height-padding;
+
+      return{x,y,width:metrics.width,height:fontSize};
+    }
+
+    // Drag events
+    canvas.addEventListener('mousedown',e=>{
+      if(!img)return;
+      const coords=getCanvasCoords(e);
+      const pos=getWatermarkPos();
+      const hitPadding=10;
+      if(coords.x>=pos.x-hitPadding&&coords.x<=pos.x+pos.width+hitPadding&&coords.y>=pos.y-pos.height-hitPadding&&coords.y<=pos.y+hitPadding){
+        isDragging=true;
+        dragOffsetX=coords.x-pos.x;
+        dragOffsetY=coords.y-pos.y;
+        canvas.style.cursor='grabbing';
+      }
+    });
+
+    canvas.addEventListener('mousemove',e=>{
+      if(!img)return;
+      const coords=getCanvasCoords(e);
+      const pos=getWatermarkPos();
+      const hitPadding=10;
+
+      if(isDragging){
+        customX=Math.max(0,Math.min(canvas.width-pos.width,coords.x-dragOffsetX));
+        customY=Math.max(pos.height,Math.min(canvas.height,coords.y-dragOffsetY));
+        document.querySelectorAll('.position-btn').forEach(b=>b.classList.remove('active'));
+        drawCanvas();
+      }else{
+        const wasHovering=isHovering;
+        if(coords.x>=pos.x-hitPadding&&coords.x<=pos.x+pos.width+hitPadding&&coords.y>=pos.y-pos.height-hitPadding&&coords.y<=pos.y+hitPadding){
+          canvas.style.cursor='grab';
+          isHovering=true;
+        }else{
+          canvas.style.cursor='default';
+          isHovering=false;
+        }
+        if(wasHovering!==isHovering)drawCanvas();
+      }
+    });
+
+    canvas.addEventListener('mouseup',()=>{isDragging=false;canvas.style.cursor='default';drawCanvas()});
+    canvas.addEventListener('mouseleave',()=>{isDragging=false;isHovering=false;canvas.style.cursor='default';drawCanvas()});
+
+    // Touch events
+    canvas.addEventListener('touchstart',e=>{
+      if(!img)return;
+      const touch=e.touches[0];
+      const coords=getCanvasCoords(touch);
+      const pos=getWatermarkPos();
+      const hitPadding=20;
+      if(coords.x>=pos.x-hitPadding&&coords.x<=pos.x+pos.width+hitPadding&&coords.y>=pos.y-pos.height-hitPadding&&coords.y<=pos.y+hitPadding){
+        isDragging=true;
+        dragOffsetX=coords.x-pos.x;
+        dragOffsetY=coords.y-pos.y;
+        e.preventDefault();
+      }
+    },{passive:false});
+
+    canvas.addEventListener('touchmove',e=>{
+      if(!isDragging||!img)return;
+      const touch=e.touches[0];
+      const coords=getCanvasCoords(touch);
+      const pos=getWatermarkPos();
+      customX=Math.max(0,Math.min(canvas.width-pos.width,coords.x-dragOffsetX));
+      customY=Math.max(pos.height,Math.min(canvas.height,coords.y-dragOffsetY));
+      document.querySelectorAll('.position-btn').forEach(b=>b.classList.remove('active'));
+      drawCanvas();
+      e.preventDefault();
+    },{passive:false});
+
+    canvas.addEventListener('touchend',()=>{isDragging=false});
+
+    function drawCanvas(){
+      if(!img)return;
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      ctx.drawImage(img,0,0);
+
+      const text=textInput.value;
+      const fontSize=parseInt(fontSizeSlider.value);
+      const opacity=parseInt(opacitySlider.value)/100;
+      const color=textColorInput.value;
+
+      ctx.font=`${fontSize}px Arial, sans-serif`;
+      ctx.fillStyle=color;
+      ctx.globalAlpha=opacity;
+      ctx.textBaseline='middle';
+
+      const pos=getWatermarkPos();
+      ctx.fillText(text,pos.x,pos.y);
+
+      // Show dashed border on hover/drag
+      if(isHovering||isDragging){
+        ctx.globalAlpha=1;
+        ctx.strokeStyle='#3b82f6';
+        ctx.lineWidth=2;
+        ctx.setLineDash([6,4]);
+        const pad=8;
+        ctx.strokeRect(pos.x-pad,pos.y-pos.height/2-pad,pos.width+pad*2,pos.height+pad*2);
+        ctx.setLineDash([]);
+      }
+      ctx.globalAlpha=1;
+    }
+
+    downloadBtn.addEventListener('click',()=>{
+      const a=document.createElement('a');
+      a.href=canvas.toDataURL('image/png');
+      a.download='watermarked.png';
+      a.click();
+      toast.success('Download complete!');
+    });
+  </script>
+</body>
+</html>

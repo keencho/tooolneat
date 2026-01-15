@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8846557285079359" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Gradient Generator - Toolneat</title>
+  <meta name="description" content="Free online CSS gradient generator. Create beautiful linear and radial gradients visually. Customize colors, direction, angle. Copy CSS code instantly for web design.">
+  <link rel="canonical" href="https://toolneat.com/en/tools/dev/gradient-generator/">
+  <link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/dev/gradient-generator/">
+  <link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/dev/gradient-generator/">
+  <link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/dev/gradient-generator/">
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+  <link rel="stylesheet" href="../../../../assets/css/output.css">
+  <script src="../../../../assets/js/common.js"></script>
+  <script src="../../../../assets/js/i18n.js"></script>
+  <script src="../../../../assets/js/components.js"></script>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Toolneat">
+  <meta property="og:title" content="CSS Gradient Generator - Toolneat">
+  <meta property="og:description" content="Free online CSS gradient generator.">
+  <meta property="og:url" content="https://toolneat.com/en/tools/dev/gradient-generator">
+  <meta property="og:image" content="https://toolneat.com/assets/images/og-image.png">
+  <meta property="og:locale" content="en_US">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"CSS Gradient Generator","description":"Free online CSS gradient generator.","url":"https://toolneat.com/en/tools/dev/gradient-generator","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"Toolneat"}}
+  </script>
+  <style>
+    .preview-box{height:200px;border-radius:16px;transition:background .3s}
+    .color-stop{display:flex;align-items:center;gap:8px;padding:8px;background:#f9fafb;border-radius:8px}
+    .dark .color-stop{background:#374151}
+    .tab-btn{padding:8px 16px;border-radius:8px;font-weight:500;transition:all .2s}
+    .tab-btn.active{background:#3b82f6;color:#fff}
+    .direction-btn{padding:8px 12px;border-radius:8px;background:#f3f4f6;transition:all .2s;font-size:12px}
+    .dark .direction-btn{background:#374151}
+    .direction-btn.active{background:#3b82f6;color:#fff}
+    .preset{width:60px;height:40px;border-radius:8px;cursor:pointer;border:2px solid transparent;transition:all .2s}
+    .preset:hover{border-color:#3b82f6}
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <div id="header"></div>
+  <main class="flex-1 py-8 md:py-12">
+    <div class="container-main">
+      <div class="mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">CSS Gradient Generator</h1>
+        <p class="text-gray-600 dark:text-gray-400">Create CSS gradients visually and copy the code.</p>
+      </div>
+      <div class="grid lg:grid-cols-2 gap-6">
+        <div class="card">
+          <div id="preview" class="preview-box mb-6"></div>
+          <div class="bg-gray-900 rounded-xl p-4 mb-4">
+            <code id="css-code" class="text-green-400 text-sm break-all"></code>
+          </div>
+          <button id="copy-btn" class="btn btn-primary w-full">Copy CSS</button>
+        </div>
+        <div class="card">
+          <div class="flex gap-2 mb-6">
+            <button id="tab-linear" class="tab-btn active">Linear</button>
+            <button id="tab-radial" class="tab-btn">Radial</button>
+          </div>
+          <div id="linear-options">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Direction</label>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <button class="direction-btn" data-dir="to top">↑</button>
+              <button class="direction-btn" data-dir="to top right">↗</button>
+              <button class="direction-btn active" data-dir="to right">→</button>
+              <button class="direction-btn" data-dir="to bottom right">↘</button>
+              <button class="direction-btn" data-dir="to bottom">↓</button>
+              <button class="direction-btn" data-dir="to bottom left">↙</button>
+              <button class="direction-btn" data-dir="to left">←</button>
+              <button class="direction-btn" data-dir="to top left">↖</button>
+            </div>
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Angle: <span id="angle-value">90</span>°</label>
+              <input type="range" id="angle" class="w-full" min="0" max="360" value="90">
+            </div>
+          </div>
+          <div id="radial-options" class="hidden">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Shape</label>
+            <div class="flex gap-2 mb-4">
+              <button class="direction-btn active" data-shape="circle">Circle</button>
+              <button class="direction-btn" data-shape="ellipse">Ellipse</button>
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Colors</label>
+            <div id="color-stops" class="space-y-2 mb-2"></div>
+            <button id="add-color" class="text-blue-500 hover:underline text-sm">+ Add Color</button>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Presets</label>
+            <div class="flex flex-wrap gap-2">
+              <div class="preset" style="background:linear-gradient(90deg,#667eea,#764ba2)" data-colors="#667eea,#764ba2"></div>
+              <div class="preset" style="background:linear-gradient(90deg,#f093fb,#f5576c)" data-colors="#f093fb,#f5576c"></div>
+              <div class="preset" style="background:linear-gradient(90deg,#4facfe,#00f2fe)" data-colors="#4facfe,#00f2fe"></div>
+              <div class="preset" style="background:linear-gradient(90deg,#43e97b,#38f9d7)" data-colors="#43e97b,#38f9d7"></div>
+              <div class="preset" style="background:linear-gradient(90deg,#fa709a,#fee140)" data-colors="#fa709a,#fee140"></div>
+              <div class="preset" style="background:linear-gradient(90deg,#a8edea,#fed6e3)" data-colors="#a8edea,#fed6e3"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <section class="mt-8 bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">What is CSS Gradient?</h2>
+        <div class="prose prose-gray dark:prose-invert max-w-none text-sm">
+          <p class="text-gray-600 dark:text-gray-400 mb-4">A smooth transition between two or more colors as a background effect. Adds sleek design to websites.</p>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mt-6 mb-3">How to Use</h3>
+          <ol class="list-decimal list-inside space-y-2 text-gray-600 dark:text-gray-400 mb-4">
+            <li>Choose Linear or Radial type</li>
+            <li>Add and adjust colors</li>
+            <li>Set direction or angle</li>
+            <li>Copy CSS code to use</li>
+          </ol>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mt-6 mb-3">FAQ</h3>
+          <div class="space-y-4">
+            <div><h4 class="font-medium text-gray-900 dark:text-white">Q: Does it work in all browsers?</h4><p class="text-gray-600 dark:text-gray-400">Supported by all modern browsers. IE is not supported.</p></div>
+            <div><h4 class="font-medium text-gray-900 dark:text-white">Q: How many colors can I add?</h4><p class="text-gray-600 dark:text-gray-400">No limit. Usually 2-4 colors look natural.</p></div>
+            <div><h4 class="font-medium text-gray-900 dark:text-white">Q: Can I apply it to text?</h4><p class="text-gray-600 dark:text-gray-400">Yes, use with background-clip: text for text gradients.</p></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <div id="footer"></div>
+  <script>
+    let type='linear',direction='to right',angle=90,shape='circle',colors=['#667eea','#764ba2'];
+    const preview=document.getElementById('preview'),cssCode=document.getElementById('css-code'),colorStops=document.getElementById('color-stops');
+
+    function updateGradient(){
+      let gradient;
+      if(type==='linear'){
+        gradient=`linear-gradient(${angle}deg, ${colors.join(', ')})`;
+      }else{
+        gradient=`radial-gradient(${shape}, ${colors.join(', ')})`;
+      }
+      preview.style.background=gradient;
+      cssCode.textContent=`background: ${gradient};`;
+    }
+
+    function renderColorStops(){
+      colorStops.innerHTML='';
+      colors.forEach((color,i)=>{
+        const div=document.createElement('div');
+        div.className='color-stop';
+        div.innerHTML=`
+          <input type="color" value="${color}" class="w-10 h-8 rounded cursor-pointer" data-index="${i}">
+          <input type="text" value="${color}" class="input flex-1 text-sm" data-index="${i}">
+          ${colors.length>2?`<button class="text-red-500 hover:text-red-600" data-remove="${i}">×</button>`:''}
+        `;
+        colorStops.appendChild(div);
+      });
+      colorStops.querySelectorAll('input[type="color"]').forEach(el=>{
+        el.addEventListener('input',e=>{colors[e.target.dataset.index]=e.target.value;updateGradient();renderColorStops()});
+      });
+      colorStops.querySelectorAll('input[type="text"]').forEach(el=>{
+        el.addEventListener('input',e=>{if(/^#[0-9A-Fa-f]{6}$/.test(e.target.value)){colors[e.target.dataset.index]=e.target.value;updateGradient()}});
+      });
+      colorStops.querySelectorAll('[data-remove]').forEach(el=>{
+        el.addEventListener('click',e=>{colors.splice(e.target.dataset.remove,1);updateGradient();renderColorStops()});
+      });
+    }
+
+    document.getElementById('tab-linear').addEventListener('click',()=>{
+      type='linear';
+      document.getElementById('tab-linear').classList.add('active');
+      document.getElementById('tab-radial').classList.remove('active');
+      document.getElementById('linear-options').classList.remove('hidden');
+      document.getElementById('radial-options').classList.add('hidden');
+      updateGradient();
+    });
+    document.getElementById('tab-radial').addEventListener('click',()=>{
+      type='radial';
+      document.getElementById('tab-radial').classList.add('active');
+      document.getElementById('tab-linear').classList.remove('active');
+      document.getElementById('radial-options').classList.remove('hidden');
+      document.getElementById('linear-options').classList.add('hidden');
+      updateGradient();
+    });
+
+    document.querySelectorAll('[data-dir]').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        document.querySelectorAll('[data-dir]').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        direction=btn.dataset.dir;
+        const angles={'to top':0,'to top right':45,'to right':90,'to bottom right':135,'to bottom':180,'to bottom left':225,'to left':270,'to top left':315};
+        angle=angles[direction];
+        document.getElementById('angle').value=angle;
+        document.getElementById('angle-value').textContent=angle;
+        updateGradient();
+      });
+    });
+
+    document.getElementById('angle').addEventListener('input',e=>{
+      angle=parseInt(e.target.value);
+      document.getElementById('angle-value').textContent=angle;
+      updateGradient();
+    });
+
+    document.querySelectorAll('[data-shape]').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        document.querySelectorAll('[data-shape]').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        shape=btn.dataset.shape;
+        updateGradient();
+      });
+    });
+
+    document.getElementById('add-color').addEventListener('click',()=>{
+      colors.push('#ffffff');
+      renderColorStops();
+      updateGradient();
+    });
+
+    document.querySelectorAll('.preset').forEach(el=>{
+      el.addEventListener('click',()=>{
+        colors=el.dataset.colors.split(',');
+        renderColorStops();
+        updateGradient();
+      });
+    });
+
+    document.getElementById('copy-btn').addEventListener('click',()=>{
+      navigator.clipboard.writeText(cssCode.textContent);
+      toast.success('CSS copied!');
+    });
+
+    renderColorStops();
+    updateGradient();
+  </script>
+</body>
+</html>
