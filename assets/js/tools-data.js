@@ -212,6 +212,54 @@ const TOOLS_DATA = {
       description: { ko: 'XML과 JSON 상호 변환', en: 'Convert between XML and JSON' },
       tags: ['xml', 'json', 'convert', 'data', '변환', '데이터'],
       icon: 'switch'
+    },
+    {
+      id: 'json-csv',
+      path: '/tools/dev/json-csv',
+      name: { ko: 'JSON ↔ CSV 변환', en: 'JSON to CSV Converter' },
+      description: { ko: 'JSON과 CSV 상호 변환', en: 'Convert between JSON and CSV' },
+      tags: ['json', 'csv', 'convert', 'data', 'excel', '변환', '엑셀'],
+      icon: 'switch'
+    },
+    {
+      id: 'js-minifier',
+      path: '/tools/dev/js-minifier',
+      name: { ko: 'JavaScript 압축기', en: 'JavaScript Minifier' },
+      description: { ko: 'JavaScript 코드 압축/난독화', en: 'Minify and obfuscate JavaScript' },
+      tags: ['javascript', 'js', 'minify', 'compress', 'uglify', '압축', '난독화'],
+      icon: 'code'
+    },
+    {
+      id: 'html-minifier',
+      path: '/tools/dev/html-minifier',
+      name: { ko: 'HTML 압축기', en: 'HTML Minifier' },
+      description: { ko: 'HTML 코드 압축 및 최적화', en: 'Minify and optimize HTML code' },
+      tags: ['html', 'minify', 'compress', 'optimize', '압축', '최적화'],
+      icon: 'code'
+    },
+    {
+      id: 'robots-txt',
+      path: '/tools/dev/robots-txt',
+      name: { ko: 'Robots.txt 생성기', en: 'Robots.txt Generator' },
+      description: { ko: 'robots.txt 파일 생성', en: 'Generate robots.txt files' },
+      tags: ['robots', 'seo', 'crawl', 'bot', 'search', '검색엔진', '크롤러'],
+      icon: 'document'
+    },
+    {
+      id: 'og-preview',
+      path: '/tools/dev/og-preview',
+      name: { ko: 'OG 미리보기', en: 'Open Graph Preview' },
+      description: { ko: 'Open Graph 메타태그 미리보기', en: 'Preview Open Graph meta tags' },
+      tags: ['og', 'opengraph', 'meta', 'social', 'facebook', 'twitter', 'seo', '미리보기'],
+      icon: 'eye'
+    },
+    {
+      id: 'box-shadow',
+      path: '/tools/dev/box-shadow',
+      name: { ko: 'Box Shadow 생성기', en: 'Box Shadow Generator' },
+      description: { ko: 'CSS box-shadow 생성기', en: 'Generate CSS box-shadow' },
+      tags: ['css', 'shadow', 'box-shadow', 'design', 'style', '그림자', '디자인'],
+      icon: 'color'
     }
   ],
   life: [
@@ -558,6 +606,38 @@ const TOOLS_DATA = {
       description: { ko: '이미지에서 EXIF 메타데이터 제거', en: 'Remove EXIF metadata from images' },
       tags: ['exif', 'metadata', 'privacy', 'gps', 'location', '메타데이터', '개인정보', '위치'],
       icon: 'shield'
+    },
+    {
+      id: 'ip-lookup',
+      path: '/tools/life/ip-lookup',
+      name: { ko: 'IP 주소 조회', en: 'IP Address Lookup' },
+      description: { ko: 'IP 주소로 위치 정보 조회', en: 'Look up location from IP address' },
+      tags: ['ip', 'address', 'location', 'geo', 'lookup', 'whois', 'IP주소', '위치', '조회'],
+      icon: 'globe'
+    },
+    {
+      id: 'countdown-timer',
+      path: '/tools/life/countdown-timer',
+      name: { ko: '카운트다운 타이머', en: 'Countdown Timer' },
+      description: { ko: '목표 시간까지 카운트다운', en: 'Countdown to target time' },
+      tags: ['countdown', 'timer', 'alarm', 'time', '카운트다운', '타이머', '알람'],
+      icon: 'clock'
+    },
+    {
+      id: 'stopwatch',
+      path: '/tools/life/stopwatch',
+      name: { ko: '스톱워치', en: 'Stopwatch' },
+      description: { ko: '시간 측정용 스톱워치', en: 'Stopwatch for time measurement' },
+      tags: ['stopwatch', 'timer', 'lap', 'time', '스톱워치', '시간', '랩'],
+      icon: 'clock'
+    },
+    {
+      id: 'aspect-ratio',
+      path: '/tools/life/aspect-ratio',
+      name: { ko: '화면비율 계산기', en: 'Aspect Ratio Calculator' },
+      description: { ko: '화면 비율 계산 및 해상도 변환', en: 'Calculate aspect ratios and convert resolutions' },
+      tags: ['aspect', 'ratio', 'resolution', 'screen', 'width', 'height', '화면비', '해상도', '비율'],
+      icon: 'monitor'
     }
   ],
   pdf: [
@@ -624,6 +704,14 @@ const TOOLS_DATA = {
       description: { ko: 'PDF에서 원하는 페이지 삭제', en: 'Delete selected pages from PDF' },
       tags: ['pdf', 'delete', 'remove', 'page', '삭제', '페이지'],
       icon: 'document'
+    },
+    {
+      id: 'reorder-pdf',
+      path: '/tools/pdf/reorder-pdf',
+      name: { ko: 'PDF 페이지 재정렬', en: 'Reorder PDF Pages' },
+      description: { ko: 'PDF 페이지 순서 변경', en: 'Reorder PDF page sequence' },
+      tags: ['pdf', 'reorder', 'sort', 'arrange', 'page', '재정렬', '순서'],
+      icon: 'document'
     }
   ]
 };
@@ -647,18 +735,17 @@ const POPULAR_TOOLS = [
 
 // Recently added tools
 const NEW_TOOLS = [
-  'delete-pdf',
-  'watermark-pdf',
-  'rotate-pdf',
-  'exif-remover',
-  'image-rotate',
-  'speech-to-text',
-  'text-to-speech',
-  'image-crop',
-  'meme-generator',
-  'pomodoro-timer',
-  'meta-tag-generator',
-  'utm-generator'
+  'html-minifier',
+  'robots-txt',
+  'og-preview',
+  'box-shadow',
+  'ip-lookup',
+  'json-csv',
+  'js-minifier',
+  'reorder-pdf',
+  'countdown-timer',
+  'stopwatch',
+  'aspect-ratio'
 ];
 
 /**

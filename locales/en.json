@@ -736,6 +736,22 @@
       "title": "Reorder PDF Pages",
       "description": "Reorder PDF pages with drag and drop."
     },
+    "jsonCsv": {
+      "title": "JSON CSV Converter",
+      "description": "Convert between JSON and CSV formats."
+    },
+    "countdownTimer": {
+      "title": "Countdown Timer",
+      "description": "Countdown to your target time."
+    },
+    "jsMinifier": {
+      "title": "JavaScript Minifier",
+      "description": "Minify JavaScript code to reduce file size."
+    },
+    "aspectRatio": {
+      "title": "Aspect Ratio Calculator",
+      "description": "Calculate aspect ratios and convert resolutions."
+    },
     "ageCalculator": {
       "title": "Age Calculator",
       "description": "Calculate your age from birthdate."
@@ -967,6 +983,26 @@
     "pomodoroTimer": {
       "title": "Pomodoro Timer",
       "description": "Timer for focus and productivity."
+    },
+    "robotsTxt": {
+      "title": "Robots.txt Generator",
+      "description": "Generate robots.txt files for search engine crawlers."
+    },
+    "boxShadow": {
+      "title": "Box Shadow Generator",
+      "description": "Create CSS box-shadow properties visually."
+    },
+    "htmlMinifier": {
+      "title": "HTML Minifier",
+      "description": "Minify HTML code to reduce file size."
+    },
+    "ogPreview": {
+      "title": "Open Graph Preview",
+      "description": "Preview how your links will appear on social media."
+    },
+    "ipLookup": {
+      "title": "IP Address Lookup",
+      "description": "Check your public IP address and location information."
     }
   },
   "common": {
