@@ -19,6 +19,7 @@
     "@tailwindcss/cli": "^4.1.18",
     "concurrently": "^9.2.1",
     "serve": "^14.2.5",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4.1.18"
   }
 }
