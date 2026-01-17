@@ -1,7 +1,12 @@
 # Toolneat 도구 추가 가이드
 
 ## 현재 도구 수
-**Dev 35, Life 51, PDF 9, 총 95개**
+**Dev 35, Life 58, PDF 9, 총 102개**
+
+### ⚠️⚠️⚠️ 숫자가 제일 중요!!! ⚠️⚠️⚠️
+- 도구 추가/삭제 시 모든 숫자 동기화 필수
+- index.html, /tools/index.html, /tools/{category}/index.html, /en/... 전부!
+- 숫자 불일치 = 사이트 신뢰도 하락
 
 ---
 
@@ -11,7 +16,7 @@
 
 **Dev (35):** base64, box-shadow, case-converter, color-contrast, color-converter, color-palette, cron-generator, css-minifier, diff-checker, gradient-generator, hash-generator, html-entity, html-minifier, json-csv, json-formatter, json-validator, js-minifier, jwt-decoder, jwt-generator, line-ending, lorem-ipsum, markdown-preview, meta-tag-generator, og-preview, password-generator, regex-tester, robots-txt, sql-formatter, text-escape, timestamp-converter, url-encoder, utm-generator, uuid-generator, xml-json, yaml-json
 
-**Life (51):** age-calculator, ai-detector, ascii-unicode, aspect-ratio, background-remover, barcode-generator, base-converter, bmi-calculator, character-counter, coin-flip, color-picker, compound-calculator, countdown-timer, dday-calculator, dead-pixel-test, dice-roller, emoji-picker, exif-remover, favicon-generator, image-compressor, image-converter, image-crop, image-resizer, image-rotate, image-watermark, ip-lookup, loan-calculator, lottery-generator, meme-generator, morse-code, noise-generator, ocr, percent-calculator, pixel-fixer, pomodoro-timer, qr-generator, qr-scanner, reaction-test, roulette, salary-calculator, screen-burn-test, screen-color-test, screen-recorder, speech-to-text, stopwatch, text-to-speech, tip-calculator, typing-test, unit-converter, video-to-gif, youtube-thumbnail
+**Life (58):** age-calculator, ai-detector, ascii-unicode, aspect-ratio, background-remover, barcode-generator, base-converter, bmi-calculator, character-counter, coin-flip, color-picker, compound-calculator, countdown-timer, dday-calculator, dead-pixel-test, dice-roller, emoji-picker, exif-remover, fake-chat, fancy-text, favicon-generator, image-blur, image-compressor, image-converter, image-crop, image-resizer, image-rotate, image-watermark, ip-lookup, korean-name-generator, loan-calculator, lottery-generator, meme-generator, mic-test, morse-code, noise-generator, ocr, percent-calculator, pixel-fixer, pomodoro-timer, qr-generator, qr-scanner, reaction-test, roulette, salary-calculator, screen-burn-test, screen-color-test, screen-recorder, sleep-calculator, speech-to-text, stopwatch, text-to-speech, tip-calculator, typing-test, unit-converter, video-to-gif, webcam-test, youtube-thumbnail
 
 **PDF (9):** compress-pdf, delete-pdf, image-to-pdf, merge-pdf, pdf-to-image, reorder-pdf, rotate-pdf, split-pdf, watermark-pdf
 

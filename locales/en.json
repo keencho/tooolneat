@@ -1030,6 +1030,41 @@
       "title": "Noise Generator",
       "description": "Free online white noise, pink noise, and brown noise generator for focus, relaxation, and sleep.",
       "descriptionLong": "Generate white noise, pink noise, and brown noise for concentration, relaxation, and sleep. Includes timer functionality."
+    },
+    "sleepCalculator": {
+      "title": "Sleep Calculator",
+      "description": "Free online tool to calculate optimal sleep and wake times based on sleep cycles.",
+      "descriptionLong": "Calculate the best time to sleep or wake up based on 90-minute sleep cycles. Wake up refreshed by aligning with your natural sleep rhythm."
+    },
+    "fakeChat": {
+      "title": "Fake Chat Generator",
+      "description": "Free online tool to create fake chat message screenshots.",
+      "descriptionLong": "Create fake chat conversation screenshots for content creation, presentations, and more."
+    },
+    "fancyText": {
+      "title": "Fancy Text Generator",
+      "description": "Free online tool to convert plain text into fancy Unicode fonts and styles.",
+      "descriptionLong": "Convert text to 𝒜𝑒𝓈𝓉𝒽𝑒𝓉𝒾𝒸, ᴛɪɴʏ, 𝕕𝕠𝕦𝕓𝕝𝕖 and many more Unicode styles. Perfect for Instagram, Twitter, and other social media."
+    },
+    "webcamTest": {
+      "title": "Webcam Test",
+      "description": "Free online tool to test if your webcam is working properly in your browser.",
+      "descriptionLong": "Test your webcam before video calls or online classes. Check resolution, brightness, and camera status."
+    },
+    "micTest": {
+      "title": "Microphone Test",
+      "description": "Free online tool to test if your microphone is working properly in your browser.",
+      "descriptionLong": "Test your microphone before video calls or recording. Check input levels and audio quality in real-time."
+    },
+    "imageBlur": {
+      "title": "Image Blur/Mosaic",
+      "description": "Free online tool to blur or pixelate specific areas of an image.",
+      "descriptionLong": "Blur or pixelate faces, license plates, or sensitive information. 100% processed in your browser for privacy."
+    },
+    "koreanNameGenerator": {
+      "title": "Korean Name Generator",
+      "description": "Free online tool to generate random Korean names.",
+      "descriptionLong": "Generate random Korean names for characters, pen names, or creative projects. Choose gender and surname options."
     }
   },
   "common": {

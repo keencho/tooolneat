@@ -1658,4 +1658,130 @@
     <priority>0.8</priority>
   </url>
 
+  <url>
+    <loc>https://toolneat.com/tools/life/sleep-calculator</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/sleep-calculator"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/sleep-calculator"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/sleep-calculator"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/en/tools/life/sleep-calculator</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/sleep-calculator"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/sleep-calculator"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/sleep-calculator"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/tools/life/fake-chat</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/fake-chat"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/fake-chat"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/fake-chat"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/en/tools/life/fake-chat</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/fake-chat"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/fake-chat"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/fake-chat"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/tools/life/fancy-text</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/fancy-text"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/fancy-text"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/fancy-text"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/en/tools/life/fancy-text</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/fancy-text"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/fancy-text"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/fancy-text"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/tools/life/webcam-test</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/webcam-test"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/webcam-test"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/webcam-test"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/en/tools/life/webcam-test</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/webcam-test"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/webcam-test"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/webcam-test"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/tools/life/mic-test</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/mic-test"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/mic-test"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/mic-test"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/en/tools/life/mic-test</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/mic-test"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/mic-test"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/mic-test"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/tools/life/image-blur</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/image-blur"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/image-blur"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/image-blur"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/en/tools/life/image-blur</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/image-blur"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/image-blur"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/image-blur"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/tools/life/korean-name-generator</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/korean-name-generator"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/korean-name-generator"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/korean-name-generator"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://toolneat.com/en/tools/life/korean-name-generator</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/life/korean-name-generator"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/life/korean-name-generator"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/life/korean-name-generator"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>

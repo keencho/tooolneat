@@ -694,6 +694,62 @@ const TOOLS_DATA = {
       description: { ko: '집중과 수면을 위한 백색소음', en: 'White noise for focus and sleep' },
       tags: ['noise', 'white', 'pink', 'brown', 'sleep', 'focus', '백색소음', '집중', '수면'],
       icon: 'speaker'
+    },
+    {
+      id: 'sleep-calculator',
+      path: '/tools/life/sleep-calculator',
+      name: { ko: '수면 계산기', en: 'Sleep Calculator' },
+      description: { ko: '최적의 수면/기상 시간 계산', en: 'Calculate optimal sleep and wake times' },
+      tags: ['sleep', 'calculator', 'wake', 'cycle', '수면', '기상', '계산기', '잠'],
+      icon: 'clock'
+    },
+    {
+      id: 'fake-chat',
+      path: '/tools/life/fake-chat',
+      name: { ko: '가짜 카톡 생성기', en: 'Fake Chat Generator' },
+      description: { ko: '가짜 채팅 스크린샷 생성', en: 'Create fake chat screenshots' },
+      tags: ['fake', 'chat', 'kakao', 'message', '가짜', '카톡', '채팅', '메시지'],
+      icon: 'text'
+    },
+    {
+      id: 'fancy-text',
+      path: '/tools/life/fancy-text',
+      name: { ko: '예쁜 글씨 생성기', en: 'Fancy Text Generator' },
+      description: { ko: '유니코드 스타일 텍스트 변환', en: 'Convert to Unicode style text' },
+      tags: ['fancy', 'text', 'unicode', 'font', 'aesthetic', '예쁜', '글씨', '폰트', 'SNS'],
+      icon: 'text'
+    },
+    {
+      id: 'webcam-test',
+      path: '/tools/life/webcam-test',
+      name: { ko: '웹캠 테스트', en: 'Webcam Test' },
+      description: { ko: '웹캠 작동 테스트', en: 'Test your webcam' },
+      tags: ['webcam', 'camera', 'test', 'video', '웹캠', '카메라', '테스트', '화상'],
+      icon: 'video'
+    },
+    {
+      id: 'mic-test',
+      path: '/tools/life/mic-test',
+      name: { ko: '마이크 테스트', en: 'Microphone Test' },
+      description: { ko: '마이크 작동 테스트', en: 'Test your microphone' },
+      tags: ['microphone', 'mic', 'test', 'audio', '마이크', '테스트', '음성', '녹음'],
+      icon: 'microphone'
+    },
+    {
+      id: 'image-blur',
+      path: '/tools/life/image-blur',
+      name: { ko: '이미지 모자이크', en: 'Image Blur/Mosaic' },
+      description: { ko: '이미지 부분 블러/모자이크', en: 'Blur or pixelate image areas' },
+      tags: ['image', 'blur', 'mosaic', 'pixelate', 'censor', '이미지', '모자이크', '블러', '가리기'],
+      icon: 'eye'
+    },
+    {
+      id: 'korean-name-generator',
+      path: '/tools/life/korean-name-generator',
+      name: { ko: '한국 이름 생성기', en: 'Korean Name Generator' },
+      description: { ko: '랜덤 한국 이름 생성', en: 'Generate random Korean names' },
+      tags: ['korean', 'name', 'generator', 'random', '한국', '이름', '생성기', '작명'],
+      icon: 'text'
     }
   ],
   pdf: [
