@@ -129,7 +129,7 @@
     </div>
 
     <!-- Mobile Menu (2-level accordion) -->
-    <nav id="mobile-menu" class="hidden md:hidden pb-4">
+    <nav id="mobile-menu" class="hidden md:hidden pb-4 max-h-[calc(100vh-4rem)] overflow-y-auto">
       <!-- Mobile Search Button -->
       <button id="mobile-search-btn" class="w-full flex items-center gap-3 py-3 px-3 mb-2 bg-gray-100 dark:bg-gray-800 rounded-xl text-gray-500 dark:text-gray-400">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -486,6 +486,23 @@
         <div id="styleResults" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
       </div>
       <div id="copyNotice" class="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg hidden">Copied!</div>
+      <section class="mt-8 card">
+        <h3 class="text-lg font-semibold mb-4">Frequently Asked Questions</h3>
+        <div class="space-y-4 text-gray-600 dark:text-gray-400">
+          <div>
+            <h4 class="font-medium text-gray-900 dark:text-white">Q: Why don't some fancy texts display correctly?</h4>
+            <p>Some fonts or apps may not support Unicode special characters. Most social media platforms and messengers display them correctly.</p>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-900 dark:text-white">Q: Does it work with non-English characters?</h4>
+            <p>No, Unicode decorative characters only support the English alphabet. Other characters will remain unchanged.</p>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-900 dark:text-white">Q: Where can I use these fancy texts?</h4>
+            <p>Use them on Instagram, Twitter, Facebook profiles or posts, chats, and anywhere you want your text to stand out.</p>
+          </div>
+        </div>
+      </section>
     </div>
   </main>
   <div id="footer"></div>

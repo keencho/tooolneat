@@ -140,7 +140,7 @@
     </div>
 
     <!-- Mobile Menu (2-level accordion) -->
-    <nav id="mobile-menu" class="hidden md:hidden pb-4">
+    <nav id="mobile-menu" class="hidden md:hidden pb-4 max-h-[calc(100vh-4rem)] overflow-y-auto">
       <!-- Mobile Search Button -->
       <button id="mobile-search-btn" class="w-full flex items-center gap-3 py-3 px-3 mb-2 bg-gray-100 dark:bg-gray-800 rounded-xl text-gray-500 dark:text-gray-400">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -520,12 +520,21 @@
           </ul>
         </div>
       </div>
-      <section class="mt-8">
-        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Frequently Asked Questions</h2>
-        <div class="space-y-4">
-          <details class="card"><summary class="font-medium cursor-pointer">What is a sleep cycle?</summary><p class="mt-2 text-gray-600 dark:text-gray-400">A sleep cycle is approximately 90 minutes long and includes light sleep, deep sleep, and REM sleep phases. Waking up at the end of a cycle helps you feel more refreshed.</p></details>
-          <details class="card"><summary class="font-medium cursor-pointer">Why add 15 minutes?</summary><p class="mt-2 text-gray-600 dark:text-gray-400">Most people take about 15 minutes to fall asleep after getting into bed. This time is factored into the calculations for more accurate recommendations.</p></details>
-          <details class="card"><summary class="font-medium cursor-pointer">How many sleep cycles are recommended?</summary><p class="mt-2 text-gray-600 dark:text-gray-400">For adults, 5-6 cycles (7.5-9 hours) is ideal. A minimum of 4 cycles (6 hours) is recommended for adequate rest.</p></details>
+      <section class="mt-8 card">
+        <h3 class="text-lg font-semibold mb-4">Frequently Asked Questions</h3>
+        <div class="space-y-4 text-gray-600 dark:text-gray-400">
+          <div>
+            <h4 class="font-medium text-gray-900 dark:text-white">Q: What is a sleep cycle?</h4>
+            <p>A sleep cycle is approximately 90 minutes long and includes light sleep, deep sleep, and REM sleep phases. Waking up at the end of a cycle helps you feel more refreshed.</p>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-900 dark:text-white">Q: Why add 15 minutes?</h4>
+            <p>Most people take about 15 minutes to fall asleep after getting into bed. This time is factored into the calculations for more accurate recommendations.</p>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-900 dark:text-white">Q: How many sleep cycles are recommended?</h4>
+            <p>For adults, 5-6 cycles (7.5-9 hours) is ideal. A minimum of 4 cycles (6 hours) is recommended for adequate rest.</p>
+          </div>
         </div>
       </section>
     </div>

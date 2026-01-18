@@ -128,7 +128,7 @@
     </div>
 
     <!-- Mobile Menu (2-level accordion) -->
-    <nav id="mobile-menu" class="hidden md:hidden pb-4">
+    <nav id="mobile-menu" class="hidden md:hidden pb-4 max-h-[calc(100vh-4rem)] overflow-y-auto">
       <!-- Mobile Search Button -->
       <button id="mobile-search-btn" class="w-full flex items-center gap-3 py-3 px-3 mb-2 bg-gray-100 dark:bg-gray-800 rounded-xl text-gray-500 dark:text-gray-400">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -488,6 +488,32 @@
             </div>
           </div>
           <div class="mb-4">
+            <label class="block text-sm font-medium mb-2">성(姓) 선택</label>
+            <select id="surnameSelect" class="input w-full">
+              <option value="">랜덤</option>
+              <option value="김">김씨</option>
+              <option value="이">이씨</option>
+              <option value="박">박씨</option>
+              <option value="최">최씨</option>
+              <option value="정">정씨</option>
+              <option value="강">강씨</option>
+              <option value="조">조씨</option>
+              <option value="윤">윤씨</option>
+              <option value="장">장씨</option>
+              <option value="임">임씨</option>
+              <option value="한">한씨</option>
+              <option value="오">오씨</option>
+              <option value="서">서씨</option>
+              <option value="신">신씨</option>
+              <option value="권">권씨</option>
+              <option value="황">황씨</option>
+              <option value="안">안씨</option>
+              <option value="송">송씨</option>
+              <option value="류">류씨</option>
+              <option value="홍">홍씨</option>
+            </select>
+          </div>
+          <div class="mb-4">
             <label class="block text-sm font-medium mb-2">생성 개수</label>
             <select id="count" class="input w-full">
               <option value="1">1개</option>
@@ -507,11 +533,21 @@
           <div id="nameList"></div>
         </div>
       </div>
-      <section class="mt-8">
-        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">자주 묻는 질문</h2>
-        <div class="space-y-4">
-          <details class="card"><summary class="font-medium cursor-pointer">이 이름들은 실제로 사용되나요?</summary><p class="mt-2 text-gray-600 dark:text-gray-400">네, 생성되는 이름들은 실제 한국에서 많이 사용되는 성과 이름을 조합한 것입니다.</p></details>
-          <details class="card"><summary class="font-medium cursor-pointer">한자는 어떻게 생성되나요?</summary><p class="mt-2 text-gray-600 dark:text-gray-400">각 한글 이름에 대해 일반적으로 사용되는 한자를 매칭하여 표시합니다.</p></details>
+      <section class="mt-8 card">
+        <h3 class="text-lg font-semibold mb-4">자주 묻는 질문</h3>
+        <div class="space-y-4 text-gray-600 dark:text-gray-400">
+          <div>
+            <h4 class="font-medium text-gray-900 dark:text-white">Q: 이 이름들은 실제로 사용되나요?</h4>
+            <p>네, 생성되는 이름들은 실제 한국에서 많이 사용되는 성과 이름을 조합한 것입니다.</p>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-900 dark:text-white">Q: 한자는 어떻게 생성되나요?</h4>
+            <p>각 한글 이름에 대해 일반적으로 사용되는 한자를 매칭하여 표시합니다. 실제 한자는 다를 수 있습니다.</p>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-900 dark:text-white">Q: 특정 성(姓)을 지정할 수 있나요?</h4>
+            <p>네, 설정에서 원하는 성을 선택하면 해당 성으로만 이름이 생성됩니다. "랜덤"을 선택하면 다양한 성이 사용됩니다.</p>
+          </div>
         </div>
       </section>
     </div>
@@ -534,7 +570,8 @@
       return [...name].map(c => hanjaMap[c] || c).join('');
     }
     function generateName() {
-      const surname = surnames[Math.floor(Math.random() * surnames.length)];
+      const selectedSurname = document.getElementById('surnameSelect').value;
+      const surname = selectedSurname || surnames[Math.floor(Math.random() * surnames.length)];
       let names;
       if (gender === 'male') names = maleNames;
       else if (gender === 'female') names = femaleNames;

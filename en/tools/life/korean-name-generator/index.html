@@ -128,7 +128,7 @@
     </div>
 
     <!-- Mobile Menu (2-level accordion) -->
-    <nav id="mobile-menu" class="hidden md:hidden pb-4">
+    <nav id="mobile-menu" class="hidden md:hidden pb-4 max-h-[calc(100vh-4rem)] overflow-y-auto">
       <!-- Mobile Search Button -->
       <button id="mobile-search-btn" class="w-full flex items-center gap-3 py-3 px-3 mb-2 bg-gray-100 dark:bg-gray-800 rounded-xl text-gray-500 dark:text-gray-400">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -488,6 +488,32 @@
             </div>
           </div>
           <div class="mb-4">
+            <label class="block text-sm font-medium mb-2">Surname</label>
+            <select id="surnameSelect" class="input w-full">
+              <option value="">Random</option>
+              <option value="0">Kim</option>
+              <option value="1">Lee</option>
+              <option value="2">Park</option>
+              <option value="3">Choi</option>
+              <option value="4">Jung</option>
+              <option value="5">Kang</option>
+              <option value="6">Cho</option>
+              <option value="7">Yoon</option>
+              <option value="8">Jang</option>
+              <option value="9">Lim</option>
+              <option value="10">Han</option>
+              <option value="11">Oh</option>
+              <option value="12">Seo</option>
+              <option value="13">Shin</option>
+              <option value="14">Kwon</option>
+              <option value="15">Hwang</option>
+              <option value="16">Ahn</option>
+              <option value="17">Song</option>
+              <option value="18">Ryu</option>
+              <option value="19">Hong</option>
+            </select>
+          </div>
+          <div class="mb-4">
             <label class="block text-sm font-medium mb-2">Number of Names</label>
             <select id="count" class="input w-full">
               <option value="1">1</option>
@@ -507,11 +533,21 @@
           <div id="nameList"></div>
         </div>
       </div>
-      <section class="mt-8">
-        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Frequently Asked Questions</h2>
-        <div class="space-y-4">
-          <details class="card"><summary class="font-medium cursor-pointer">Are these real Korean names?</summary><p class="mt-2 text-gray-600 dark:text-gray-400">Yes, the generated names combine commonly used Korean surnames and given names that are actually used in Korea.</p></details>
-          <details class="card"><summary class="font-medium cursor-pointer">How are the Chinese characters generated?</summary><p class="mt-2 text-gray-600 dark:text-gray-400">Each Korean name is matched with commonly used Chinese characters (Hanja) that correspond to the Korean pronunciation.</p></details>
+      <section class="mt-8 card">
+        <h3 class="text-lg font-semibold mb-4">Frequently Asked Questions</h3>
+        <div class="space-y-4 text-gray-600 dark:text-gray-400">
+          <div>
+            <h4 class="font-medium text-gray-900 dark:text-white">Q: Are these real Korean names?</h4>
+            <p>Yes, the generated names combine commonly used Korean surnames and given names that are actually used in Korea.</p>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-900 dark:text-white">Q: How are the Chinese characters generated?</h4>
+            <p>Each Korean name is matched with commonly used Chinese characters (Hanja) that correspond to the Korean pronunciation.</p>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-900 dark:text-white">Q: Can I choose a specific surname?</h4>
+            <p>Yes, you can select a specific Korean surname from the dropdown menu. If set to "Random", a surname will be randomly chosen from the 20 most common Korean surnames.</p>
+          </div>
         </div>
       </section>
     </div>
@@ -538,7 +574,8 @@
       return [...name].map(c => hanjaMap[c] || c).join('');
     }
     function generateName() {
-      const surnameIdx = Math.floor(Math.random() * surnames.length);
+      const selectedSurname = document.getElementById('surnameSelect').value;
+      const surnameIdx = selectedSurname !== '' ? parseInt(selectedSurname) : Math.floor(Math.random() * surnames.length);
       const surname = surnames[surnameIdx];
       const surnameRoman = surnamesRoman[surnameIdx];
       let names, namesRoman;

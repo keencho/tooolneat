@@ -133,7 +133,7 @@
     </div>
 
     <!-- Mobile Menu (2-level accordion) -->
-    <nav id="mobile-menu" class="hidden md:hidden pb-4">
+    <nav id="mobile-menu" class="hidden md:hidden pb-4 max-h-[calc(100vh-4rem)] overflow-y-auto">
       <!-- Mobile Search Button -->
       <button id="mobile-search-btn" class="w-full flex items-center gap-3 py-3 px-3 mb-2 bg-gray-100 dark:bg-gray-800 rounded-xl text-gray-500 dark:text-gray-400">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -497,8 +497,14 @@
               <option value="">마이크 선택...</option>
             </select>
           </div>
+          <div class="flex flex-wrap justify-center gap-3 mb-4">
+            <button id="recordBtn" onclick="startRecording()" class="btn btn-secondary" disabled>🔴 녹음 시작</button>
+            <button id="playBtn" onclick="playRecording()" class="btn btn-secondary" disabled>▶️ 녹음 듣기</button>
+          </div>
           <div id="status"><span class="status-badge waiting">대기 중</span></div>
+          <div id="recordStatus" class="mt-2 text-sm text-gray-500 dark:text-gray-400"></div>
           <div id="micName" class="mt-2 text-sm text-gray-500 dark:text-gray-400">-</div>
+          <audio id="audioPlayback" class="hidden"></audio>
         </div>
         <div class="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
           <h3 class="font-semibold text-blue-800 dark:text-blue-300 mb-2">테스트 방법</h3>
@@ -509,11 +515,21 @@
           </ul>
         </div>
       </div>
-      <section class="mt-8">
-        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">자주 묻는 질문</h2>
-        <div class="space-y-4">
-          <details class="card"><summary class="font-medium cursor-pointer">마이크가 작동하지 않아요</summary><p class="mt-2 text-gray-600 dark:text-gray-400">1. 브라우저에서 마이크 권한을 허용했는지 확인하세요. 2. 다른 앱에서 마이크를 사용 중인지 확인하세요. 3. 시스템 설정에서 마이크가 활성화되어 있는지 확인하세요.</p></details>
-          <details class="card"><summary class="font-medium cursor-pointer">볼륨이 너무 작아요</summary><p class="mt-2 text-gray-600 dark:text-gray-400">시스템 설정에서 마이크 입력 볼륨을 높여보세요. 마이크와의 거리도 확인해보세요.</p></details>
+      <section class="mt-8 card">
+        <h3 class="text-lg font-semibold mb-4">자주 묻는 질문</h3>
+        <div class="space-y-4 text-gray-600 dark:text-gray-400">
+          <div>
+            <h4 class="font-medium text-gray-900 dark:text-white">Q: 마이크가 작동하지 않아요</h4>
+            <p>1. 브라우저에서 마이크 권한을 허용했는지 확인하세요. 2. 다른 앱에서 마이크를 사용 중인지 확인하세요. 3. 시스템 설정에서 마이크가 활성화되어 있는지 확인하세요.</p>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-900 dark:text-white">Q: 볼륨이 너무 작아요</h4>
+            <p>시스템 설정에서 마이크 입력 볼륨을 높여보세요. 마이크와의 거리도 확인해보세요.</p>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-900 dark:text-white">Q: 녹음한 소리가 안 들려요</h4>
+            <p>녹음 후 "녹음 듣기" 버튼을 클릭하세요. 스피커 볼륨이 켜져 있는지 확인하고, 헤드폰 사용 시 연결 상태를 확인하세요.</p>
+          </div>
         </div>
       </section>
     </div>
@@ -545,6 +561,7 @@
         document.getElementById('status').innerHTML = '<span class="status-badge success">작동 중</span>';
         document.getElementById('startBtn').disabled = true;
         document.getElementById('stopBtn').disabled = false;
+        document.getElementById('recordBtn').disabled = false;
         getMics();
         updateVolume();
       } catch (err) {
@@ -552,6 +569,7 @@
       }
     }
     function stopMic() {
+      if (isRecording) stopRecording();
       if (animationId) cancelAnimationFrame(animationId);
       if (stream) stream.getTracks().forEach(t => t.stop());
       if (audioContext) audioContext.close();
@@ -563,6 +581,7 @@
       document.getElementById('status').innerHTML = '<span class="status-badge waiting">중지됨</span>';
       document.getElementById('startBtn').disabled = false;
       document.getElementById('stopBtn').disabled = true;
+      document.getElementById('recordBtn').disabled = true;
       document.getElementById('micName').textContent = '-';
     }
     function switchMic() {
@@ -578,6 +597,49 @@
       document.getElementById('volumeFill').style.height = volume + '%';
       document.getElementById('volumeValue').textContent = volume;
       animationId = requestAnimationFrame(updateVolume);
+    }
+    let mediaRecorder = null;
+    let recordedChunks = [];
+    let isRecording = false;
+    let recordedAudioUrl = null;
+    function startRecording() {
+      if (!stream) return;
+      if (isRecording) {
+        stopRecording();
+        return;
+      }
+      recordedChunks = [];
+      mediaRecorder = new MediaRecorder(stream);
+      mediaRecorder.ondataavailable = e => { if (e.data.size > 0) recordedChunks.push(e.data); };
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(recordedChunks, { type: 'audio/webm' });
+        if (recordedAudioUrl) URL.revokeObjectURL(recordedAudioUrl);
+        recordedAudioUrl = URL.createObjectURL(blob);
+        document.getElementById('audioPlayback').src = recordedAudioUrl;
+        document.getElementById('playBtn').disabled = false;
+        document.getElementById('recordStatus').textContent = '녹음 완료! "녹음 듣기" 버튼을 눌러 확인하세요.';
+      };
+      mediaRecorder.start();
+      isRecording = true;
+      document.getElementById('recordBtn').textContent = '⏹️ 녹음 중지';
+      document.getElementById('recordBtn').classList.add('bg-red-500');
+      document.getElementById('recordStatus').textContent = '🔴 녹음 중...';
+    }
+    function stopRecording() {
+      if (mediaRecorder && isRecording) {
+        mediaRecorder.stop();
+        isRecording = false;
+        document.getElementById('recordBtn').textContent = '🔴 녹음 시작';
+        document.getElementById('recordBtn').classList.remove('bg-red-500');
+      }
+    }
+    function playRecording() {
+      const audio = document.getElementById('audioPlayback');
+      if (audio.src) {
+        audio.play();
+        document.getElementById('recordStatus').textContent = '▶️ 재생 중...';
+        audio.onended = () => { document.getElementById('recordStatus').textContent = '재생 완료'; };
+      }
     }
     getMics();
   </script>

@@ -140,7 +140,7 @@
     </div>
 
     <!-- Mobile Menu (2-level accordion) -->
-    <nav id="mobile-menu" class="hidden md:hidden pb-4">
+    <nav id="mobile-menu" class="hidden md:hidden pb-4 max-h-[calc(100vh-4rem)] overflow-y-auto">
       <!-- Mobile Search Button -->
       <button id="mobile-search-btn" class="w-full flex items-center gap-3 py-3 px-3 mb-2 bg-gray-100 dark:bg-gray-800 rounded-xl text-gray-500 dark:text-gray-400">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -520,12 +520,21 @@
           </ul>
         </div>
       </div>
-      <section class="mt-8">
-        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">자주 묻는 질문</h2>
-        <div class="space-y-4">
-          <details class="card"><summary class="font-medium cursor-pointer">수면 주기란 무엇인가요?</summary><p class="mt-2 text-gray-600 dark:text-gray-400">수면 주기는 약 90분 단위로 얕은 수면, 깊은 수면, REM 수면을 거치는 패턴입니다. 주기가 완료되는 시점에 일어나면 더 개운하게 느껴집니다.</p></details>
-          <details class="card"><summary class="font-medium cursor-pointer">왜 15분을 더하나요?</summary><p class="mt-2 text-gray-600 dark:text-gray-400">대부분의 사람은 침대에 눕고 실제로 잠들기까지 약 15분이 걸립니다. 이 시간을 계산에 반영하여 더 정확한 시간을 제안합니다.</p></details>
-          <details class="card"><summary class="font-medium cursor-pointer">권장 수면 주기는 몇 회인가요?</summary><p class="mt-2 text-gray-600 dark:text-gray-400">성인 기준 5-6회 (7.5-9시간)가 이상적입니다. 최소 4회 (6시간) 이상은 자는 것이 좋습니다.</p></details>
+      <section class="mt-8 card">
+        <h3 class="text-lg font-semibold mb-4">자주 묻는 질문</h3>
+        <div class="space-y-4 text-gray-600 dark:text-gray-400">
+          <div>
+            <h4 class="font-medium text-gray-900 dark:text-white">Q: 수면 주기란 무엇인가요?</h4>
+            <p>수면 주기는 약 90분 단위로 얕은 수면, 깊은 수면, REM 수면을 거치는 패턴입니다. 주기가 완료되는 시점에 일어나면 더 개운하게 느껴집니다.</p>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-900 dark:text-white">Q: 왜 15분을 더하나요?</h4>
+            <p>대부분의 사람은 침대에 눕고 실제로 잠들기까지 약 15분이 걸립니다. 이 시간을 계산에 반영하여 더 정확한 시간을 제안합니다.</p>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-900 dark:text-white">Q: 권장 수면 주기는 몇 회인가요?</h4>
+            <p>성인 기준 5-6회 (7.5-9시간)가 이상적입니다. 최소 4회 (6시간) 이상은 자는 것이 좋습니다.</p>
+          </div>
         </div>
       </section>
     </div>

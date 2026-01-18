@@ -188,3 +188,132 @@ Backdrop: fixed top-16, z-55
 ## applicationCategory (JSON-LD)
 - Dev: `DeveloperApplication`
 - Life/PDF: `UtilitiesApplication`
+
+---
+
+## FAQ 섹션 작성 가이드
+
+### ⚠️ details/summary 사용 금지!
+아코디언 스타일(details/summary) 대신 **항상 펼쳐진 형태**로 작성
+
+### 올바른 FAQ 구조
+```html
+<section class="mt-8 card">
+  <h3 class="text-lg font-semibold mb-4">자주 묻는 질문</h3>
+  <div class="space-y-4 text-gray-600 dark:text-gray-400">
+    <div>
+      <h4 class="font-medium text-gray-900 dark:text-white">Q: 질문 내용?</h4>
+      <p>답변 내용</p>
+    </div>
+    <div>
+      <h4 class="font-medium text-gray-900 dark:text-white">Q: 두 번째 질문?</h4>
+      <p>두 번째 답변</p>
+    </div>
+  </div>
+</section>
+```
+
+### FAQ 필수 항목 (도구 성격에 맞게 작성)
+1. 지원 형식/기능 설명
+2. 서버 저장 여부 (대부분 "브라우저에서 처리, 서버 저장 안함")
+3. 도구 사용 팁 또는 기능 차이점
+
+---
+
+## 알려진 기술적 이슈 및 해결책
+
+### 1. html2canvas + Tailwind CSS v4 oklch 오류
+**문제**: Tailwind CSS v4의 `oklch()` 색상 함수를 html2canvas가 파싱 못함
+```
+Error: Attempting to parse an unsupported color function 'oklch'
+```
+
+**해결책**: html2canvas 대신 **Canvas API로 직접 그리기**
+- 참고: `/tools/life/fake-chat/index.html`의 `downloadChat()` 함수
+- RGB/HEX 색상만 사용하여 canvas에 직접 렌더링
+
+### 2. 모바일 헤더 메뉴 스크롤 안됨
+**문제**: 모바일에서 Dev Tools, Life Tools 등 확장 시 스크롤 불가
+
+**해결책**: `#mobile-menu`에 max-height와 overflow 추가
+```html
+<nav id="mobile-menu" class="hidden md:hidden pb-4 max-h-[calc(100vh-4rem)] overflow-y-auto">
+```
+
+### 3. 이미지 업로드 후 재업로드 불가
+**문제**: 이미지 한번 올리면 새 이미지 업로드 못함 (F5 필요)
+
+**해결책**: "새 이미지" 버튼 추가
+```javascript
+function newImage() {
+  document.getElementById('editorArea').classList.add('hidden');
+  document.getElementById('uploadCard').classList.remove('hidden');
+  document.getElementById('imageInput').value = '';
+  originalImage = null;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+```
+- 업로드 영역 카드에 ID 부여 (`id="uploadCard"`)
+- 에디터 영역 숨기고 업로드 영역 다시 표시
+
+### 4. 모자이크 효과가 불균일하게 적용됨
+**문제**: 픽셀화 블록이 브러시 위치에 따라 어긋남
+
+**해결책**: 블록 그리드 정렬 + 중앙 샘플링
+```javascript
+function applyPixelate(cx, cy, size, pixelSize) {
+  // 블록 시작점을 그리드에 정렬
+  const blockX = Math.floor(startX / pixelSize) * pixelSize;
+  const blockY = Math.floor(startY / pixelSize) * pixelSize;
+
+  // 블록 중앙에서 색상 샘플링
+  const sampleX = px + Math.floor(pixelSize / 2);
+  const sampleY = py + Math.floor(pixelSize / 2);
+  // ...
+}
+```
+
+### 5. 업로드 영역 hidden 처리 후 빈 공간 남음
+**문제**: `uploadArea`만 hidden하면 부모 카드가 빈 공간으로 남음
+
+**해결책**: 부모 카드 전체를 숨김
+```html
+<!-- 부모 카드에 ID 부여 -->
+<div id="uploadCard" class="card mb-6">
+  <div id="uploadArea" class="drop-zone">...</div>
+</div>
+```
+```javascript
+// uploadArea 대신 uploadCard를 숨김
+document.getElementById('uploadCard').classList.add('hidden');
+```
+
+---
+
+## 도구별 공통 패턴
+
+### 이미지 처리 도구
+```
+구조:
+1. 업로드 카드 (id="uploadCard") - 드래그앤드롭 + 파일선택
+2. 에디터 영역 (id="editorArea", hidden) - 도구 + 캔버스
+3. FAQ 섹션
+
+필수 버튼:
+- 초기화 (원본으로 복원)
+- 새 이미지 (다른 이미지 업로드)
+- 다운로드
+```
+
+### Canvas 기반 이미지 저장
+```javascript
+// 올바른 방법 - Canvas API 직접 사용
+const canvas = document.createElement('canvas');
+const ctx = canvas.getContext('2d');
+ctx.fillStyle = '#ffffff';  // RGB/HEX만 사용!
+// ... 직접 그리기 ...
+link.href = canvas.toDataURL('image/png');
+
+// 피해야 할 방법 - html2canvas (oklch 오류 발생)
+// html2canvas(element).then(canvas => ...)
+```

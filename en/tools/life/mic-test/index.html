@@ -133,7 +133,7 @@
     </div>
 
     <!-- Mobile Menu (2-level accordion) -->
-    <nav id="mobile-menu" class="hidden md:hidden pb-4">
+    <nav id="mobile-menu" class="hidden md:hidden pb-4 max-h-[calc(100vh-4rem)] overflow-y-auto">
       <!-- Mobile Search Button -->
       <button id="mobile-search-btn" class="w-full flex items-center gap-3 py-3 px-3 mb-2 bg-gray-100 dark:bg-gray-800 rounded-xl text-gray-500 dark:text-gray-400">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -497,8 +497,14 @@
               <option value="">Select microphone...</option>
             </select>
           </div>
+          <div class="flex flex-wrap justify-center gap-3 mb-4">
+            <button id="recordBtn" onclick="startRecording()" class="btn btn-secondary" disabled>🔴 Start Recording</button>
+            <button id="playBtn" onclick="playRecording()" class="btn btn-secondary" disabled>▶️ Play Recording</button>
+          </div>
           <div id="status"><span class="status-badge waiting">Waiting</span></div>
+          <div id="recordStatus" class="mt-2 text-sm text-gray-500 dark:text-gray-400"></div>
           <div id="micName" class="mt-2 text-sm text-gray-500 dark:text-gray-400">-</div>
+          <audio id="audioPlayback" class="hidden"></audio>
         </div>
         <div class="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
           <h3 class="font-semibold text-blue-800 dark:text-blue-300 mb-2">How to Test</h3>
@@ -509,11 +515,21 @@
           </ul>
         </div>
       </div>
-      <section class="mt-8">
-        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Frequently Asked Questions</h2>
-        <div class="space-y-4">
-          <details class="card"><summary class="font-medium cursor-pointer">Microphone not working?</summary><p class="mt-2 text-gray-600 dark:text-gray-400">1. Check if you've allowed microphone permission in your browser. 2. Make sure no other app is using the microphone. 3. Check if the microphone is enabled in your system settings.</p></details>
-          <details class="card"><summary class="font-medium cursor-pointer">Volume is too low?</summary><p class="mt-2 text-gray-600 dark:text-gray-400">Try increasing the microphone input volume in your system settings. Also check the distance between you and the microphone.</p></details>
+      <section class="mt-8 card">
+        <h3 class="text-lg font-semibold mb-4">Frequently Asked Questions</h3>
+        <div class="space-y-4 text-gray-600 dark:text-gray-400">
+          <div>
+            <h4 class="font-medium text-gray-900 dark:text-white">Q: Microphone not working?</h4>
+            <p>1. Check if you've allowed microphone permission in your browser. 2. Make sure no other app is using the microphone. 3. Check if the microphone is enabled in your system settings.</p>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-900 dark:text-white">Q: Volume is too low?</h4>
+            <p>Try increasing the microphone input volume in your system settings. Also check the distance between you and the microphone.</p>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-900 dark:text-white">Q: Can't hear the recording?</h4>
+            <p>After recording, click "Play Recording" button. Make sure your speakers are on, and if using headphones, check the connection.</p>
+          </div>
         </div>
       </section>
     </div>
@@ -545,6 +561,7 @@
         document.getElementById('status').innerHTML = '<span class="status-badge success">Working</span>';
         document.getElementById('startBtn').disabled = true;
         document.getElementById('stopBtn').disabled = false;
+        document.getElementById('recordBtn').disabled = false;
         getMics();
         updateVolume();
       } catch (err) {
@@ -552,6 +569,7 @@
       }
     }
     function stopMic() {
+      if (isRecording) stopRecording();
       if (animationId) cancelAnimationFrame(animationId);
       if (stream) stream.getTracks().forEach(t => t.stop());
       if (audioContext) audioContext.close();
@@ -563,6 +581,7 @@
       document.getElementById('status').innerHTML = '<span class="status-badge waiting">Stopped</span>';
       document.getElementById('startBtn').disabled = false;
       document.getElementById('stopBtn').disabled = true;
+      document.getElementById('recordBtn').disabled = true;
       document.getElementById('micName').textContent = '-';
     }
     function switchMic() {
@@ -578,6 +597,49 @@
       document.getElementById('volumeFill').style.height = volume + '%';
       document.getElementById('volumeValue').textContent = volume;
       animationId = requestAnimationFrame(updateVolume);
+    }
+    let mediaRecorder = null;
+    let recordedChunks = [];
+    let isRecording = false;
+    let recordedAudioUrl = null;
+    function startRecording() {
+      if (!stream) return;
+      if (isRecording) {
+        stopRecording();
+        return;
+      }
+      recordedChunks = [];
+      mediaRecorder = new MediaRecorder(stream);
+      mediaRecorder.ondataavailable = e => { if (e.data.size > 0) recordedChunks.push(e.data); };
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(recordedChunks, { type: 'audio/webm' });
+        if (recordedAudioUrl) URL.revokeObjectURL(recordedAudioUrl);
+        recordedAudioUrl = URL.createObjectURL(blob);
+        document.getElementById('audioPlayback').src = recordedAudioUrl;
+        document.getElementById('playBtn').disabled = false;
+        document.getElementById('recordStatus').textContent = 'Recording complete! Click "Play Recording" to listen.';
+      };
+      mediaRecorder.start();
+      isRecording = true;
+      document.getElementById('recordBtn').textContent = '⏹️ Stop Recording';
+      document.getElementById('recordBtn').classList.add('bg-red-500');
+      document.getElementById('recordStatus').textContent = '🔴 Recording...';
+    }
+    function stopRecording() {
+      if (mediaRecorder && isRecording) {
+        mediaRecorder.stop();
+        isRecording = false;
+        document.getElementById('recordBtn').textContent = '🔴 Start Recording';
+        document.getElementById('recordBtn').classList.remove('bg-red-500');
+      }
+    }
+    function playRecording() {
+      const audio = document.getElementById('audioPlayback');
+      if (audio.src) {
+        audio.play();
+        document.getElementById('recordStatus').textContent = '▶️ Playing...';
+        audio.onended = () => { document.getElementById('recordStatus').textContent = 'Playback complete'; };
+      }
     }
     getMics();
   </script>

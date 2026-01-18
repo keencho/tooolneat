@@ -27,13 +27,12 @@
   <script src="../../../../assets/js/common.js"></script>
   <script src="../../../../assets/js/i18n.js"></script>
   <script src="../../../../assets/js/components.js"></script>
-  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
   <style>
     .chat-preview { background: #b2c7d9; min-height: 400px; border-radius: 12px; padding: 16px; max-width: 360px; margin: 0 auto; }
     .chat-header { background: #b2c7d9; padding: 8px; text-align: center; font-weight: 600; color: #333; }
-    .chat-bubble { max-width: 70%; padding: 10px 14px; border-radius: 12px; margin: 4px 0; font-size: 14px; line-height: 1.4; word-wrap: break-word; }
-    .chat-bubble.sent { background: #fee500; margin-left: auto; border-bottom-right-radius: 4px; }
-    .chat-bubble.received { background: white; margin-right: auto; border-bottom-left-radius: 4px; }
+    .chat-bubble { max-width: 70%; padding: 10px 14px; border-radius: 12px; margin: 4px 0; font-size: 14px; line-height: 1.4; word-wrap: break-word; color: #333; }
+    .chat-bubble.sent { background: #fee500; margin-left: auto; border-bottom-right-radius: 4px; color: #333; }
+    .chat-bubble.received { background: white; margin-right: auto; border-bottom-left-radius: 4px; color: #333; }
     .chat-time { font-size: 10px; color: #666; margin-top: 2px; }
     .chat-time.sent { text-align: right; }
     .chat-name { font-size: 12px; color: #555; margin-bottom: 2px; }
@@ -132,7 +131,7 @@
     </div>
 
     <!-- Mobile Menu (2-level accordion) -->
-    <nav id="mobile-menu" class="hidden md:hidden pb-4">
+    <nav id="mobile-menu" class="hidden md:hidden pb-4 max-h-[calc(100vh-4rem)] overflow-y-auto">
       <!-- Mobile Search Button -->
       <button id="mobile-search-btn" class="w-full flex items-center gap-3 py-3 px-3 mb-2 bg-gray-100 dark:bg-gray-800 rounded-xl text-gray-500 dark:text-gray-400">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -490,12 +489,12 @@
           <div class="mb-4">
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Add Message</label>
             <div class="flex gap-2 mb-2">
-              <input type="text" id="messageInput" class="input flex-1" placeholder="Enter message">
-              <select id="senderType" class="input w-24">
+              <select id="senderType" class="input w-20">
                 <option value="sent">Me</option>
                 <option value="received">Them</option>
               </select>
             </div>
+            <textarea id="messageInput" class="input w-full mb-2" rows="3" placeholder="Enter message" style="resize: vertical;"></textarea>
             <button onclick="addMessage()" class="btn btn-primary w-full">Add Message</button>
           </div>
           <div class="mb-4">
@@ -512,6 +511,23 @@
           </div>
         </div>
       </div>
+      <section class="mt-8 card">
+        <h3 class="text-lg font-semibold mb-4">Frequently Asked Questions</h3>
+        <div class="space-y-4 text-gray-600 dark:text-gray-400">
+          <div>
+            <h4 class="font-medium text-gray-900 dark:text-white">Q: What is this tool used for?</h4>
+            <p>Create fake conversation screenshots for content creation, presentations, educational materials, or sharing fun conversations with friends.</p>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-900 dark:text-white">Q: Are my images saved on the server?</h4>
+            <p>No, all processing is done in your browser and images are downloaded directly. Nothing is sent to or stored on any server.</p>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-900 dark:text-white">Q: What if the image download doesn't work?</h4>
+            <p>Check if your browser has popup blockers enabled, or try a different browser. Special characters may also cause issues.</p>
+          </div>
+        </div>
+      </section>
     </div>
   </main>
   <div id="footer"></div>
@@ -550,13 +566,146 @@
       `).join('');
     }
     function downloadChat() {
-      const preview = document.getElementById('chatPreview');
-      html2canvas(preview, { backgroundColor: '#b2c7d9' }).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'fake-chat.png';
-        link.href = canvas.toDataURL();
-        link.click();
+      const name = document.getElementById('chatName').value || 'Friend';
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const scale = 2;
+      const width = 360;
+      const padding = 16;
+      const headerHeight = 40;
+      const bubbleRadius = 12;
+      const maxBubbleWidth = width * 0.7;
+      const lineHeight = 20;
+      const bubblePaddingV = 12;
+      const bubblePaddingH = 14;
+      const timeHeight = 16;
+
+      // Calculate total height
+      ctx.font = '14px system-ui, -apple-system, sans-serif';
+      let totalHeight = padding + headerHeight + 16;
+
+      messages.forEach(m => {
+        const lines = wrapText(ctx, m.text, maxBubbleWidth - bubblePaddingH * 2);
+        const bubbleContentHeight = lines.length * lineHeight + timeHeight + bubblePaddingV * 2;
+        totalHeight += bubbleContentHeight + 8 + (m.sender === 'received' ? 18 : 0);
       });
+      totalHeight += padding;
+
+      canvas.width = width * scale;
+      canvas.height = Math.max(400, totalHeight) * scale;
+      ctx.scale(scale, scale);
+
+      // Background
+      ctx.fillStyle = '#b2c7d9';
+      roundRect(ctx, 0, 0, width, Math.max(400, totalHeight), 12);
+      ctx.fill();
+
+      // Header
+      ctx.fillStyle = '#333';
+      ctx.font = '600 16px system-ui, -apple-system, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(name, width / 2, padding + 24);
+
+      // Messages
+      let y = padding + headerHeight + 16;
+      ctx.textAlign = 'left';
+
+      messages.forEach(m => {
+        ctx.font = '14px system-ui, -apple-system, sans-serif';
+        const lines = wrapText(ctx, m.text, maxBubbleWidth - bubblePaddingH * 2);
+        const textBlockHeight = lines.length * lineHeight;
+        const bubbleHeight = textBlockHeight + timeHeight + bubblePaddingV * 2;
+        const bubbleWidth = Math.min(maxBubbleWidth, Math.max(...lines.map(l => ctx.measureText(l).width)) + bubblePaddingH * 2);
+
+        let x = m.sender === 'sent' ? width - padding - bubbleWidth : padding;
+
+        // Sender name for received messages
+        if (m.sender === 'received') {
+          ctx.fillStyle = '#555';
+          ctx.font = '12px system-ui, -apple-system, sans-serif';
+          ctx.fillText(name, x, y + 12);
+          y += 18;
+        }
+
+        // Bubble
+        ctx.fillStyle = m.sender === 'sent' ? '#fee500' : '#ffffff';
+        drawBubble(ctx, x, y, bubbleWidth, bubbleHeight, bubbleRadius, m.sender);
+
+        // Text
+        ctx.fillStyle = '#333';
+        ctx.font = '14px system-ui, -apple-system, sans-serif';
+        lines.forEach((line, i) => {
+          ctx.fillText(line, x + bubblePaddingH, y + bubblePaddingV + 14 + i * lineHeight);
+        });
+
+        // Time
+        ctx.fillStyle = '#888';
+        ctx.font = '11px system-ui, -apple-system, sans-serif';
+        const timeWidth = ctx.measureText(m.time).width;
+        const timeX = m.sender === 'sent' ? x + bubbleWidth - timeWidth - bubblePaddingH : x + bubblePaddingH;
+        ctx.fillText(m.time, timeX, y + bubblePaddingV + textBlockHeight + 14 + 2);
+
+        y += bubbleHeight + 8;
+      });
+
+      const link = document.createElement('a');
+      link.download = 'fake-chat.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    function wrapText(ctx, text, maxWidth) {
+      const words = text.split('');
+      const lines = [];
+      let line = '';
+      for (const char of words) {
+        const testLine = line + char;
+        if (ctx.measureText(testLine).width > maxWidth && line) {
+          lines.push(line);
+          line = char;
+        } else {
+          line = testLine;
+        }
+      }
+      if (line) lines.push(line);
+      return lines.length ? lines : [''];
+    }
+
+    function roundRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    function drawBubble(ctx, x, y, w, h, r, sender) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - (sender === 'sent' ? 4 : r));
+      if (sender === 'sent') {
+        ctx.quadraticCurveTo(x + w, y + h, x + w - 4, y + h);
+      } else {
+        ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      }
+      ctx.lineTo(x + (sender === 'received' ? 4 : r), y + h);
+      if (sender === 'received') {
+        ctx.quadraticCurveTo(x, y + h, x, y + h - 4);
+      } else {
+        ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      }
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+      ctx.fill();
     }
     document.getElementById('chatName').addEventListener('input', renderChat);
     document.getElementById('messageInput').addEventListener('keypress', e => { if (e.key === 'Enter') addMessage(); });

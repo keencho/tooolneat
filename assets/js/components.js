@@ -185,6 +185,87 @@
     const grid = document.getElementById('tools-grid');
     const triggerBtns = document.querySelectorAll('.tools-overlay-trigger');
 
+    // Setup tooltip system
+    if (grid && !document.getElementById('tool-grid-styles')) {
+      const style = document.createElement('style');
+      style.id = 'tool-grid-styles';
+      style.textContent = `
+        .tool-grid-item .tool-name-full { display: none; }
+        #tool-tooltip {
+          position: fixed;
+          padding: 8px 12px;
+          background: #1f2937;
+          color: #fff;
+          font-size: 13px;
+          font-weight: 500;
+          white-space: nowrap;
+          border-radius: 8px;
+          z-index: 9999;
+          box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+          pointer-events: none;
+          opacity: 0;
+          transition: opacity 0.15s ease;
+        }
+        #tool-tooltip.visible { opacity: 1; }
+        #tool-tooltip::after {
+          content: '';
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          border: 6px solid transparent;
+        }
+        #tool-tooltip.arrow-bottom::after {
+          top: 100%;
+          border-top-color: #1f2937;
+        }
+        #tool-tooltip.arrow-top::after {
+          bottom: 100%;
+          border-bottom-color: #1f2937;
+        }
+      `;
+      document.head.appendChild(style);
+
+      const tooltip = document.createElement('div');
+      tooltip.id = 'tool-tooltip';
+      document.body.appendChild(tooltip);
+
+      let tooltipTimeout;
+      grid.addEventListener('mouseenter', (e) => {
+        const item = e.target.closest('.tool-grid-item');
+        if (!item) return;
+        const name = item.querySelector('.tool-name-full')?.textContent;
+        if (!name) return;
+
+        clearTimeout(tooltipTimeout);
+        tooltipTimeout = setTimeout(() => {
+          const rect = item.getBoundingClientRect();
+          tooltip.textContent = name;
+          tooltip.classList.remove('arrow-top', 'arrow-bottom');
+
+          let top, arrowClass;
+          if (rect.bottom + 50 < window.innerHeight) {
+            top = rect.bottom + 8;
+            arrowClass = 'arrow-top';
+          } else {
+            top = rect.top - 40;
+            arrowClass = 'arrow-bottom';
+          }
+
+          tooltip.style.top = top + 'px';
+          tooltip.style.left = (rect.left + rect.width / 2) + 'px';
+          tooltip.style.transform = 'translateX(-50%)';
+          tooltip.classList.add(arrowClass, 'visible');
+        }, 200);
+      }, true);
+
+      grid.addEventListener('mouseleave', (e) => {
+        const item = e.target.closest('.tool-grid-item');
+        if (!item) return;
+        clearTimeout(tooltipTimeout);
+        tooltip.classList.remove('visible');
+      }, true);
+    }
+
     // Current state
     let currentCategory = 'all';
     let currentSearch = '';
@@ -291,13 +372,14 @@
         const gradient = colorMap[tool.category] || colorMap.dev;
 
         return `
-          <a href="${path}" class="group flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+          <a href="${path}" class="tool-grid-item group relative flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" title="${name}">
             <div class="flex-shrink-0 w-8 h-8 rounded-md bg-gradient-to-br ${gradient} flex items-center justify-center">
               <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
               </svg>
             </div>
-            <span class="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 truncate">${name}</span>
+            <span class="tool-name text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 truncate">${name}</span>
+            <span class="tool-name-full">${name}</span>
           </a>
         `;
       }).join('');

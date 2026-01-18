@@ -129,7 +129,7 @@
     </div>
 
     <!-- Mobile Menu (2-level accordion) -->
-    <nav id="mobile-menu" class="hidden md:hidden pb-4">
+    <nav id="mobile-menu" class="hidden md:hidden pb-4 max-h-[calc(100vh-4rem)] overflow-y-auto">
       <!-- Mobile Search Button -->
       <button id="mobile-search-btn" class="w-full flex items-center gap-3 py-3 px-3 mb-2 bg-gray-100 dark:bg-gray-800 rounded-xl text-gray-500 dark:text-gray-400">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -486,6 +486,23 @@
         <div id="styleResults" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
       </div>
       <div id="copyNotice" class="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg hidden">복사됨!</div>
+      <section class="mt-8 card">
+        <h3 class="text-lg font-semibold mb-4">자주 묻는 질문</h3>
+        <div class="space-y-4 text-gray-600 dark:text-gray-400">
+          <div>
+            <h4 class="font-medium text-gray-900 dark:text-white">Q: 예쁜 글씨가 표시되지 않아요</h4>
+            <p>일부 폰트나 앱에서는 유니코드 특수 문자가 지원되지 않을 수 있습니다. SNS나 메신저에서는 대부분 정상적으로 표시됩니다.</p>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-900 dark:text-white">Q: 한글도 변환되나요?</h4>
+            <p>아니요, 유니코드 특수 문자는 영문 알파벳만 지원합니다. 한글은 원본 그대로 유지됩니다.</p>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-900 dark:text-white">Q: 어디에 사용할 수 있나요?</h4>
+            <p>인스타그램, 트위터, 페이스북 등 SNS 프로필이나 게시물, 채팅 등에서 눈에 띄는 텍스트를 만들 때 사용할 수 있습니다.</p>
+          </div>
+        </div>
+      </section>
     </div>
   </main>
   <div id="footer"></div>

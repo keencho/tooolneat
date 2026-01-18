@@ -28,8 +28,8 @@
   <script src="../../../assets/js/i18n.js"></script>
   <script src="../../../assets/js/components.js"></script>
   <style>
-    .canvas-container { position: relative; display: inline-block; max-width: 100%; }
-    #canvas { max-width: 100%; cursor: crosshair; border-radius: 8px; }
+    .canvas-container { position: relative; display: block; max-width: 100%; overflow: auto; background: #1f2937; border-radius: 8px; padding: 8px; }
+    #canvas { max-width: 100%; height: auto; cursor: crosshair; border-radius: 8px; display: block; background: #374151; }
     .drop-zone { border: 2px dashed #d1d5db; border-radius: 12px; padding: 48px; text-align: center; transition: all 0.2s; }
     .drop-zone:hover, .drop-zone.dragover { border-color: #6366f1; background: #f5f3ff; }
     .dark .drop-zone { border-color: #4b5563; }
@@ -129,7 +129,7 @@
     </div>
 
     <!-- Mobile Menu (2-level accordion) -->
-    <nav id="mobile-menu" class="hidden md:hidden pb-4">
+    <nav id="mobile-menu" class="hidden md:hidden pb-4 max-h-[calc(100vh-4rem)] overflow-y-auto">
       <!-- Mobile Search Button -->
       <button id="mobile-search-btn" class="w-full flex items-center gap-3 py-3 px-3 mb-2 bg-gray-100 dark:bg-gray-800 rounded-xl text-gray-500 dark:text-gray-400">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -477,7 +477,7 @@
         <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2" data-i18n="tools.imageBlur.title">이미지 모자이크</h1>
         <p class="text-gray-600 dark:text-gray-400" data-i18n="tools.imageBlur.descriptionLong">이미지의 특정 부분을 블러 또는 모자이크 처리할 수 있습니다.</p>
       </div>
-      <div class="card mb-6">
+      <div id="uploadCard" class="card mb-6">
         <div id="uploadArea" class="drop-zone">
           <input type="file" id="imageInput" accept="image/*" class="hidden" onchange="loadImage(event)">
           <svg class="w-12 h-12 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
@@ -497,15 +497,16 @@
             </div>
             <div>
               <label class="block text-sm font-medium mb-1">브러시 크기</label>
-              <input type="range" id="brushSize" min="10" max="100" value="30" class="w-32">
+              <input type="range" id="brushSize" min="2" max="100" value="20" class="w-32">
             </div>
             <div>
               <label class="block text-sm font-medium mb-1">강도</label>
               <input type="range" id="intensity" min="5" max="30" value="15" class="w-32">
             </div>
           </div>
-          <div class="flex gap-2">
+          <div class="flex gap-2 flex-wrap">
             <button onclick="resetImage()" class="btn btn-secondary">초기화</button>
+            <button onclick="newImage()" class="btn btn-secondary">새 이미지</button>
             <button onclick="downloadImage()" class="btn btn-primary">다운로드</button>
           </div>
         </div>
@@ -516,6 +517,23 @@
           <p class="text-sm text-gray-500 mt-2">마우스로 드래그하여 블러/모자이크 처리할 영역을 칠하세요</p>
         </div>
       </div>
+      <section class="mt-8 card">
+        <h3 class="text-lg font-semibold mb-4">자주 묻는 질문</h3>
+        <div class="space-y-4 text-gray-600 dark:text-gray-400">
+          <div>
+            <h4 class="font-medium text-gray-900 dark:text-white">Q: 어떤 이미지 형식을 지원하나요?</h4>
+            <p>JPG, PNG, GIF, WebP 등 브라우저에서 지원하는 대부분의 이미지 형식을 사용할 수 있습니다.</p>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-900 dark:text-white">Q: 처리된 이미지가 서버에 저장되나요?</h4>
+            <p>아니요, 모든 처리는 브라우저에서 이루어지며 이미지는 직접 다운로드됩니다. 서버로 전송되거나 저장되지 않습니다.</p>
+          </div>
+          <div>
+            <h4 class="font-medium text-gray-900 dark:text-white">Q: 블러와 모자이크의 차이점은?</h4>
+            <p>블러는 영역을 부드럽게 흐리게 하고, 모자이크는 픽셀 형태로 처리합니다. 개인정보 보호 목적에는 둘 다 효과적입니다.</p>
+          </div>
+        </div>
+      </section>
     </div>
   </main>
   <div id="footer"></div>
@@ -538,7 +556,7 @@
           canvas.height = img.height;
           ctx.drawImage(img, 0, 0);
           originalImage = ctx.getImageData(0, 0, canvas.width, canvas.height);
-          document.getElementById('uploadArea').classList.add('hidden');
+          document.getElementById('uploadCard').classList.add('hidden');
           document.getElementById('editorArea').classList.remove('hidden');
         };
         img.src = e.target.result;
@@ -570,15 +588,21 @@
       ctx.putImageData(blurred, Math.max(0, cx - size), Math.max(0, cy - size));
     }
     function applyPixelate(cx, cy, size, pixelSize) {
-      const x = Math.max(0, cx - size);
-      const y = Math.max(0, cy - size);
-      const w = Math.min(size * 2, canvas.width - x);
-      const h = Math.min(size * 2, canvas.height - y);
-      for (let py = 0; py < h; py += pixelSize) {
-        for (let px = 0; px < w; px += pixelSize) {
-          const imgData = ctx.getImageData(x + px, y + py, 1, 1);
+      const startX = Math.max(0, Math.floor(cx - size));
+      const startY = Math.max(0, Math.floor(cy - size));
+      const endX = Math.min(canvas.width, Math.ceil(cx + size));
+      const endY = Math.min(canvas.height, Math.ceil(cy + size));
+      const blockX = Math.floor(startX / pixelSize) * pixelSize;
+      const blockY = Math.floor(startY / pixelSize) * pixelSize;
+      for (let py = blockY; py < endY; py += pixelSize) {
+        for (let px = blockX; px < endX; px += pixelSize) {
+          const sampleX = Math.min(px + Math.floor(pixelSize / 2), canvas.width - 1);
+          const sampleY = Math.min(py + Math.floor(pixelSize / 2), canvas.height - 1);
+          const imgData = ctx.getImageData(sampleX, sampleY, 1, 1);
           ctx.fillStyle = `rgb(${imgData.data[0]},${imgData.data[1]},${imgData.data[2]})`;
-          ctx.fillRect(x + px, y + py, pixelSize, pixelSize);
+          const rectW = Math.min(pixelSize, canvas.width - px);
+          const rectH = Math.min(pixelSize, canvas.height - py);
+          ctx.fillRect(px, py, rectW, rectH);
         }
       }
     }
@@ -601,6 +625,13 @@
       return imgData;
     }
     function resetImage() { if (originalImage) ctx.putImageData(originalImage, 0, 0); }
+    function newImage() {
+      document.getElementById('editorArea').classList.add('hidden');
+      document.getElementById('uploadCard').classList.remove('hidden');
+      document.getElementById('imageInput').value = '';
+      originalImage = null;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
     function downloadImage() {
       const link = document.createElement('a');
       link.download = 'blurred-image.png';
