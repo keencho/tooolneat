@@ -44,14 +44,8 @@
   window.toggleTheme = () => {
     const isDark = document.documentElement.classList.contains('dark');
     const newTheme = isDark ? 'light' : 'dark';
-
-    console.log('[Theme] Toggling:', isDark ? 'dark -> light' : 'light -> dark');
-    console.log('[Theme] <html> classes before:', document.documentElement.className);
-
     localStorage.setItem('theme', newTheme);
     applyTheme(newTheme);
-
-    console.log('[Theme] <html> classes after:', document.documentElement.className);
 
     if (typeof updateThemeIcon === 'function') {
       updateThemeIcon(newTheme === 'dark');
