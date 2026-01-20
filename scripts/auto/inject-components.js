@@ -63,11 +63,11 @@ function findHtmlFiles(dir, files = []) {
 function convertLinksForEnglish(html) {
   // Replace href="/tools/... with href="/en/tools/...
   // Replace href="/pages/... with href="/en/pages/...
-  // Replace href="/" with href="/en/"
+  // Replace href="/" with href="/en"
   return html
     .replace(/href="\/tools\//g, 'href="/en/tools/')
     .replace(/href="\/pages\//g, 'href="/en/pages/')
-    .replace(/href="\/"/g, 'href="/en/"');
+    .replace(/href="\/"/g, 'href="/en"');
 }
 
 // Inject components into HTML file

@@ -15,9 +15,10 @@
 
 ### 1. 도구 파일 생성
 ```
-/tools/{category}/{tool-id}/index.html       ← 한글
-/en/tools/{category}/{tool-id}/index.html    ← 영어
+/tools/{category}/{tool-id}.html       ← 한글
+/en/tools/{category}/{tool-id}.html    ← 영어
 ```
+⚠️ **폴더/index.html 구조 사용 금지!** → Cloudflare Pages에서 trailing slash 리다이렉트 발생
 
 **필수 `<head>` 태그 (순서대로):**
 ```html
@@ -32,18 +33,18 @@
   <title>도구 이름 - Toolneat</title>
   <meta name="description" content="도구 설명">
 
-  <!-- 3. Canonical & hreflang -->
-  <link rel="canonical" href="https://toolneat.com/tools/{category}/{tool-id}/">
-  <link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/{category}/{tool-id}/">
-  <link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/{category}/{tool-id}/">
-  <link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/{category}/{tool-id}/">
+  <!-- 3. Canonical & hreflang (⚠️ trailing slash 금지!) -->
+  <link rel="canonical" href="https://toolneat.com/tools/{category}/{tool-id}">
+  <link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/{category}/{tool-id}">
+  <link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/{category}/{tool-id}">
+  <link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/{category}/{tool-id}">
 
   <!-- 4. Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Toolneat">
   <meta property="og:title" content="도구 이름 - Toolneat">
   <meta property="og:description" content="도구 설명">
-  <meta property="og:url" content="https://toolneat.com/tools/{category}/{tool-id}/">
+  <meta property="og:url" content="https://toolneat.com/tools/{category}/{tool-id}">
   <meta property="og:image" content="https://toolneat.com/assets/images/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#2563eb">
@@ -74,7 +75,7 @@
     "@type": "WebApplication",
     "name": "도구 이름",
     "description": "도구 설명",
-    "url": "https://toolneat.com/tools/{category}/{tool-id}/",
+    "url": "https://toolneat.com/tools/{category}/{tool-id}",
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "Any",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
@@ -152,23 +153,15 @@
 ### 6. 헤더 (모바일 메뉴)
 
 1. `/components/header.html` 수정
-2. `node scripts/auto/force-update-headers.js` 실행
+2. `node scripts/auto/inject-components.js` 실행 (또는 빌드 시 자동)
 
 ---
 
 ### 7. sitemap.xml
 
-```xml
-<url>
-  <loc>https://toolneat.com/tools/{category}/{tool-id}</loc>
-  <xhtml:link rel="alternate" hreflang="ko" href="https://toolneat.com/tools/{category}/{tool-id}"/>
-  <xhtml:link rel="alternate" hreflang="en" href="https://toolneat.com/en/tools/{category}/{tool-id}"/>
-  <xhtml:link rel="alternate" hreflang="x-default" href="https://toolneat.com/tools/{category}/{tool-id}"/>
-  <changefreq>monthly</changefreq>
-  <priority>0.8</priority>
-</url>
-<!-- 영어 버전도 동일하게 추가 -->
-```
+자동 생성됨: `node scripts/auto/generate-sitemap.js`
+
+⚠️ **URL에 trailing slash 절대 금지!**
 
 ---
 
@@ -210,6 +203,35 @@
 **PDF (9):** compress-pdf, delete-pdf, image-to-pdf, merge-pdf, pdf-to-image, reorder-pdf, rotate-pdf, split-pdf, watermark-pdf
 
 **Game (5):** 2048, minesweeper, snake, memory-game, tetris
+
+---
+
+## ⚠️ URL 규칙 (중요!)
+
+### Trailing Slash 금지
+모든 URL에 trailing slash(`/`) 사용 금지. Cloudflare Pages 리다이렉트 방지.
+
+```
+❌ https://toolneat.com/tools/dev/
+✅ https://toolneat.com/tools/dev
+
+❌ href="/en/"
+✅ href="/en"
+```
+
+**적용 위치:**
+- `<link rel="canonical">`
+- `<link rel="alternate" hreflang>`
+- `<meta property="og:url">`
+- JSON-LD `"url"`
+- 모든 내부 링크 `href`
+- sitemap.xml
+
+### 파일 구조
+```
+❌ /tools/dev/hash-generator/index.html  (폴더 구조 → trailing slash 리다이렉트 발생)
+✅ /tools/dev/hash-generator.html        (파일 구조 → 리다이렉트 없음)
+```
 
 ---
 
